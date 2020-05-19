@@ -29,8 +29,8 @@ namespace HotelsGUI
                 DateFrom = DateFrom.SelectedDate.Value,
                 NumberOfAdults = adultsNumber
             };
-            BookingSearchService bookingSearchService = new BookingSearchService();
-            bookingSearchService.StartSearch(userPreference);
+
+            SearchService.SearchServiceInstance.Search(userPreference);
         }
     }
 }

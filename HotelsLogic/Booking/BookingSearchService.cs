@@ -11,7 +11,7 @@ namespace HotelsLogic
         public void Search(UserPreference userPreference)
         {
             Directory.CreateDirectory("./" + DirectoryName);
-            File.WriteAllText("./" + DirectoryName + "bookingSearch.txt", PrepareUserPreferenceForBookingBot(userPreference));
+            File.WriteAllText("./" + DirectoryName + "/bookingSearch.txt", PrepareUserPreferenceForBookingBot(userPreference));
         }
         private string PrepareUserPreferenceForBookingBot(UserPreference userPreference)
         {

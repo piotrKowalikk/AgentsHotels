@@ -1,0 +1,14 @@
+C:\studia\semest6\agenty\RPA\HotelsConsoleApp\HotelsConsoleApp\bin\Debug\netcoreapp3.1\HotelsConsoleApp.exe
+C:\studia\semest6\agenty\RPA\HotelsConsoleApp\HotelsConsoleApp\bin\Debug\netcoreapp3.1\HotelsConsoleApp.deps.json
+C:\studia\semest6\agenty\RPA\HotelsConsoleApp\HotelsConsoleApp\bin\Debug\netcoreapp3.1\HotelsConsoleApp.runtimeconfig.json
+C:\studia\semest6\agenty\RPA\HotelsConsoleApp\HotelsConsoleApp\bin\Debug\netcoreapp3.1\HotelsConsoleApp.runtimeconfig.dev.json
+C:\studia\semest6\agenty\RPA\HotelsConsoleApp\HotelsConsoleApp\bin\Debug\netcoreapp3.1\HotelsConsoleApp.dll
+C:\studia\semest6\agenty\RPA\HotelsConsoleApp\HotelsConsoleApp\bin\Debug\netcoreapp3.1\HotelsConsoleApp.pdb
+C:\studia\semest6\agenty\RPA\HotelsConsoleApp\HotelsConsoleApp\bin\Debug\netcoreapp3.1\HotelsLogic.dll
+C:\studia\semest6\agenty\RPA\HotelsConsoleApp\HotelsConsoleApp\bin\Debug\netcoreapp3.1\HotelsLogic.pdb
+C:\studia\semest6\agenty\RPA\HotelsConsoleApp\HotelsConsoleApp\obj\Debug\netcoreapp3.1\HotelsConsoleApp.csprojAssemblyReference.cache
+C:\studia\semest6\agenty\RPA\HotelsConsoleApp\HotelsConsoleApp\obj\Debug\netcoreapp3.1\HotelsConsoleApp.AssemblyInfoInputs.cache
+C:\studia\semest6\agenty\RPA\HotelsConsoleApp\HotelsConsoleApp\obj\Debug\netcoreapp3.1\HotelsConsoleApp.AssemblyInfo.cs
+C:\studia\semest6\agenty\RPA\HotelsConsoleApp\HotelsConsoleApp\obj\Debug\netcoreapp3.1\HotelsConsoleApp.csproj.CopyComplete
+C:\studia\semest6\agenty\RPA\HotelsConsoleApp\HotelsConsoleApp\obj\Debug\netcoreapp3.1\HotelsConsoleApp.dll
+C:\studia\semest6\agenty\RPA\HotelsConsoleApp\HotelsConsoleApp\obj\Debug\netcoreapp3.1\HotelsConsoleApp.pdb

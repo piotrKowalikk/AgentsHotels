@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "HotelsConsoleApp/1.0.0": {
+        "dependencies": {
+          "HotelsLogic": "1.0.0"
+        },
+        "runtime": {
+          "HotelsConsoleApp.dll": {}
+        }
+      },
+      "HotelsLogic/1.0.0": {
+        "runtime": {
+          "HotelsLogic.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "HotelsConsoleApp/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "HotelsLogic/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

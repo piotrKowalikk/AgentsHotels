@@ -1,0 +1,8 @@
+C:\studia\semest6\agenty\RPA\HotelsConsoleApp\HotelsLogic\bin\Debug\netcoreapp3.1\HotelsLogic.deps.json
+C:\studia\semest6\agenty\RPA\HotelsConsoleApp\HotelsLogic\bin\Debug\netcoreapp3.1\HotelsLogic.dll
+C:\studia\semest6\agenty\RPA\HotelsConsoleApp\HotelsLogic\bin\Debug\netcoreapp3.1\HotelsLogic.pdb
+C:\studia\semest6\agenty\RPA\HotelsConsoleApp\HotelsLogic\obj\Debug\netcoreapp3.1\HotelsLogic.csprojAssemblyReference.cache
+C:\studia\semest6\agenty\RPA\HotelsConsoleApp\HotelsLogic\obj\Debug\netcoreapp3.1\HotelsLogic.AssemblyInfoInputs.cache
+C:\studia\semest6\agenty\RPA\HotelsConsoleApp\HotelsLogic\obj\Debug\netcoreapp3.1\HotelsLogic.AssemblyInfo.cs
+C:\studia\semest6\agenty\RPA\HotelsConsoleApp\HotelsLogic\obj\Debug\netcoreapp3.1\HotelsLogic.dll
+C:\studia\semest6\agenty\RPA\HotelsConsoleApp\HotelsLogic\obj\Debug\netcoreapp3.1\HotelsLogic.pdb

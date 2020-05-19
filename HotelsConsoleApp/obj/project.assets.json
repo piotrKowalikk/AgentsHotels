@@ -27,23 +27,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Piotrek\\.nuget\\packages\\": {},
+    "C:\\Users\\Piotr\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\studia\\semest6\\agenty\\RPA\\HotelsConsoleApp\\HotelsConsoleApp\\HotelsConsoleApp.csproj",
+      "projectUniqueName": "C:\\Dev\\AgentsHotels\\HotelsConsoleApp\\HotelsConsoleApp.csproj",
       "projectName": "HotelsConsoleApp",
-      "projectPath": "C:\\studia\\semest6\\agenty\\RPA\\HotelsConsoleApp\\HotelsConsoleApp\\HotelsConsoleApp.csproj",
-      "packagesPath": "C:\\Users\\Piotrek\\.nuget\\packages\\",
-      "outputPath": "C:\\studia\\semest6\\agenty\\RPA\\HotelsConsoleApp\\HotelsConsoleApp\\obj\\",
+      "projectPath": "C:\\Dev\\AgentsHotels\\HotelsConsoleApp\\HotelsConsoleApp.csproj",
+      "packagesPath": "C:\\Users\\Piotr\\.nuget\\packages\\",
+      "outputPath": "C:\\Dev\\AgentsHotels\\HotelsConsoleApp\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Piotrek\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Piotr\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -56,8 +56,8 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "C:\\studia\\semest6\\agenty\\RPA\\HotelsConsoleApp\\HotelsLogic\\HotelsLogic.csproj": {
-              "projectPath": "C:\\studia\\semest6\\agenty\\RPA\\HotelsConsoleApp\\HotelsLogic\\HotelsLogic.csproj"
+            "C:\\Dev\\AgentsHotels\\HotelsLogic\\HotelsLogic.csproj": {
+              "projectPath": "C:\\Dev\\AgentsHotels\\HotelsLogic\\HotelsLogic.csproj"
             }
           }
         }

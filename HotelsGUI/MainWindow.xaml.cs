@@ -18,13 +18,15 @@ namespace HotelsGUI
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
             if (!DateFrom.SelectedDate.HasValue || !DateTo.SelectedDate.HasValue || !Int32.TryParse(AdultsNumberText.Text, out int adultsNumber))
+            {
                 return;
+            }
 
             UserPreference userPreference = new UserPreference()
             {
                 City = CityTextbox.Text,
-                DateTo = DateFrom.SelectedDate.Value,
-                DateFrom = DateTo.SelectedDate.Value,
+                DateTo = DateTo.SelectedDate.Value,
+                DateFrom = DateFrom.SelectedDate.Value,
                 NumberOfAdults = adultsNumber
             };
             BookingSearchService bookingSearchService = new BookingSearchService();

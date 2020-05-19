@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace HotelsLogic
+namespace HotelsLogic.Trivago
 {
-    public class BookingSearchService
+    public class TrivagoSearchService : ISearchService
     {
-        static string DirectoryName = "BookingSearch";
-        public void StartSearch(UserPreference userPreference)
+        static string DirectoryName = "TrivagoSearch";
+        public void Search(UserPreference userPreference)
         {
             Directory.CreateDirectory("./" + DirectoryName);
-            File.WriteAllText("./" + DirectoryName + "bookingSearch.txt", PrepareUserPreferenceForBookingBot(userPreference));
+            File.WriteAllText("./" + DirectoryName + "trivagoSearch.txt", PrepareUserPreferenceForTrivagoBot(userPreference));
         }
         private string PrepareUserPreferenceForBookingBot(UserPreference userPreference)
         {

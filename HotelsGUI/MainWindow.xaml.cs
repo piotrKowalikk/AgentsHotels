@@ -1,5 +1,6 @@
 ﻿using HotelsLogic;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
@@ -25,11 +26,11 @@ namespace HotelsGUI
         {
             if (!DateFrom.SelectedDate.HasValue || !DateTo.SelectedDate.HasValue || !Int32.TryParse(AdultsNumberText.Text, out int adultsNumber))
             {
-                ValidationTextBlock.Text = "Enter valid input";
+                OutputTextBlock.Text = "Enter valid input";
                 return;
             }
 
-            ValidationTextBlock.Text = string.Empty;
+            OutputTextBlock.Text = string.Empty;
 
             UserPreference userPreference = new UserPreference()
             {
@@ -41,13 +42,21 @@ namespace HotelsGUI
 
             SearchService.SearchServiceInstance.Search(userPreference);
 
-            await ResultService.ResultServiceInstance.WaitForResult(new FileSystemEventHandler(OnResultCreated));
+            await ResultService.ResultServiceInstance.WaitForResult(new FileSystemEventHandler(OnResultFileCreated));
+            OutputTextBlock.Text = "Waiting for results";
         }
 
-        private void OnResultCreated(object source, FileSystemEventArgs e)
+        private void OnResultFileCreated(object source, FileSystemEventArgs e)
         {
+            List<SearchResult> newResults = ResultService.ResultServiceInstance.GetResultsFromFile(e.FullPath);
+
             App.Current.Dispatcher.Invoke(() =>
-                Results.Add(new SearchResult("Trivago", "Tani Hotel", "www.hotel.pl"))
+            {
+                foreach (SearchResult item in newResults)
+                {
+                    Results.Add(item);
+                }
+            }
             );
         }
     }

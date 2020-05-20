@@ -23,7 +23,7 @@
         <DatePicker Name="DateFrom" Grid.Row="1"></DatePicker>
         <DatePicker Name="DateTo" Grid.Row="2"></DatePicker>
         <TextBox Name="AdultsNumberText" Grid.Row="3"></TextBox>
-        <TextBlock Name="ValidationTextBlock" Grid.Row="4"></TextBlock>
+        <TextBlock Name="OutputTextBlock" Grid.Row="4"></TextBlock>
         <Button Name="StartButton" Grid.Row="5" Click="StartButton_Click">Start</Button>
 
 

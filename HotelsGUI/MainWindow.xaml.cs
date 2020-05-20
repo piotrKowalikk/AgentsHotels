@@ -16,15 +16,9 @@ namespace HotelsGUI
         public MainWindow()
         {
             InitializeComponent();
-            Results = new ObservableCollection<SearchResult>
-            {
-                new SearchResult("Trivago", "Super Hotel", "www.hotel.pl"),
-                new SearchResult("Trivago", "Fajny Hotel", "www.hotel.pl"),
-                new SearchResult("Trivago", "Tani Hotel", "www.hotel.pl")
-            };
 
+            Results = new ObservableCollection<SearchResult>();
             ResultListView.ItemsSource = Results;
-
         }
 
         private async void StartButton_Click(object sender, RoutedEventArgs e)

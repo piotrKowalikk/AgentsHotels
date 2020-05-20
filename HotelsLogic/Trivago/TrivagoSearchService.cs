@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using System.IO;
 
 namespace HotelsLogic.Trivago
 {
@@ -11,9 +8,9 @@ namespace HotelsLogic.Trivago
         public void Search(UserPreference userPreference)
         {
             Directory.CreateDirectory("./" + DirectoryName);
-            File.WriteAllText("./" + DirectoryName + "trivagoSearch.txt", PrepareUserPreferenceForTrivagoBot(userPreference));
+            File.WriteAllText("./" + DirectoryName + "/trivagoSearch.txt", PrepareUserPreferenceForTrivagoBot(userPreference));
         }
-        private string PrepareUserPreferenceForBookingBot(UserPreference userPreference)
+        private string PrepareUserPreferenceForTrivagoBot(UserPreference userPreference)
         {
             return new BookingUserPreference(userPreference).GetDeserializedUserPreference();
         }

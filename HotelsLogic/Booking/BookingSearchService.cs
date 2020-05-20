@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using System.IO;
 
 namespace HotelsLogic
 {
@@ -11,7 +8,7 @@ namespace HotelsLogic
         public void Search(UserPreference userPreference)
         {
             Directory.CreateDirectory("./" + DirectoryName);
-            File.WriteAllText("./" + DirectoryName + "bookingSearch.txt", PrepareUserPreferenceForBookingBot(userPreference));
+            File.WriteAllText("./" + DirectoryName + "/bookingSearch.txt", PrepareUserPreferenceForBookingBot(userPreference));
         }
         private string PrepareUserPreferenceForBookingBot(UserPreference userPreference)
         {

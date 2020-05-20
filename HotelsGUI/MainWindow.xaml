@@ -17,11 +17,23 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <TextBox Name="CityTextbox"></TextBox>
         <DatePicker Name="DateFrom" Grid.Row="1"></DatePicker>
         <DatePicker Name="DateTo" Grid.Row="2"></DatePicker>
         <TextBox Name="AdultsNumberText" Grid.Row="3"></TextBox>
-        <Button Name="StartButton" Grid.Row="4" Click="StartButton_Click">Start</Button>
+        <TextBlock Name="OutputTextBlock" Grid.Row="4"></TextBlock>
+        <Button Name="StartButton" Grid.Row="5" Click="StartButton_Click">Start</Button>
+
+
+        <ListView Name="ResultListView" Grid.Column="1" Grid.RowSpan="10" >
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding HotelName}"/>
+                    <GridViewColumn Header="URL" DisplayMemberBinding="{Binding Url}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Window>

@@ -5,6 +5,7 @@ addon core version 4.98.18332.1321
 --TODO: instead of delays it could be done by try block and goto 
 
 --główny program - tylko na tworzenie pliku się uruchamia
+dialog "Hej"
 if  ♥task⟦changetype⟧=="Created"
      call main
 end
@@ -21,6 +22,8 @@ procedure main
     ♥fromPrice=♥json⟦fromPrice⟧
     ♥toPrice=♥json⟦toPrice⟧
     ♥city=♥json⟦city⟧
+    --TODO
+    ♥outputPath=♥json⟦outputPath⟧
     
     --helpers
     ♥dateFromMonthsToSkip=♥json⟦dateFromMonthsToSkip⟧
@@ -70,7 +73,7 @@ procedure main
     selenium.runscript ‴document.querySelector('[data-date~="♥dateFrom"]').click()‴
     delay 5
     --dateTo
-        for ♥tmp from  ♥dateFromMonthsToSkip to ♥dateToMonthsToSkip step 1
+        for ♥tmp from  ♥dateFromMonthsToSkip+1 to ♥dateToMonthsToSkip step 1
         selenium.runscript ‴document.querySelector('[data-bui-ref~=calendar-next]').click()‴
         delay 1
     end
@@ -93,10 +96,21 @@ procedure main
         delay 5
     end
     
-    --wybór wynikowego domku
-    selenium.click search /html/body/div[6]/div/div[3]/div[1]/div[2]/div[1]/div[1]/form/div[5]/div[2]/button by xpath
-    selenium.geturl result ♥url 
-    
-    --wyświetlenie wyników
-    dialog message ♥url
+ --wybór wynikowego 1 domku
+♥title1=""
+♥url=""
+selenium.getinnerhtml search       /html/body/div[6]/div/div[3]/div[1]/div[1]/div[7]/div[3]/div[1]/div/div[1]/div[2]/div[1]/div[1]/div[1]/h3/a/span[1] by xpath result   ♥title1
+selenium.click search         /html/body/div[6]/div/div[3]/div[1]/div[1]/div[7]/div[3]/div[1]/div/div[1]/div[2]/div[1]/div[1]/div[1]/h3/a/span[1] by xpath
+selenium.geturl result ♥url1 
+
+--zapis do pliku
+program notepad
+keyboard ‴[‴
+keyboard ‴{"fromCompany": "booking","hotelName": "♥title1","url": "♥url1"},⋘ENTER⋙‴
+keyboard ‴]‴
+keyboard  ⋘CTRL+S⋙
+keyboard ‴bookingResult.txt‴
+keyboard ⋘ALT+A⋙
+keyboard ‴♥outputPath‴ 
+keyboard ⋘ALT+Z⋙    
 end

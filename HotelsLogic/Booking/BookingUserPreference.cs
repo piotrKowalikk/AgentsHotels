@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -18,6 +19,7 @@ namespace HotelsLogic
         public int fromPrice { get; private set; }
         public int toPrice { get; private set; }
         public string city { get; private set; }
+        public string outputPath { get; private set; }
 
         public BookingUserPreference(UserPreference userPreference)
         {
@@ -32,6 +34,8 @@ namespace HotelsLogic
             //helpers
             dateFromMonthsToSkip = userPreference.DateFrom.Month - DateTime.Now.Month;
             dateToMonthsToSkip = userPreference.DateTo.Month - DateTime.Now.Month;
+            outputPath = ResultService.ResultsPath;
+
         }
 
         public string GetDeserializedUserPreference()

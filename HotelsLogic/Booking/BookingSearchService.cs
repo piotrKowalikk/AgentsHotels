@@ -4,7 +4,7 @@ namespace HotelsLogic
 {
     public class BookingSearchService : ISearchService
     {
-        static string DirectoryName = "BookingSearch";
+        readonly public static string DirectoryName = "BookingSearch";
         public void Search(UserPreference userPreference)
         {
             Directory.CreateDirectory("./" + DirectoryName);

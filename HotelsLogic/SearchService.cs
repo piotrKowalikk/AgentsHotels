@@ -1,5 +1,4 @@
-﻿using HotelsLogic.Trivago;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -15,6 +14,7 @@ namespace HotelsLogic
             searchServices = new List<ISearchService>();
             searchServices.Add(new BookingSearchService());
             searchServices.Add(new TrivagoSearchService());
+            searchServices.Add(new HotelsSearchService());
         }
         public void Search(UserPreference us)
         {

@@ -2,11 +2,11 @@
 
 namespace HotelsLogic
 {
-    class BookingUserPreference
+    class HotelsUserPreference
     {
         private UserPreference userPreference;
 
-        public BookingUserPreference(UserPreference userPreference)
+        public HotelsUserPreference(UserPreference userPreference)
         {
             this.userPreference = userPreference;
         }

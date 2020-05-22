@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotelsConsoleApp", "HotelsC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotelsLogic", "HotelsLogic\HotelsLogic.csproj", "{A5A17E87-569C-4DB2-9B45-4898C65CD157}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelsGUI", "HotelsGUI\HotelsGUI.csproj", "{D4EBA226-2D14-46DE-B739-F3A4E854E60B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotelsGUI", "HotelsGUI\HotelsGUI.csproj", "{D4EBA226-2D14-46DE-B739-F3A4E854E60B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

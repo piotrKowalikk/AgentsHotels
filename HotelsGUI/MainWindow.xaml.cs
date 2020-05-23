@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Windows;
 
 namespace HotelsGUI
@@ -64,7 +65,8 @@ namespace HotelsGUI
             {
                 foreach (SearchResult item in newResults)
                 {
-                    Results.Add(item);
+                    if (!Results.Any(x => x.HotelName == item.HotelName))
+                        Results.Add(item);
                 }
             }
             );

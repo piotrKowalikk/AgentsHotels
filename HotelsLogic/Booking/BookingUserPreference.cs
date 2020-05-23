@@ -23,8 +23,8 @@ namespace HotelsLogic
 
         public BookingUserPreference(UserPreference userPreference)
         {
-            dateFrom = userPreference.DateFrom.Year + "-" + userPreference.DateFrom.Month + "-" + userPreference.DateFrom.Day;
-            dateTo = userPreference.DateTo.Year + "-" + userPreference.DateTo.Month + "-" + userPreference.DateTo.Day;
+            dateFrom = userPreference.DateFrom.Year + "-" + MakeTwoPostions(userPreference.DateFrom.Month) + "-" + MakeTwoPostions(userPreference.DateFrom.Day);
+            dateTo = userPreference.DateTo.Year + "-" + MakeTwoPostions(userPreference.DateTo.Month) + "-" + MakeTwoPostions(userPreference.DateTo.Day);
             numberOfAdults = userPreference.NumberOfAdults;
             numberOfChildren = 2;
             numberOfRooms = 2;//TODO
@@ -36,6 +36,12 @@ namespace HotelsLogic
             dateToMonthsToSkip = userPreference.DateTo.Month - DateTime.Now.Month;
             outputPath = ResultService.ResultsPath;
 
+        }
+        private static string MakeTwoPostions(int num)
+        {
+            if (num < 10)
+                return "0" + num;
+            return "" + num;
         }
 
         public string GetDeserializedUserPreference()

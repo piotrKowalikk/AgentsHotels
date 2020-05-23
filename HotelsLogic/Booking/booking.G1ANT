@@ -5,7 +5,7 @@ addon core version 4.98.18332.1321
 --TODO: instead of delays it could be done by try block and goto 
 
 --główny program - tylko na tworzenie pliku się uruchamia
-dialog "Hej"
+--dialog "Hej"
 if  ♥task⟦changetype⟧=="Created"
      call main
 end
@@ -22,7 +22,7 @@ procedure main
     ♥fromPrice=♥json⟦fromPrice⟧
     ♥toPrice=♥json⟦toPrice⟧
     ♥city=♥json⟦city⟧
-    --TODO
+    ♥delay=5
     ♥outputPath=♥json⟦outputPath⟧
     
     --helpers
@@ -64,36 +64,38 @@ procedure main
     
     --wybory dat
     selenium.click search xp__dates-inner by class
-    delay 5
+    delay ♥delay
     --dateFrom    
-    for ♥tmp from 1 to ♥dateFromMonthsToSkip step 1
-        selenium.runscript ‴document.querySelector('[data-bui-ref~=calendar-next]').click()‴
-        delay 1
+    if ♥dateFromMonthsToSkip>0
+        for ♥tmp from 1 to ♥dateFromMonthsToSkip step 1
+            selenium.runscript ‴document.querySelector('[data-bui-ref~=calendar-next]').click()‴
+            delay 1
+        end
     end
     selenium.runscript ‴document.querySelector('[data-date~="♥dateFrom"]').click()‴
-    delay 5
+    delay ♥delay
     --dateTo
         for ♥tmp from  ♥dateFromMonthsToSkip+1 to ♥dateToMonthsToSkip step 1
         selenium.runscript ‴document.querySelector('[data-bui-ref~=calendar-next]').click()‴
         delay 1
     end
     selenium.runscript ‴document.querySelector('[data-date~="♥dateTo"]').click()‴
-    delay 5
+    delay ♥delay
     
     --kliknij wyszukaj
     selenium.click search sb-searchbox__button by class
-    delay 5
+    delay ♥delay
     
     --pozostałe stałe paramenry
     selenium.runscript ‴document.getElementsByName('group_adults')[0].selectedIndex=♥numberOfAdults-1‴
     selenium.runscript ‴document.getElementsByName('group_children')[0].selectedIndex=♥numberOfChildren-1‴
     selenium.runscript ‴document.getElementsByName('no_rooms')[0].selectedIndex=♥numberOfRooms-1‴
-    delay 5
+    delay ♥delay
     
     --klikanie w checkboxy z cena
     for ♥prio from ♥fromCostPriority to  ♥toCostPriority step 1
         selenium.runscript ‴document.querySelector('[data-id~="pri-♥prio"]').click();‴
-        delay 5
+        delay ♥delay
     end
     
  --wybór wynikowego 1 domku
@@ -102,6 +104,7 @@ procedure main
 selenium.getinnerhtml search       /html/body/div[6]/div/div[3]/div[1]/div[1]/div[7]/div[3]/div[1]/div/div[1]/div[2]/div[1]/div[1]/div[1]/h3/a/span[1] by xpath result   ♥title1
 selenium.click search         /html/body/div[6]/div/div[3]/div[1]/div[1]/div[7]/div[3]/div[1]/div/div[1]/div[2]/div[1]/div[1]/div[1]/h3/a/span[1] by xpath
 selenium.geturl result ♥url1 
+selenium.close
 
 --zapis do pliku
 program notepad
@@ -112,5 +115,6 @@ keyboard  ⋘CTRL+S⋙
 keyboard ‴bookingResult.txt‴
 keyboard ⋘ALT+A⋙
 keyboard ‴♥outputPath‴ 
-keyboard ⋘ALT+Z⋙    
+keyboard ⋘ALT+Z⋙
+keyboard ⋘CTRL+W⋙
 end

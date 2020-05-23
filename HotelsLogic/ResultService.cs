@@ -9,6 +9,8 @@ namespace HotelsLogic
     {
         public static ResultService ResultServiceInstance { get; private set; } = new ResultService();
         public static string ResultsPath;
+        FileSystemWatcher watcher;
+
         static ResultService()
         {
             ResultsPath = (Directory.GetCurrentDirectory() + @"\\Results").Replace(@"\\", @"\");
@@ -23,10 +25,11 @@ namespace HotelsLogic
             }
 
             var tcs = new TaskCompletionSource<bool>();
-            FileSystemWatcher watcher = new FileSystemWatcher();
+            watcher = new FileSystemWatcher();
 
             watcher.Path = ResultsPath;
             watcher.Created += onCreate;
+            //watcher.Changed += onCreate;
             watcher.EnableRaisingEvents = true;
 
             return tcs.Task;
@@ -35,22 +38,30 @@ namespace HotelsLogic
         public List<SearchResult> GetResultsFromFile(string path)
         {
             List<SearchResult> results = new List<SearchResult>();
-
-            using (FileStream fileStream = new FileStream(path, FileMode.Open))
-            using (StreamReader reader = new StreamReader(fileStream))
+            //watcher.EnableRaisingEvents = false;
+            try
             {
-                string fileContent = reader.ReadToEnd();
-
-                try
+                using (FileStream fileStream = new FileStream(path, FileMode.Open))
+                using (StreamReader reader = new StreamReader(fileStream))
                 {
-                    results = JsonConvert.DeserializeObject<List<SearchResult>>(fileContent);
+                    string fileContent = reader.ReadToEnd();
 
-                }
-                catch (System.Exception)
-                {
-                    throw;
+                    try
+                    {
+                        results = JsonConvert.DeserializeObject<List<SearchResult>>(fileContent);
+
+                    }
+                    catch (System.Exception)
+                    {
+                        throw;
+                    }
                 }
             }
+            catch
+            {
+
+            }
+            //watcher.EnableRaisingEvents = true;
 
             return results;
         }

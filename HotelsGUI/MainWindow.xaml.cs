@@ -38,6 +38,8 @@ namespace HotelsGUI
 
         private async void StartButton_Click(object sender, RoutedEventArgs e)
         {
+            ResultService.ResultServiceInstance.CleanResultsFolder();
+
             OutputTextBlock.Text = string.Empty;
 
             UserPreference userPreference = new UserPreference()

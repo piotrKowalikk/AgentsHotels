@@ -6,5 +6,6 @@ namespace HotelsLogic
     public interface IResultService
     {
         public Task WaitForResult(FileSystemEventHandler onCreate);
+        public void CleanResultsFolder();
     }
 }

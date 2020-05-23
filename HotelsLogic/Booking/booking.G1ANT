@@ -1,0 +1,116 @@
+﻿addon selenium version 4.103.0.0
+addon language version 4.98.18332.1321
+addon core version 4.98.18332.1321
+
+--TODO: instead of delays it could be done by try block and goto 
+
+--główny program - tylko na tworzenie pliku się uruchamia
+dialog "Hej"
+if  ♥task⟦changetype⟧=="Created"
+     call main
+end
+--koniec programu
+
+procedure main
+    text.read ♥task⟦filepath⟧ result ♥jsonTxt
+    ♥json = ⟦json⟧♥jsonTxt
+    ♥dateFrom=♥json⟦dateFrom⟧
+    ♥dateTo=♥json⟦dateTo⟧
+    ♥numberOfAdults=♥json⟦numberOfAdults⟧
+    ♥numberOfChildren=♥json⟦numberOfChildren⟧
+    ♥numberOfRooms=♥json⟦numberOfRooms⟧
+    ♥fromPrice=♥json⟦fromPrice⟧
+    ♥toPrice=♥json⟦toPrice⟧
+    ♥city=♥json⟦city⟧
+    --TODO
+    ♥outputPath=♥json⟦outputPath⟧
+    
+    --helpers
+    ♥dateFromMonthsToSkip=♥json⟦dateFromMonthsToSkip⟧
+    ♥dateToMonthsToSkip=♥json⟦dateToMonthsToSkip⟧
+    
+    --ceny: u mnie są checkboxy więc muszę znaleźć przedział do którego mi wpada 
+    ♥toCostPriority=0;
+    if ♥toPrice<266 
+        ♥toCostPriority=1;
+    else if ♥toPrice<452
+        ♥toCostPriority=2;
+    else if ♥toPrice<679
+        ♥toCostPriority=3;
+    else if ♥toPrice<905
+        ♥toCostPriority=4;
+    else
+        ♥toCostPriority=5;
+    end
+
+    ♥fromCostPriority=0;
+    if ♥fromPrice<266 
+        ♥fromCostPriority=1;
+    else if ♥fromPrice<452
+        ♥fromCostPriority=2;
+    else if ♥fromPrice<679
+        ♥fromCostPriority=3;
+    else if ♥fromPrice<905
+        ♥fromCostPriority=4;
+    else
+        ♥fromCostPriority=5;
+    end
+    -------
+    --start programu
+    selenium.open chrome url ‴www.booking.com‴
+    
+    --wybór miasta
+    selenium.type ♥city search ss by id 
+    
+    --wybory dat
+    selenium.click search xp__dates-inner by class
+    delay 5
+    --dateFrom    
+    for ♥tmp from 1 to ♥dateFromMonthsToSkip step 1
+        selenium.runscript ‴document.querySelector('[data-bui-ref~=calendar-next]').click()‴
+        delay 1
+    end
+    selenium.runscript ‴document.querySelector('[data-date~="♥dateFrom"]').click()‴
+    delay 5
+    --dateTo
+        for ♥tmp from  ♥dateFromMonthsToSkip+1 to ♥dateToMonthsToSkip step 1
+        selenium.runscript ‴document.querySelector('[data-bui-ref~=calendar-next]').click()‴
+        delay 1
+    end
+    selenium.runscript ‴document.querySelector('[data-date~="♥dateTo"]').click()‴
+    delay 5
+    
+    --kliknij wyszukaj
+    selenium.click search sb-searchbox__button by class
+    delay 5
+    
+    --pozostałe stałe paramenry
+    selenium.runscript ‴document.getElementsByName('group_adults')[0].selectedIndex=♥numberOfAdults-1‴
+    selenium.runscript ‴document.getElementsByName('group_children')[0].selectedIndex=♥numberOfChildren-1‴
+    selenium.runscript ‴document.getElementsByName('no_rooms')[0].selectedIndex=♥numberOfRooms-1‴
+    delay 5
+    
+    --klikanie w checkboxy z cena
+    for ♥prio from ♥fromCostPriority to  ♥toCostPriority step 1
+        selenium.runscript ‴document.querySelector('[data-id~="pri-♥prio"]').click();‴
+        delay 5
+    end
+    
+ --wybór wynikowego 1 domku
+♥title1=""
+♥url=""
+selenium.getinnerhtml search       /html/body/div[6]/div/div[3]/div[1]/div[1]/div[7]/div[3]/div[1]/div/div[1]/div[2]/div[1]/div[1]/div[1]/h3/a/span[1] by xpath result   ♥title1
+selenium.click search         /html/body/div[6]/div/div[3]/div[1]/div[1]/div[7]/div[3]/div[1]/div/div[1]/div[2]/div[1]/div[1]/div[1]/h3/a/span[1] by xpath
+selenium.geturl result ♥url1 
+
+--zapis do pliku
+program notepad
+keyboard ‴[‴
+keyboard ‴{"fromCompany": "booking","hotelName": "♥title1","url": "♥url1"},⋘ENTER⋙‴
+keyboard ‴]‴
+keyboard  ⋘CTRL+S⋙
+keyboard ‴bookingResult.txt‴
+keyboard ⋘ALT+A⋙
+keyboard ‴♥outputPath‴ 
+keyboard ⋘ALT+Z⋙    
+end

@@ -8,19 +8,24 @@ namespace HotelsLogic
     public class ResultService : IResultService
     {
         public static ResultService ResultServiceInstance { get; private set; } = new ResultService();
+        public static string ResultsPath;
+        static ResultService()
+        {
+            ResultsPath = (Directory.GetCurrentDirectory() + @"\\Results").Replace(@"\\", @"\");
+        }
 
         public Task WaitForResult(FileSystemEventHandler onCreate)
         {
-            string path = Directory.GetCurrentDirectory() + "/Results";
-            if (!Directory.Exists(path))
+
+            if (!Directory.Exists(ResultsPath))
             {
-                Directory.CreateDirectory(path);
+                Directory.CreateDirectory(ResultsPath);
             }
 
             var tcs = new TaskCompletionSource<bool>();
             FileSystemWatcher watcher = new FileSystemWatcher();
 
-            watcher.Path = path;
+            watcher.Path = ResultsPath;
             watcher.Created += onCreate;
             watcher.EnableRaisingEvents = true;
 

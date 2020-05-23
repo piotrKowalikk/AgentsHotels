@@ -38,6 +38,12 @@ namespace HotelsGUI
 
         private async void StartButton_Click(object sender, RoutedEventArgs e)
         {
+            if(!InputIsValid(out string message))
+            {
+                OutputTextBlock.Text = message;
+                return;
+            }
+
             ResultService.ResultServiceInstance.CleanResultsFolder();
 
             OutputTextBlock.Text = string.Empty;
@@ -78,6 +84,24 @@ namespace HotelsGUI
             proc.StartInfo.UseShellExecute = true;
             proc.StartInfo.FileName = e.Uri.AbsoluteUri;
             proc.Start();
+        }
+
+        private bool InputIsValid(out string message)
+        {
+            if(DateFrom.SelectedDate.Value.CompareTo(DateTo.SelectedDate.Value) >= 0)
+            {
+                message = "Date From cannot be greater than Date To";
+                return false;
+            }
+
+            if (DateFrom.SelectedDate.Value.CompareTo(DateTime.Today) < 0)
+            {
+                message = "Date From cannot be before today";
+                return false;
+            }
+
+            message = "";
+            return true;
         }
     }
 }

@@ -19,8 +19,18 @@ namespace HotelsGUI
         {
             InitializeComponent();
 
+            AddInitialInput();
+
             Results = new ObservableCollection<SearchResult>();
             ResultListView.ItemsSource = Results;
+        }
+
+        private void AddInitialInput()
+        {
+            CityTextbox.Text = "Warszawa";
+            DateFrom.SelectedDate = DateTime.Today;
+            DateTo.SelectedDate = DateTime.Today.AddDays(1);
+            AdultsNumberText.Text = "2";
         }
 
         private async void StartButton_Click(object sender, RoutedEventArgs e)

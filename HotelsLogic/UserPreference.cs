@@ -8,5 +8,6 @@ namespace HotelsLogic
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
         public int NumberOfAdults { get; set; }
+        public int Delay { get; set; }
     }
 }

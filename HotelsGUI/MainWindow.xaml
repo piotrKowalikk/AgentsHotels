@@ -11,29 +11,102 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <TextBox Name="CityTextbox"></TextBox>
-        <DatePicker Name="DateFrom" Grid.Row="1"></DatePicker>
-        <DatePicker Name="DateTo" Grid.Row="2"></DatePicker>
-        <TextBox Name="AdultsNumberText" Grid.Row="3"></TextBox>
-        <TextBlock Name="OutputTextBlock" Grid.Row="4"></TextBlock>
-        <Button Name="StartButton" Grid.Row="5" Click="StartButton_Click">Start</Button>
 
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-        <ListView Name="ResultListView" Grid.Column="1" Grid.RowSpan="10" >
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding HotelName}"/>
-                    <GridViewColumn Header="URL" DisplayMemberBinding="{Binding Url}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Label Name="CityLabel" VerticalAlignment="Bottom" >City</Label>
+                <TextBox Name="CityTextbox" VerticalAlignment="Top" Grid.Row="1"></TextBox>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Label Name="DateFromLabel" VerticalAlignment="Bottom" >Date From</Label>
+                <DatePicker Name="DateFrom" VerticalAlignment="Top" Grid.Row="1"></DatePicker>
+            </Grid>
+
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Label Name="DateToLabel" VerticalAlignment="Bottom" >Date To</Label>
+                <DatePicker Name="DateTo" VerticalAlignment="Top" Grid.Row="1"></DatePicker>
+            </Grid>
+
+            <Grid Grid.Row="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Label Name="AdultsNumberLabel" VerticalAlignment="Bottom" >Number of Adults</Label>
+                <ComboBox Name="AdultsNumberCombobox" VerticalAlignment="Top" Grid.Row="1">
+                    <ComboBoxItem Content="1"></ComboBoxItem>
+                    <ComboBoxItem Content="2"></ComboBoxItem>
+                    <ComboBoxItem Content="3"></ComboBoxItem>
+                    <ComboBoxItem Content="4"></ComboBoxItem>
+                </ComboBox>
+            </Grid>
+
+            <Grid Grid.Row="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Label Name="DelayLabel" VerticalAlignment="Center" >Delay</Label>
+                <ComboBox Name="DelayCombobox" VerticalAlignment="Top" Grid.Row="1">
+                    <ComboBoxItem Content="Short"></ComboBoxItem>
+                    <ComboBoxItem Content="Medium"></ComboBoxItem>
+                    <ComboBoxItem Content="Long"></ComboBoxItem>
+                </ComboBox>
+            </Grid>
+
+            <Grid Grid.Row="5">
+                <TextBlock Name="OutputTextBlock" Grid.Row="4" VerticalAlignment="Center"></TextBlock>
+            </Grid>
+
+            <Grid Grid.Row="6">
+                <Button Name="StartButton" Grid.Row="5" Click="StartButton_Click" VerticalAlignment="Center">Start</Button>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <ListView Name="ResultListView" Grid.Column="1" Grid.RowSpan="10" >
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding HotelName}"/>
+
+                        <GridViewColumn Header="URL" >
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock>
+                                        <Hyperlink NavigateUri="{Binding Url}" RequestNavigate="Hyperlink_RequestNavigate">
+                                            <TextBlock >CLICK</TextBlock>
+                                        </Hyperlink>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+
     </Grid>
 </Window>

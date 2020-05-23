@@ -2,9 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Navigation;
 
 namespace HotelsGUI
 {
@@ -30,17 +32,12 @@ namespace HotelsGUI
             CityTextbox.Text = "Warszawa";
             DateFrom.SelectedDate = DateTime.Today;
             DateTo.SelectedDate = DateTime.Today.AddDays(1);
-            AdultsNumberText.Text = "2";
+            AdultsNumberCombobox.SelectedIndex = 1;
+            DelayCombobox.SelectedIndex = 1;
         }
 
         private async void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!DateFrom.SelectedDate.HasValue || !DateTo.SelectedDate.HasValue || !Int32.TryParse(AdultsNumberText.Text, out int adultsNumber))
-            {
-                OutputTextBlock.Text = "Enter valid input";
-                return;
-            }
-
             OutputTextBlock.Text = string.Empty;
 
             UserPreference userPreference = new UserPreference()
@@ -48,7 +45,8 @@ namespace HotelsGUI
                 City = CityTextbox.Text,
                 DateTo = DateTo.SelectedDate.Value,
                 DateFrom = DateFrom.SelectedDate.Value,
-                NumberOfAdults = adultsNumber
+                NumberOfAdults = AdultsNumberCombobox.SelectedIndex + 1,
+                Delay = (DelayCombobox.SelectedIndex + 1) * 3
             };
 
             SearchService.SearchServiceInstance.Search(userPreference);
@@ -70,6 +68,14 @@ namespace HotelsGUI
                 }
             }
             );
+        }
+
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            Process proc = new Process();
+            proc.StartInfo.UseShellExecute = true;
+            proc.StartInfo.FileName = e.Uri.AbsoluteUri;
+            proc.Start();
         }
     }
 }

@@ -1,120 +1,115 @@
-﻿addon selenium version 4.103.0.0
-addon language version 4.98.18332.1321
-addon core version 4.98.18332.1321
+﻿addon msoffice version 4.103.0.0
+addon selenium version 4.103.0.0
+addon core version 4.106.0.0
+addon language version 4.105.0.0
 
---TODO: instead of delays it could be done by try block and goto 
 
---główny program - tylko na tworzenie pliku się uruchamia
---dialog "Hej"
-if  ♥task⟦changetype⟧=="Created"
-     call main
-end
---koniec programu
 
-procedure main
-    text.read ♥task⟦filepath⟧ result ♥jsonTxt
-    ♥json = ⟦json⟧♥jsonTxt
+text.read ♥task⟦filepath⟧ result ♥jsonTxt
+   ♥json = ⟦json⟧♥jsonTxt
     ♥dateFrom=♥json⟦dateFrom⟧
     ♥dateTo=♥json⟦dateTo⟧
     ♥numberOfAdults=♥json⟦numberOfAdults⟧
-    ♥numberOfChildren=♥json⟦numberOfChildren⟧
-    ♥numberOfRooms=♥json⟦numberOfRooms⟧
-    ♥fromPrice=♥json⟦fromPrice⟧
-    ♥toPrice=♥json⟦toPrice⟧
     ♥city=♥json⟦city⟧
-    ♥delay=5
     ♥outputPath=♥json⟦outputPath⟧
-    
-    --helpers
-    ♥dateFromMonthsToSkip=♥json⟦dateFromMonthsToSkip⟧
-    ♥dateToMonthsToSkip=♥json⟦dateToMonthsToSkip⟧
-    
-    --ceny: u mnie są checkboxy więc muszę znaleźć przedział do którego mi wpada 
-    ♥toCostPriority=0;
-    if ♥toPrice<266 
-        ♥toCostPriority=1;
-    else if ♥toPrice<452
-        ♥toCostPriority=2;
-    else if ♥toPrice<679
-        ♥toCostPriority=3;
-    else if ♥toPrice<905
-        ♥toCostPriority=4;
-    else
-        ♥toCostPriority=5;
-    end
+    ♥delay=♥json⟦delay⟧
 
-    ♥fromCostPriority=0;
-    if ♥fromPrice<266 
-        ♥fromCostPriority=1;
-    else if ♥fromPrice<452
-        ♥fromCostPriority=2;
-    else if ♥fromPrice<679
-        ♥fromCostPriority=3;
-    else if ♥fromPrice<905
-        ♥fromCostPriority=4;
-    else
-        ♥fromCostPriority=5;
-    end
-    -------
-    --start programu
-    selenium.open chrome url ‴www.booking.com‴
-    
-    --wybór miasta
-    selenium.type ♥city search ss by id 
-    
-    --wybory dat
-    selenium.click search xp__dates-inner by class
-    delay ♥delay
-    --dateFrom    
-    if ♥dateFromMonthsToSkip>0
-        for ♥tmp from 1 to ♥dateFromMonthsToSkip step 1
-            selenium.runscript ‴document.querySelector('[data-bui-ref~=calendar-next]').click()‴
-            delay 1
-        end
-    end
-    selenium.runscript ‴document.querySelector('[data-date~="♥dateFrom"]').click()‴
-    delay ♥delay
-    --dateTo
-        for ♥tmp from  ♥dateFromMonthsToSkip+1 to ♥dateToMonthsToSkip step 1
-        selenium.runscript ‴document.querySelector('[data-bui-ref~=calendar-next]').click()‴
-        delay 1
-    end
-    selenium.runscript ‴document.querySelector('[data-date~="♥dateTo"]').click()‴
-    delay ♥delay
-    
-    --kliknij wyszukaj
-    selenium.click search sb-searchbox__button by class
-    delay ♥delay
-    
-    --pozostałe stałe paramenry
-    selenium.runscript ‴document.getElementsByName('group_adults')[0].selectedIndex=♥numberOfAdults-1‴
-    selenium.runscript ‴document.getElementsByName('group_children')[0].selectedIndex=♥numberOfChildren-1‴
-    selenium.runscript ‴document.getElementsByName('no_rooms')[0].selectedIndex=♥numberOfRooms-1‴
-    delay ♥delay
-    
-    --klikanie w checkboxy z cena
-    for ♥prio from ♥fromCostPriority to  ♥toCostPriority step 1
-        selenium.runscript ‴document.querySelector('[data-id~="pri-♥prio"]').click();‴
-        delay ♥delay
-    end
-    
- --wybór wynikowego 1 domku
-♥title1=""
-♥url=""
-selenium.getinnerhtml search       /html/body/div[6]/div/div[3]/div[1]/div[1]/div[7]/div[3]/div[1]/div/div[1]/div[2]/div[1]/div[1]/div[1]/h3/a/span[1] by xpath result   ♥title1
-selenium.click search         /html/body/div[6]/div/div[3]/div[1]/div[1]/div[7]/div[3]/div[1]/div/div[1]/div[2]/div[1]/div[1]/div[1]/h3/a/span[1] by xpath
-selenium.geturl result ♥url1 
-selenium.close
+selenium.open chrome url ‴https://www.trivago.pl/‴
+delay 5
+window ✱trivago✱ style maximize
 
---zapis do pliku
+delay ♥delay
+
+selenium.runscript ‴document.getElementsByClassName('flex')[0].click()‴
+delay 1
+selenium.runscript ‴document.querySelectorAll("[class*=cal-is-selectable]")[0].click()‴
+delay 1
+selenium.runscript ‴let dat = document.getElementsByClassName('dealform-button__label')[0].dateTime; let arr = dat.split('-'); let datok = arr[1] + '/' + arr[2] + '/' + arr[0]; let d1 = new Date(arr[0], arr[1] - 1, arr[2]); let d2 = new Date('♥dateFrom'); console.log('♥dateFrom'); console.log(d1); console.log(d2); return Math.ceil(Math.abs(d2 - d1) / (1000 * 60 * 60 * 24)) - 1;‴ result ♥days
+
+selenium.runscript ‴let dat = document.getElementsByClassName('dealform-button__label')[0].dateTime; let arr = dat.split('-'); let datok = arr[1] + '/' + arr[2] + '/' + arr[0]; let d1 = new Date(arr[0], arr[1] - 1, arr[2]); let d2 = new Date('♥dateFrom'); console.log('♥dateFrom'); console.log(d1); console.log(d2); return (d2 - d1) > 0 ? 2 : 1;‴ result ♥increaseDays
+
+for ♥i from 0 to ♥days
+    selenium.click search //*[@id="js-fullscreen-hero"]/div[1]/form/div[2]/button[♥increaseDays] by xpath
+
+    delay 1
+end for 
+
+selenium.runscript ‴let dat = document.getElementsByClassName('dealform-button__label')[1].dateTime; let arr = dat.split('-'); let datok = arr[1] + '/' + arr[2] + '/' + arr[0]; let d1 = new Date(arr[0], arr[1] - 1, arr[2]); let d2 = new Date('♥dateTo'); console.log('♥dateTo'); console.log(d1); console.log(d2); return Math.ceil(Math.abs(d2 - d1) / (1000 * 60 * 60 * 24)) - 1;‴ result ♥days
+
+selenium.runscript ‴let dat = document.getElementsByClassName('dealform-button__label')[1].dateTime; let arr = dat.split('-'); let datok = arr[1] + '/' + arr[2] + '/' + arr[0]; let d1 = new Date(arr[0], arr[1] - 1, arr[2]); let d2 = new Date('♥dateTo'); console.log('♥dateTo'); console.log(d1); console.log(d2); return (d2 - d1) > 0 ? 2 : 1;‴ result ♥increaseDays
+
+for ♥i from 0 to ♥days
+    selenium.click search //*[@id="js-fullscreen-hero"]/div[1]/form/div[3]/button[♥increaseDays] by xpath
+    delay 1
+end for 
+
+delay 1
+
+if ⊂♥numberOfAdults != 2⊃
+    selenium.click search //*[@id="js-fullscreen-hero"]/div[1]/form/button[1] by xpath
+    delay 1
+    selenium.click search //*[@id="js-fullscreen-hero"]/div[1]/form/div[4]/div/div/ul/li[3]/button by xpath
+    delay 1
+    selenium.runscript ‴let element = document.getElementsByClassName("df-select")[0]; element.selectedIndex = (♥dorosli - 1); if ("createEvent" in document) { var evt = document.createEvent("HTMLEvents"); evt.initEvent("change", false, true); element.dispatchEvent(evt); } else element.fireEvent("onchange");‴
+
+    selenium.click search //*[@id="dealform_extRooms"]/div[2]/button[2]/span by xpath
+end
+
+delay 2
+selenium.click search ‴//*[@id="querytext"]‴ by xpath
+delay 1
+selenium.type ♥city search ‴//*[@id="querytext"]‴ by xpath
+delay 2
+selenium.click search search-button__label by class
+
+list.create type text result ♥hotels
+list.create type text result ♥urls
+
 program notepad
-keyboard ‴[‴
-keyboard ‴{"fromCompany": "booking","hotelName": "♥title1","url": "♥url1"},⋘ENTER⋙‴
+delay 2
+window ✱trivago✱
+
+delay ♥delay
+selenium.runscript ‴let element = document.getElementById('mf-select-sortby'); element.selectedIndex = 5; if ("createEvent" in document) { var evt = document.createEvent("HTMLEvents"); evt.initEvent("change", false, true); element.dispatchEvent(evt); } else element.fireEvent("onchange");‴;
+delay ♥delay;
+
+--for ♥i from 0 to 1
+    --selenium.runscript ‴return document.getElementsByClassName('item-link name__copytext')[♥i].innerText‴ result ♥hotel
+    window ✱Notatnik✱
+    keyboard ‴[‴
+    delay 1
+    window ✱trivago✱ style maximize
+    
+    selenium.runscript ‴return document.getElementsByClassName('item-link name__copytext')[0].innerText‴ result ♥hotel
+    list.add ♥hotels toadd ♥hotel
+    delay 1
+    
+    --selenium.runscript ‴document.querySelectorAll("[class*=accommodation-list__recommended]")[♥i].querySelectorAll("[class*=accommodation-list__button]")[0].click()‴
+--    selenium.runscript ‴document.querySelectorAll("[class*=accommodation-list__recommended]")[♥i].querySelectorAll("[class*=accommodation-list__button]")[0].click()‴
+    
+    selenium.runscript ‴document.querySelectorAll("[class*=location-details]")[0].click()‴
+    delay 2
+    selenium.runscript ‴document.querySelectorAll("[class*=btn-as-link--share]")[0].click()‴
+    keyboard ⋘CTRL+C⋙
+    delay 1
+    keyboard ⋘ENTER⋙
+    delay 1
+    window ✱Notatnik✱
+    delay 1
+    keyboard ‴{"fromCompany": "trivago","hotelName": "♥hotel","url": "⋘CTRL+V⋙"},⋘ENTER⋙‴
+
+    delay 1
+    window ✱trivago✱
+    --dialog ♥url
+--end for
+
+
+delay 1
+window ✱Notatnik✱
+
 keyboard ‴]‴
 keyboard  ⋘CTRL+S⋙
-keyboard ‴bookingResult.txt‴
-keyboard ⋘ALT+A⋙
 keyboard ‴♥outputPath‴ 
-keyboard ⋘ALT+Z⋙
-keyboard ⋘CTRL+W⋙
-end
+keyboard ‴\trivagoResult.txt‴ 
+delay 1
+keyboard ⋘ENTER⋙

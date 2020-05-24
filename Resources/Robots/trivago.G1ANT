@@ -6,13 +6,23 @@ addon language version 4.105.0.0
 
 
 text.read ♥task⟦filepath⟧ result ♥jsonTxt
-   ♥json = ⟦json⟧♥jsonTxt
+    ♥json = ⟦json⟧♥jsonTxt
     ♥dateFrom=♥json⟦dateFrom⟧
     ♥dateTo=♥json⟦dateTo⟧
     ♥numberOfAdults=♥json⟦numberOfAdults⟧
     ♥city=♥json⟦city⟧
     ♥outputPath=♥json⟦outputPath⟧
     ♥delay=♥json⟦delay⟧
+
+--♥outputPath=‴C:\Dev\AgentsHotels\HotelsGUI\bin\Debug\netcoreapp3.1\Results‴
+--♥dateFrom="05/27/2020"
+--♥dateTo="05/28/2020"
+--♥city="Lubin"
+--♥days = 0
+--♥increaseDays=true
+--♥numberOfAdults=3
+--♥delay=9
+
 
 selenium.open chrome url ‴https://www.trivago.pl/‴
 delay 5
@@ -30,7 +40,6 @@ selenium.runscript ‴let dat = document.getElementsByClassName('dealform-button
 
 for ♥i from 0 to ♥days
     selenium.click search //*[@id="js-fullscreen-hero"]/div[1]/form/div[2]/button[♥increaseDays] by xpath
-
     delay 1
 end for 
 
@@ -50,9 +59,12 @@ if ⊂♥numberOfAdults != 2⊃
     delay 1
     selenium.click search //*[@id="js-fullscreen-hero"]/div[1]/form/div[4]/div/div/ul/li[3]/button by xpath
     delay 1
-    selenium.runscript ‴let element = document.getElementsByClassName("df-select")[0]; element.selectedIndex = (♥dorosli - 1); if ("createEvent" in document) { var evt = document.createEvent("HTMLEvents"); evt.initEvent("change", false, true); element.dispatchEvent(evt); } else element.fireEvent("onchange");‴
-
-    selenium.click search //*[@id="dealform_extRooms"]/div[2]/button[2]/span by xpath
+    selenium.click search /html/body/div[4]/div[2]/div[4]/div[1]/form/div[4]/div/div/div/div[1]/div/div[2]/div/select by xpath
+    delay 1
+    selenium.click search /html/body/div[4]/div[2]/div[4]/div[1]/form/div[4]/div/div/div/div[1]/div/div[2]/div/select/option[3] by xpath
+    selenium.runscript ‴let element = document.getElementsByClassName("df-select")[0]; element.selectedIndex = (♥numberOfAdults - 1); if ("createEvent" in document) { var evt = document.createEvent("HTMLEvents"); evt.initEvent("change", false, true); element.dispatchEvent(evt); } else element.fireEvent("onchange");‴
+    selenium.runscript ‴document.querySelectorAll("[class*=btn--tertiary]")[1].click()‴
+    --selenium.click search /html/body/div[4]/div[2]/div[4]/div[1]/form/div[4]/div/div/div/div[2]/button[2] by xpath
 end
 
 delay 2
@@ -75,7 +87,7 @@ delay ♥delay;
 
 --for ♥i from 0 to 1
     --selenium.runscript ‴return document.getElementsByClassName('item-link name__copytext')[♥i].innerText‴ result ♥hotel
-    window ✱notepad✱
+    window ✱not✱
     keyboard ‴[‴
     delay 1
     window ✱trivago✱ style maximize
@@ -94,18 +106,17 @@ delay ♥delay;
     delay 1
     keyboard ⋘ENTER⋙
     delay 1
-    window ✱notepad✱
+    window ✱not✱
     delay 1
     keyboard ‴{"fromCompany": "trivago","hotelName": "♥hotel","url": "⋘CTRL+V⋙"},⋘ENTER⋙‴
 
     delay 1
     window ✱trivago✱
-    --dialog ♥url
 --end for
 
 
 delay 1
-window ✱notepad✱
+window ✱not✱
 
 keyboard ‴]‴
 keyboard  ⋘CTRL+S⋙

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -68,18 +69,25 @@ namespace HotelsLogic
 
         public void CleanResultsFolder()
         {
-            string[] filesToClean = Directory.GetFiles(ResultsPath);
-
-            foreach (string path in filesToClean)
+            try
             {
-                try
-                {
-                    File.Delete(path);
-                }
-                catch
-                {
+                string[] filesToClean = Directory.GetFiles(ResultsPath);
 
+                foreach (string path in filesToClean)
+                {
+                    try
+                    {
+                        File.Delete(path);
+                    }
+                    catch
+                    {
+
+                    }
                 }
+            }
+            catch
+            {
+                //xd
             }
         }
 

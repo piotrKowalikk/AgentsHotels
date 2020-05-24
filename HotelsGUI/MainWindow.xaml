@@ -78,7 +78,7 @@
             </Grid>
 
             <Grid Grid.Row="5">
-                <TextBlock Name="OutputTextBlock" Grid.Row="4" VerticalAlignment="Center"></TextBlock>
+                <TextBlock Name="OutputTextBlock" Grid.Row="4" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
             </Grid>
 
             <Grid Grid.Row="6">

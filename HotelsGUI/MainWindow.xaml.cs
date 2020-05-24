@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Windows;
 using System.Windows.Navigation;
 
@@ -38,6 +39,14 @@ namespace HotelsGUI
 
         private async void StartButton_Click(object sender, RoutedEventArgs e)
         {
+            if(!InputIsValid(out string message))
+            {
+                OutputTextBlock.Text = message;
+                return;
+            }
+
+            ResultService.ResultServiceInstance.CleanResultsFolder();
+
             OutputTextBlock.Text = string.Empty;
 
             UserPreference userPreference = new UserPreference()
@@ -64,7 +73,11 @@ namespace HotelsGUI
                 foreach (SearchResult item in newResults)
                 {
                     if (!Results.Any(x => x.HotelName == item.HotelName))
+                    {
                         Results.Add(item);
+                        SoundPlayer wowSound = new SoundPlayer("./success.wav");
+                        wowSound.Play();
+                    }
                 }
             }
             );
@@ -76,6 +89,36 @@ namespace HotelsGUI
             proc.StartInfo.UseShellExecute = true;
             proc.StartInfo.FileName = e.Uri.AbsoluteUri;
             proc.Start();
+        }
+
+        private bool InputIsValid(out string message)
+        {
+            if (!DateFrom.SelectedDate.HasValue)
+            {
+                message = "Select value of DateFrom";
+                return false;
+            }
+
+            if (!DateTo.SelectedDate.HasValue)
+            {
+                message = "Select value of DateTo";
+                return false;
+            }
+
+            if (DateFrom.SelectedDate.Value.CompareTo(DateTo.SelectedDate.Value) >= 0)
+            {
+                message = "Date From cannot be greater than Date To";
+                return false;
+            }
+
+            if (DateFrom.SelectedDate.Value.CompareTo(DateTime.Today) < 0)
+            {
+                message = "Date From cannot be before today";
+                return false;
+            }
+
+            message = "";
+            return true;
         }
     }
 }

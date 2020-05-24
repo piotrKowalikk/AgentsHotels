@@ -66,5 +66,22 @@ namespace HotelsLogic
             return results;
         }
 
+        public void CleanResultsFolder()
+        {
+            string[] filesToClean = Directory.GetFiles(ResultsPath);
+
+            foreach (string path in filesToClean)
+            {
+                try
+                {
+                    File.Delete(path);
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
     }
 }

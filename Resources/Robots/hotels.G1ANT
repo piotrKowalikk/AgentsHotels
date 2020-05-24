@@ -1,0 +1,75 @@
+addon selenium version 4.103.0.0
+addon language version 4.98.18332.1321
+addon core version 4.98.18332.1321
+
+if  ♥task⟦changetype⟧=="Created"
+     call main
+end
+
+procedure main
+    text.read ♥task⟦filepath⟧ result ♥jsonTxt
+    ♥json = ⟦json⟧♥jsonTxt
+    ♥dateFrom=♥json⟦dateFrom⟧
+    ♥dateTo=♥json⟦dateTo⟧
+    ♥numberOfAdults=♥json⟦numberOfAdults⟧
+    ♥numberOfChildren=♥json⟦numberOfChildren⟧
+    ♥numberOfRooms=♥json⟦numberOfRooms⟧
+    ♥fromPrice=♥json⟦fromPrice⟧
+    ♥toPrice=♥json⟦toPrice⟧
+    ♥city=♥json⟦city⟧
+    ♥outputPath=♥json⟦outputPath⟧
+    ♥delay=2
+
+    selenium.open chrome url ‴www.hotels.com‴
+
+    --choose city
+    selenium.type ♥city search qf-0q-destination by id
+    
+    --selenium.click search citysqm-asi0-s0 by id
+    --selenium.click search recommendedsqm-asi0-s0 by id
+    --selenium.runscript script ‴document.querySelector('[id*="sqm-asi0-s0"]').click()‴
+    selenium.click search /html/body/div[8]/table/tbody[1]/tr[1]/td by xpath
+    delay ♥delay
+
+    selenium.click search qf-0q-localised-check-in by id
+    selenium.runscript script ‴document.getElementById('qf-0q-localised-check-in').value=''‴
+    selenium.type ♥dateFrom search qf-0q-localised-check-in by id
+
+    delay ♥delay
+
+    selenium.click search qf-0q-localised-check-out by id
+    selenium.runscript script ‴document.getElementById('qf-0q-localised-check-out').value=''‴
+    selenium.type ♥dateTo search qf-0q-localised-check-out by id
+
+    delay ♥delay
+
+    --get out of calendar focus
+    selenium.click search widget-query-heading by class
+
+    --set number of adults
+    selenium.runscript script ‴document.getElementById('qf-0q-room-0-adults').selectedIndex=♥numberOfAdults-1‴
+
+    delay ♥delay
+
+    selenium.click search cta-strong by class
+
+    delay ♥delay
+
+    selenium.getinnerhtml search /html/body/div[3]/main/div[2]/div[2]/div/section[2]/div/ol/li[1]/article/section/div/h3/a by xpath result ♥title1
+
+    selenium.click search /html/body/div[3]/main/div[2]/div[2]/div/section[2]/div/ol/li[1]/article/section/div/h3/a by xpath
+
+    delay ♥delay
+
+    selenium.geturl result ♥url1
+
+    --zapis do pliku
+    program notepad
+    keyboard ‴[‴
+    keyboard ‴{"fromCompany": "booking","hotelName": "♥title1","url": "♥url1"},⋘ENTER⋙‴
+    keyboard ‴]‴
+    keyboard  ⋘CTRL+S⋙
+    keyboard ‴♥outputPath‴ 
+    keyboard ‴\hotelsResult.txt‴
+    keyboard ⋘ENTER⋙    
+end

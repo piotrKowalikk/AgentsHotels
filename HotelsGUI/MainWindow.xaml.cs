@@ -75,7 +75,7 @@ namespace HotelsGUI
                     if (!Results.Any(x => x.HotelName == item.HotelName))
                     {
                         Results.Add(item);
-                        SoundPlayer wowSound = new SoundPlayer("./success.wav");
+                        SoundPlayer wowSound = new SoundPlayer("../../../../Resources/Sounds/success.wav");
                         wowSound.Play();
                     }
                 }

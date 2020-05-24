@@ -93,7 +93,19 @@ namespace HotelsGUI
 
         private bool InputIsValid(out string message)
         {
-            if(DateFrom.SelectedDate.Value.CompareTo(DateTo.SelectedDate.Value) >= 0)
+            if (!DateFrom.SelectedDate.HasValue)
+            {
+                message = "Select value of DateFrom";
+                return false;
+            }
+
+            if (!DateTo.SelectedDate.HasValue)
+            {
+                message = "Select value of DateTo";
+                return false;
+            }
+
+            if (DateFrom.SelectedDate.Value.CompareTo(DateTo.SelectedDate.Value) >= 0)
             {
                 message = "Date From cannot be greater than Date To";
                 return false;

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace HotelsLogic
@@ -19,19 +20,28 @@ namespace HotelsLogic
 
         public void Add(SavedPreference pref)
         {
-            string jsonString = JsonConvert.SerializeObject(pref);
-            File.WriteAllText($"{PreferencesPath}/{pref.PreferenceName}", jsonString);
+            if (pref == null)
+            {
+                return;
+            }
+
+            string json = JsonConvert.SerializeObject(pref);
+            File.WriteAllText($"{PreferencesPath}/{pref.PreferenceName}.txt", json);
         }
 
         public bool Delete(SavedPreference pref)
         {
+            if(pref == null)
+            {
+                return false;
+            }
+
             try
             {
-                File.Delete($"{PreferencesPath}/{pref.PreferenceName}");
+                File.Delete($"{PreferencesPath}/{pref.PreferenceName}.txt");
             }
-            catch (System.Exception)
+            catch
             {
-
                 return false;
             }
 
@@ -40,7 +50,23 @@ namespace HotelsLogic
 
         public IEnumerable<SavedPreference> GetAll()
         {
-            throw new System.NotImplementedException();
+            List<SavedPreference> result = new List<SavedPreference>();
+            try
+            {
+                string[] fileNames = Directory.GetFiles(PreferencesPath);
+
+                foreach (string name in fileNames)
+                {
+                    string json = File.ReadAllText(name);
+                    result.Add(JsonConvert.DeserializeObject<SavedPreference>(json));
+                }
+            }
+            catch
+            {
+                throw;
+            }
+
+            return result;
         }
     }
 }

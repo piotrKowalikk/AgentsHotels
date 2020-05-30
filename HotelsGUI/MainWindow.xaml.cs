@@ -18,14 +18,18 @@ namespace HotelsGUI
     {
 
         public ObservableCollection<SearchResult> Results { get; set; }
+        public ObservableCollection<SavedPreference> Preferences { get; set; }
         public MainWindow()
         {
             InitializeComponent();
 
-            AddInitialInput();
-
             Results = new ObservableCollection<SearchResult>();
             ResultListView.ItemsSource = Results;
+
+            Preferences = new ObservableCollection<SavedPreference>(PreferencesRepository.PreferencesRepositoryInstance.GetAll());
+            AddInitialInput();
+            PreferencesCombobox.ItemsSource = Preferences;
+            //PreferencesCombobox. = "--Select Preference--";
         }
 
         private void AddInitialInput()
@@ -62,6 +66,44 @@ namespace HotelsGUI
 
             await ResultService.ResultServiceInstance.WaitForResult(new FileSystemEventHandler(OnResultFileCreated));
             OutputTextBlock.Text = "Waiting for results";
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(string.IsNullOrWhiteSpace(PreferenceNameTextbox.Text))
+            {
+                OutputTextBlock.Text = "Select name for your preference";
+                return;
+            }
+            if(!InputIsValid(out string message))
+            {
+                OutputTextBlock.Text = message;
+                return;
+            }
+
+            SavedPreference pref = new SavedPreference
+            {
+                PreferenceName = PreferenceNameTextbox.Text,
+                City = CityTextbox.Text,
+                DateTo = DateTo.SelectedDate.Value,
+                DateFrom = DateFrom.SelectedDate.Value,
+                NumberOfAdults = AdultsNumberCombobox.SelectedIndex + 1,
+                Delay = GetDelaySecondsFromComboIndex(DelayCombobox.SelectedIndex)
+            };
+
+            PreferencesRepository.PreferencesRepositoryInstance.Add(pref);
+            OutputTextBlock.Text = string.Empty;
+        }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(!PreferencesRepository.PreferencesRepositoryInstance.Delete(PreferencesCombobox.SelectedItem as SavedPreference))
+            {
+                OutputTextBlock.Text = "Could not delete preference";
+                return;
+            }
+
+            OutputTextBlock.Text = string.Empty;
         }
 
         private void OnResultFileCreated(object source, FileSystemEventArgs e)
@@ -120,5 +162,25 @@ namespace HotelsGUI
             message = "";
             return true;
         }
+
+        private void PreferencesCombobox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            FillInputs(PreferencesCombobox.SelectedItem as SavedPreference);
+
+            Preferences = new ObservableCollection<SavedPreference>(PreferencesRepository.PreferencesRepositoryInstance.GetAll());
+        }
+
+        private void FillInputs(SavedPreference savedPreference)
+        {
+            CityTextbox.Text = savedPreference.City;
+            DateFrom.SelectedDate = savedPreference.DateFrom;
+            DateTo.SelectedDate = savedPreference.DateTo;
+            AdultsNumberCombobox.SelectedIndex = savedPreference.NumberOfAdults - 1;
+            DelayCombobox.SelectedIndex = GetDelayComboIndexFromSeconds(savedPreference.Delay);
+            PreferenceNameTextbox.Text = savedPreference.PreferenceName;
+        }
+
+        private int GetDelayComboIndexFromSeconds(int delay) => delay / 3 - 1;
+        private int GetDelaySecondsFromComboIndex(int index) => (index + 1 )* 3;
     }
 }

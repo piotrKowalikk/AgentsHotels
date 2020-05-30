@@ -92,6 +92,7 @@ namespace HotelsGUI
             }
 
             ResultService.ResultServiceInstance.CleanResultsFolder();
+            SearchService.SearchServiceInstance.CleanServiceFolder();
 
             OutputTextBlock.Text = string.Empty;
 

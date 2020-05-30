@@ -14,5 +14,27 @@ namespace HotelsLogic
         {
             return new BookingUserPreference(userPreference).GetDeserializedUserPreference();
         }
+
+        public void CleanServiceFolder()
+        {
+            try
+            {
+                string[] fileNames = Directory.GetFiles("./" + DirectoryName);
+
+                foreach (string file in fileNames)
+                {
+                    try
+                    {
+                        File.Delete(file);
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+            catch
+            {
+            }
+        }
     }
 }

@@ -16,11 +16,20 @@ namespace HotelsLogic
             searchServices.Add(new TrivagoSearchService());
             searchServices.Add(new HotelsSearchService());
         }
+
         public void Search(UserPreference us)
         {
             foreach (var ss in searchServices)
             {
                 ss.Search(us);
+            }
+        }
+
+        public void CleanServiceFolder()
+        {
+            foreach (var ss in searchServices)
+            {
+                ss.CleanServiceFolder();
             }
         }
     }

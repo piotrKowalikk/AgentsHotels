@@ -7,5 +7,6 @@ namespace HotelsLogic
     interface ISearchService
     {
         void Search(UserPreference up);
+        public void CleanServiceFolder();
     }
 }

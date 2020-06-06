@@ -4,7 +4,6 @@ addon core version 4.106.0.0
 addon language version 4.105.0.0
 
 
-
 text.read ♥task⟦filepath⟧ result ♥jsonTxt
     ♥json = ⟦json⟧♥jsonTxt
     ♥dateFrom=♥json⟦dateFrom⟧
@@ -14,15 +13,44 @@ text.read ♥task⟦filepath⟧ result ♥jsonTxt
     ♥outputPath=♥json⟦outputPath⟧
     ♥delay=♥json⟦delay⟧
 
---♥outputPath=‴C:\Dev\AgentsHotels\HotelsGUI\bin\Debug\netcoreapp3.1\Results‴
---♥dateFrom="05/27/2020"
---♥dateTo="05/28/2020"
---♥city="Lubin"
---♥days = 0
---♥increaseDays=true
---♥numberOfAdults=3
---♥delay=9
+    --♥outputPath=‴C:\Dev\AgentsHotels\HotelsGUI\bin\Debug\netcoreapp3.1\Results‴
+    --♥dateFrom="05/27/2020"
+    --♥dateTo="05/28/2020"
+    --♥city="Lubin"
+    --♥days = 0
+    --♥increaseDays=true
+    --♥numberOfAdults=3
+    --♥delay=9
 
+    ♥airConditioning=false
+    ♥freeCancelation=false
+    ♥wifi=true
+    ♥bar=false
+    ♥pool=false
+    ♥fridge=false
+    ♥microwave=false
+    ♥safe=false
+    ♥tv=true
+    ♥massage=false
+    ♥sauna=false
+    ♥gym=true
+    ♥spa=false
+    ♥stars=0
+
+    --♥airConditioning=true
+    --♥freeCancelation=true
+    --♥wifi=true
+    --♥bar=true
+    --♥pool=true
+    --♥fridge=true
+    --♥microwave=true
+    --♥safe=true
+    --♥tv=true
+    --♥massage=true
+    --♥sauna=true
+    --♥gym=true
+    --♥spa=true
+    --♥stars=0
 
 selenium.open chrome url ‴https://www.trivago.pl/‴
 delay 5
@@ -40,8 +68,9 @@ selenium.runscript ‴let dat = document.getElementsByClassName('dealform-button
 
 for ♥i from 0 to ♥days
     selenium.click search //*[@id="js-fullscreen-hero"]/div[1]/form/div[2]/button[♥increaseDays] by xpath
+
     delay 1
-end for 
+end for
 
 selenium.runscript ‴let dat = document.getElementsByClassName('dealform-button__label')[1].dateTime; let arr = dat.split('-'); let datok = arr[1] + '/' + arr[2] + '/' + arr[0]; let d1 = new Date(arr[0], arr[1] - 1, arr[2]); let d2 = new Date('♥dateTo'); console.log('♥dateTo'); console.log(d1); console.log(d2); return Math.ceil(Math.abs(d2 - d1) / (1000 * 60 * 60 * 24)) - 1;‴ result ♥days
 
@@ -50,7 +79,7 @@ selenium.runscript ‴let dat = document.getElementsByClassName('dealform-button
 for ♥i from 0 to ♥days
     selenium.click search //*[@id="js-fullscreen-hero"]/div[1]/form/div[3]/button[♥increaseDays] by xpath
     delay 1
-end for 
+end for
 
 delay 1
 
@@ -59,12 +88,9 @@ if ⊂♥numberOfAdults != 2⊃
     delay 1
     selenium.click search //*[@id="js-fullscreen-hero"]/div[1]/form/div[4]/div/div/ul/li[3]/button by xpath
     delay 1
-    selenium.click search /html/body/div[4]/div[2]/div[4]/div[1]/form/div[4]/div/div/div/div[1]/div/div[2]/div/select by xpath
-    delay 1
-    selenium.click search /html/body/div[4]/div[2]/div[4]/div[1]/form/div[4]/div/div/div/div[1]/div/div[2]/div/select/option[3] by xpath
-    selenium.runscript ‴let element = document.getElementsByClassName("df-select")[0]; element.selectedIndex = (♥numberOfAdults - 1); if ("createEvent" in document) { var evt = document.createEvent("HTMLEvents"); evt.initEvent("change", false, true); element.dispatchEvent(evt); } else element.fireEvent("onchange");‴
-    selenium.runscript ‴document.querySelectorAll("[class*=btn--tertiary]")[1].click()‴
-    --selenium.click search /html/body/div[4]/div[2]/div[4]/div[1]/form/div[4]/div/div/div/div[2]/button[2] by xpath
+    selenium.runscript ‴let element = document.getElementsByClassName("df-select")[0]; element.selectedIndex = (♥dorosli - 1); if ("createEvent" in document) { var evt = document.createEvent("HTMLEvents"); evt.initEvent("change", false, true); element.dispatchEvent(evt); } else element.fireEvent("onchange");‴
+
+    selenium.click search //*[@id="dealform_extRooms"]/div[2]/button[2]/span by xpath
 end
 
 delay 2
@@ -77,6 +103,81 @@ selenium.click search search-button__label by class
 list.create type text result ♥hotels
 list.create type text result ♥urls
 
+delay 2
+
+if ⊂♥stars > 0⊃
+    selenium.click search ‴/html/body/div[3]/section/div/div/ul/li[2]/button‴ by xpath
+    delay 1
+    --selenium.click search ‴/html/body/div[5]/section/div/div/ul/li[2]/div/div/section/div/div/div[1]/div/ul/li[2]/div/button[♥stars]‴
+    selenium.click search ‴/html/body/div[3]/section/div/div/ul/li[2]/div/div/section/div/div/div[1]/div/ul/li[2]/div/button[♥stars]‴ by xpath
+    delay 1
+    --selenium.click search ‴/html/body/div[4]/section/div/div/ul/li[2]/div/div/section/div/div/footer/button[2]‴ by xpath
+    selenium.click search ‴filter-popover-done-button‴ by id
+    delay ♥delay
+end
+
+-- FILTRY
+delay 1
+selenium.click search ‴/html/body/div[3]/section/div/div/ul/li[5]/button‴ by xpath
+delay 1
+if ⊂♥freeCancelation⊃
+    selenium.runscript ‴let nodelist = document.querySelectorAll("[class*=filter-components__concept]"); let xd = Array.from(nodelist); let xd2 = xd.filter(li => li.children[0].innerText == "Bezpłatna anulacja")[0]; xd2.children[1].children[0].click();‴
+    delay 1
+end
+-- UDOGODNIENIA W HOTELU
+if ⊂♥bar⊃
+    selenium.runscript ‴let nodelist = document.querySelectorAll("[class*=filter-components__concept]"); let xd = Array.from(nodelist); let xd2 = xd.filter(li => li.children[0].innerText == "Bar hotelowy")[0]; xd2.children[1].children[0].click();‴
+    delay 1
+end
+if ⊂♥wifi⊃
+    selenium.runscript ‴let nodelist = document.querySelectorAll("[class*=filter-components__concept]"); let xd = Array.from(nodelist); let xd2 = xd.filter(li => li.children[0].innerText == "Wi-Fi")[0]; xd2.children[1].children[0].click();‴
+    delay 1
+end
+if ⊂♥pool⊃
+    selenium.runscript ‴let nodelist = document.querySelectorAll("[class*=filter-components__concept]"); let xd = Array.from(nodelist); let xd2 = xd.filter(li => li.children[0].innerText == "Basen")[0]; xd2.children[1].children[0].click();‴
+    delay 1
+end
+-- UDOGODNIENIA W POKOJACH
+if ⊂♥fridge⊃
+    selenium.runscript ‴let nodelist = document.querySelectorAll("[class*=filter-components__concept]"); let xd = Array.from(nodelist); let xd2 = xd.filter(li => li.children[0].innerText == "Lodówka")[0]; xd2.children[1].children[0].click();‴
+    delay 1
+end
+if ⊂♥microwave⊃
+    selenium.runscript ‴let nodelist = document.querySelectorAll("[class*=filter-components__concept]"); let xd = Array.from(nodelist); let xd2 = xd.filter(li => li.children[0].innerText == "Mikrofalówka")[0]; xd2.children[1].children[0].click();‴
+    delay 1
+end
+if ⊂♥safe⊃
+    selenium.runscript ‴let nodelist = document.querySelectorAll("[class*=filter-components__concept]"); let xd = Array.from(nodelist); let xd2 = xd.filter(li => li.children[0].innerText == "Sejf")[0]; xd2.children[1].children[0].click();‴
+end
+if ⊂♥tv⊃
+    selenium.runscript ‴let nodelist = document.querySelectorAll("[class*=filter-components__concept]"); let xd = Array.from(nodelist); let xd2 = xd.filter(li => li.children[0].innerText == "Telewizja")[0]; xd2.children[1].children[0].click();‴
+    delay 1
+end
+-- WELLNESS & SPA
+if ⊂♥massage⊃
+    selenium.runscript ‴let nodelist = document.querySelectorAll("[class*=filter-components__concept]"); let xd = Array.from(nodelist); let xd2 = xd.filter(li => li.children[0].innerText == "Masaż")[0]; xd2.children[1].children[0].click();‴
+    delay 1
+end
+if ⊂♥sauna⊃
+    selenium.runscript ‴let nodelist = document.querySelectorAll("[class*=filter-components__concept]"); let xd = Array.from(nodelist); let xd2 = xd.filter(li => li.children[0].innerText == "Sauna")[0]; xd2.children[1].children[0].click();‴
+    delay 1
+end
+if ⊂♥gym⊃
+    selenium.runscript ‴let nodelist = document.querySelectorAll("[class*=filter-components__concept]"); let xd = Array.from(nodelist); let xd2 = xd.filter(li => li.children[0].innerText == "Siłownia")[0]; xd2.children[1].children[0].click();‴
+    delay 1
+end
+if ⊂♥spa⊃
+    selenium.runscript ‴let nodelist = document.querySelectorAll("[class*=filter-components__concept]"); let xd = Array.from(nodelist); let xd2 = xd.filter(li => li.children[0].innerText == "Spa")[0]; xd2.children[1].children[0].click();‴
+    delay 1
+end
+
+selenium.click search ‴filter-popover-done-button‴ by id
+delay ♥delay
+---
+
+delay 1
+
+
 program notepad
 delay 2
 window ✱trivago✱
@@ -87,18 +188,18 @@ delay ♥delay;
 
 --for ♥i from 0 to 1
     --selenium.runscript ‴return document.getElementsByClassName('item-link name__copytext')[♥i].innerText‴ result ♥hotel
-    window ✱not✱
+    window ✱Not✱
     keyboard ‴[‴
     delay 1
     window ✱trivago✱ style maximize
-    
+
     selenium.runscript ‴return document.getElementsByClassName('item-link name__copytext')[0].innerText‴ result ♥hotel
     list.add ♥hotels toadd ♥hotel
     delay 1
-    
+
     --selenium.runscript ‴document.querySelectorAll("[class*=accommodation-list__recommended]")[♥i].querySelectorAll("[class*=accommodation-list__button]")[0].click()‴
 --    selenium.runscript ‴document.querySelectorAll("[class*=accommodation-list__recommended]")[♥i].querySelectorAll("[class*=accommodation-list__button]")[0].click()‴
-    
+
     selenium.runscript ‴document.querySelectorAll("[class*=location-details]")[0].click()‴
     delay 2
     selenium.runscript ‴document.querySelectorAll("[class*=btn-as-link--share]")[0].click()‴
@@ -106,22 +207,22 @@ delay ♥delay;
     delay 1
     keyboard ⋘ENTER⋙
     delay 1
-    window ✱not✱
+    window ✱Not✱
     delay 1
     keyboard ‴{"fromCompany": "trivago","hotelName": "♥hotel","url": "⋘CTRL+V⋙"},⋘ENTER⋙‴
 
     delay 1
     window ✱trivago✱
+    --dialog ♥url
 --end for
 
 
 delay 1
-window ✱not✱
+window ✱Not✱
 
 keyboard ‴]‴
 keyboard  ⋘CTRL+S⋙
-keyboard ‴♥outputPath‴ 
-keyboard ‴\trivagoResult.txt‴ 
+keyboard ‴♥outputPath‴
+keyboard ‴\trivagoResult.txt‴
 delay 1
 keyboard ⋘ENTER⋙
-

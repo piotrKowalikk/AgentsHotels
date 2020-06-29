@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HotelsLogic
@@ -10,11 +11,16 @@ namespace HotelsLogic
     {
         public static ResultService ResultServiceInstance { get; private set; } = new ResultService();
         public static string ResultsPath;
+        public static List<string> SearchOrders;
         FileSystemWatcher watcher;
 
         static ResultService()
         {
             ResultsPath = (Directory.GetCurrentDirectory() + @"\\Results").Replace(@"\\", @"\");
+            SearchOrders = new List<string>();
+            SearchOrders.Add((Directory.GetCurrentDirectory() + @"\\BookingSearch").Replace(@"\\", @"\"));
+            SearchOrders.Add((Directory.GetCurrentDirectory() + @"\\TrivagoSearch").Replace(@"\\", @"\"));
+            SearchOrders.Add((Directory.GetCurrentDirectory() + @"\\HotelsSearch").Replace(@"\\", @"\"));
         }
 
         public Task WaitForResult(FileSystemEventHandler onCreate)
@@ -39,7 +45,8 @@ namespace HotelsLogic
         public List<SearchResult> GetResultsFromFile(string path)
         {
             List<SearchResult> results = new List<SearchResult>();
-            //watcher.EnableRaisingEvents = false;
+            Thread.Sleep(1000);
+            watcher.EnableRaisingEvents = false;
             try
             {
                 using (FileStream fileStream = new FileStream(path, FileMode.Open))
@@ -62,7 +69,7 @@ namespace HotelsLogic
             {
 
             }
-            //watcher.EnableRaisingEvents = true;
+            watcher.EnableRaisingEvents = true;
 
             return results;
         }
@@ -91,5 +98,31 @@ namespace HotelsLogic
             }
         }
 
+        public void CleanSearchOrders()
+        { 
+            foreach(var path in SearchOrders)
+            {
+                try
+                {
+                    string[] filesToClean = Directory.GetFiles(path);
+
+                    foreach (string filepath in filesToClean)
+                    {
+                        try
+                        {
+                            File.Delete(filepath);
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+                }
+                catch
+                {
+                    //xddd
+                }
+            }
+        }
     }
 }

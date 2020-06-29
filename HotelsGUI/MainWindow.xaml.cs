@@ -182,5 +182,10 @@ namespace HotelsGUI
             }
             );
         }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            ResultService.ResultServiceInstance.CleanSearchOrders();
+        }
     }
 }

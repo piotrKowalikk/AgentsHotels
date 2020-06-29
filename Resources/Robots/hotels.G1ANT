@@ -21,7 +21,10 @@ procedure main
     ♥delay=2
 
     selenium.open chrome url ‴www.hotels.com‴
-
+    delay 5
+    window ✱hotels✱ style maximize
+    selenium.click search cookie-policy-banner-accept by class
+    delay 3 
     --choose city
     selenium.type ♥city search qf-0q-destination by id
     
@@ -62,11 +65,12 @@ procedure main
     delay ♥delay
 
     selenium.geturl result ♥url1
+    selenium.close
 
     --zapis do pliku
     program notepad
     keyboard ‴[‴
-    keyboard ‴{"fromCompany": "booking","hotelName": "♥title1","url": "♥url1"},⋘ENTER⋙‴
+    keyboard ‴{"fromCompany": "hotels","hotelName": "♥title1","url": "♥url1"},⋘ENTER⋙‴
     keyboard ‴]‴
     keyboard  ⋘CTRL+S⋙
     keyboard ‴♥outputPath‴ 

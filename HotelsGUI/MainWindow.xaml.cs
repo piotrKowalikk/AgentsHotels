@@ -66,7 +66,9 @@ namespace HotelsGUI
 
         private void OnResultFileCreated(object source, FileSystemEventArgs e)
         {
+            Debug.Write("preresult");
             List<SearchResult> newResults = ResultService.ResultServiceInstance.GetResultsFromFile(e.FullPath);
+            Debug.Write("result");
 
             App.Current.Dispatcher.Invoke(() =>
             {
@@ -119,6 +121,11 @@ namespace HotelsGUI
 
             message = "";
             return true;
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            ResultService.ResultServiceInstance.CleanSearchOrders();
         }
     }
 }

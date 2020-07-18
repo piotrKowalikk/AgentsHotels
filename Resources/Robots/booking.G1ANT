@@ -21,8 +21,8 @@ if  ♥task⟦changetype⟧=="Created"
     ♥fromPrice=♥json⟦fromPrice⟧
     ♥toPrice=♥json⟦toPrice⟧
     ♥city=♥json⟦city⟧
-    ♥numberOfReturnOffers=5
-    ♥delay=5
+    ♥numberOfReturnOffers=♥json⟦numberOfReturnOffers⟧
+    ♥delay=♥json⟦‴delay‴⟧
     ♥outputPath=♥json⟦outputPath⟧
     
     
@@ -274,7 +274,7 @@ if  ♥task⟦changetype⟧=="Created"
 
 
 ♥urlsArray="["
-for ♥i from 1 to 5 step 1
+for ♥i from 1 to ♥numberOfReturnOffers+1 step 1
     try errorresult ♥errorMesg  errorjump errjump
         selenium.getattribute name href search /html/body/div[6]/div/div[3]/div[1]/div[1]/div[7]/div[3]/div[1]/div/div[♥i]/div[2]/div[1]/div[1]/div[1]/h3/a by xpath result ♥url1
         selenium.getinnerhtml search           /html/body/div[6]/div/div[3]/div[1]/div[1]/div[7]/div[3]/div[1]/div/div[♥i]/div[2]/div[1]/div[1]/div[1]/h3/a/span[1] by xpath result   ♥title1

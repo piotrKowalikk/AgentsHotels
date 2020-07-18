@@ -5,13 +5,12 @@ addon core version 4.98.18332.1321
 --TODO: instead of delays it could be done by try block and goto 
 
 --główny program - tylko na tworzenie pliku się uruchamia
-dialog "Hej"
-if  ♥task⟦changetype⟧=="Created"
-     call main
-end
---koniec programu
+    ♥satisfied="Satisfied"
+    ♥possible="Possible"
+    ♥notfound="NotFound"
+    ♥notsearched="NotSearched"
 
-procedure main
+if  ♥task⟦changetype⟧=="Created"
     text.read ♥task⟦filepath⟧ result ♥jsonTxt
     ♥json = ⟦json⟧♥jsonTxt
     ♥dateFrom=♥json⟦dateFrom⟧
@@ -22,8 +21,40 @@ procedure main
     ♥fromPrice=♥json⟦fromPrice⟧
     ♥toPrice=♥json⟦toPrice⟧
     ♥city=♥json⟦city⟧
+    ♥numberOfReturnOffers=5
     ♥delay=5
     ♥outputPath=♥json⟦outputPath⟧
+    
+    
+    --filtry
+    ♥airConditioning= ♥json⟦airConditioning⟧
+    ♥airConditioningMsg=♥notsearched
+    ♥freeCancelation= ♥json⟦freeCancelation⟧
+    ♥freeCancelationMsg=♥notsearched
+    ♥wifi= ♥json⟦wifi⟧
+    ♥wifiMsg=♥notsearched
+    ♥bar= ♥json⟦bar⟧
+    ♥barMsg=♥notsearched
+    ♥pool= ♥json⟦pool⟧
+    ♥poolMsg=♥notsearched
+    ♥fridge= ♥json⟦fridge⟧
+    ♥fridgeMsg=♥notsearched
+    ♥microwave= ♥json⟦microwave⟧
+    ♥microwaveMsg=♥notsearched
+    ♥safe= ♥json⟦safe⟧
+    ♥safeMsg=♥notsearched
+    ♥tv= ♥json⟦tv⟧
+    ♥tvMsg=♥notsearched
+    ♥massage= ♥json⟦massage⟧
+    ♥massageMsg=♥notsearched
+    ♥sauna= ♥json⟦sauna⟧
+    ♥saunaMsg=♥notsearched
+    ♥gym= ♥json⟦gym⟧
+    ♥gymMsg=♥notsearched
+    ♥spa= ♥json⟦spa⟧
+    ♥spaMsg=♥notsearched
+    ♥stars= ♥json⟦stars⟧
+    ♥starsMsg=♥notsearched
     
     --helpers
     ♥dateFromMonthsToSkip=♥json⟦dateFromMonthsToSkip⟧
@@ -98,19 +129,168 @@ procedure main
         delay ♥delay
     end
     
- --wybór wynikowego 1 domku
-♥title1=""
-♥url=""
-selenium.getinnerhtml search       /html/body/div[6]/div/div[3]/div[1]/div[1]/div[7]/div[3]/div[1]/div/div[1]/div[2]/div[1]/div[1]/div[1]/h3/a/span[1] by xpath result   ♥title1
-selenium.click search         /html/body/div[6]/div/div[3]/div[1]/div[1]/div[7]/div[3]/div[1]/div/div[1]/div[2]/div[1]/div[1]/div[1]/h3/a/span[1] by xpath
-selenium.geturl result ♥url1 
+
+    --filtry
+        --klimatyzacja 
+        try if ♥airConditioning errorjump catchAirConditioning
+            selenium.runscript ‴$('[data-id="roomfacility-11"]')[0].click()‴
+            ♥airConditioningMsg=♥satisfied
+        end
+        jump succededAirConditioning
+        label catchAirConditioning
+            delay  ♥delay       
+            ♥airConditioningMsg=♥notfound
+        label succededAirConditioning
+        
+        --free cancelation 
+        try if ♥freeCancelation errorjump catchFreeCancelation
+            delay  ♥delay       
+            selenium.runscript ‴$('[data-id="fc-2"]')[0].click()‴
+            ♥freeCancelationMsg=♥satisfied
+        end
+        jump succededFreeCancelation
+        label catchFreeCancelation
+            ♥freeCancelationMsg=♥notfound
+        label succededFreeCancelation
+        
+        --wifi
+        try if ♥wifi errorjump catchWifi
+            delay  ♥delay       
+            selenium.runscript ‴$('[data-id="hotelfacility-107"]')[0].click()‴
+            ♥wifiMsg=♥satisfied
+        end
+        jump succededWifi
+        label catchWifi
+            ♥wifiMsg=♥notfound
+        label succededWifi
+        
+        --bar szuka restauracji hotelfacility-7
+        try if ♥bar errorjump catchBar
+            delay  ♥delay       
+            selenium.runscript ‴$('[data-id="hotelfacility-3"]')[0].click()‴
+            ♥barMsg=♥possible
+        end
+        jump succededBar
+        label catchBar
+            ♥barMsg=♥notfound
+        label succededBar
+          
+        --pool
+        try if ♥pool errorjump catchPool
+            delay  ♥delay       
+            selenium.runscript ‴$('[data-id="hotelfacility-301"]')[0].click()‴
+            ♥poolMsg=♥satisfied
+        end
+        jump succededPool
+        label catchPool
+            ♥poolMsg=♥notfound
+        label succededPool
+        
+        --fringe
+        try if ♥fridge errorjump catchfringe
+            delay  ♥delay       
+            selenium.runscript ‴$('[data-id="roomfacility-999"]')[0].click()‴
+            ♥fridgeMsg=♥possible
+        end
+        jump succededfridge
+        label catchfringe
+            ♥fridgeMsg=♥notfound
+        label succededfridge
+        
+        --microwave
+        if ♥microwave 
+           ♥microwaveMsg=♥fridgeMsg
+        end
+
+        --safe - brak możliwości wyboru
+        if ♥safe
+            ♥safeMsg=♥notfound
+        end
+        
+        --tv
+        try if ♥tv errorjump catchtv
+            delay  ♥delay 
+            selenium.runscript ‴$('[data-id="roomfacility-75"]')[0].click()‴
+            ♥tvMsg=♥satisfied
+        end
+        jump succededtv
+        label catchtv
+            ♥tvMsg=♥notfound
+        label succededtv
+        
+        
+        --massage
+        try if ♥massage errorjump catchmassage
+            delay  ♥delay 
+            selenium.runscript ‴$('[data-id="popular_activities-55"]')[0].click()‴
+            ♥massageMsg=♥satisfied
+        end
+        jump succededmassage
+        label catchmassage
+            ♥massageMsg=♥notfound
+        label succededmassage
+        
+        
+        --sauna
+        try if ♥sauna errorjump catchsauna
+            delay  ♥delay 
+            selenium.runscript ‴$('[data-id="popular_activities-10"]')[0].click()‴
+            ♥saunaMsg=♥satisfied
+        end
+        jump succededsauna
+        label catchsauna
+            ♥saunaMsg=♥notfound
+        label succededsauna
+        
+        
+        --gym - centrum fitness wyszukuje
+        try if ♥gym errorjump catchgym
+            delay  ♥delay 
+            selenium.runscript ‴$('[data-id="popular_activities-11"]')[0].click()‴
+            ♥gym=♥satisfied
+        end
+        jump succededgym
+        label catchgym
+            ♥gymMsg=♥notfound
+        label succededgym
+        
+        --spa
+        try if ♥spa errorjump catchspa
+            delay  ♥delay
+            selenium.runscript ‴$('[data-id="popular_activities-54"]')[0].click()‴
+            ♥spaMsg=♥satisfied
+        end
+        jump succededspa
+        label catchspa
+            ♥spaMsg=♥notfound
+        label succededspa
+        
+        --stars
+        if ♥stars 
+            ♥starsMsg=♥notfound
+        end
+    
+ --wybór wynikowych domków
+
+
+♥urlsArray="["
+for ♥i from 1 to 5 step 1
+    try errorresult ♥errorMesg  errorjump errjump
+        selenium.getattribute name href search /html/body/div[6]/div/div[3]/div[1]/div[1]/div[7]/div[3]/div[1]/div/div[♥i]/div[2]/div[1]/div[1]/div[1]/h3/a by xpath result ♥url1
+        selenium.getinnerhtml search           /html/body/div[6]/div/div[3]/div[1]/div[1]/div[7]/div[3]/div[1]/div/div[♥i]/div[2]/div[1]/div[1]/div[1]/h3/a/span[1] by xpath result   ♥title1
+        ♥urlsArray = ‴♥urlsArray {"url":"♥url1","hotelName": "♥title1"},‴
+    end
+    label errjump
+   -- dialog  ♥errorMesg
+end
+♥urlsArray= ♥urlsArray + "]"
+
 selenium.close
 
 --zapis do pliku
+♥filters = {"airConditioning": "♥airConditioningMsg", "freeCancelation" : "♥freeCancelationMsg","wifi":"♥wifiMsg", "bar":"♥barMsg","pool":"♥poolMsg","fridge":"♥fridgeMsg","microwave":"♥microwaveMsg","safe":"♥safeMsg","tv":"♥tvMsg","massage":"♥massageMsg","sauna":"♥saunaMsg","gym":"♥gymMsg","spa":"♥spaMsg","stars":"♥starsMsg"}
 program notepad
-keyboard ‴[‴
-keyboard ‴{"fromCompany": "booking","hotelName": "♥title1","url": "♥url1"},⋘ENTER⋙‴
-keyboard ‴]‴
+keyboard ‴{"fromCompany": "booking","hotelsList":♥urlsArray, "filters": ♥filters}⋘ENTER⋙‴
 keyboard  ⋘CTRL+S⋙
 keyboard ‴bookingResult.txt‴
 keyboard ⋘ALT+A⋙

@@ -56,10 +56,10 @@ namespace HotelsLogic
 
                     try
                     {
-                        results = JsonConvert.DeserializeObject<List<SearchResult>>(fileContent);
+                        results.Add( JsonConvert.DeserializeObject<SearchResult>(fileContent));
 
                     }
-                    catch (System.Exception)
+                    catch (System.Exception e)
                     {
                         throw;
                     }

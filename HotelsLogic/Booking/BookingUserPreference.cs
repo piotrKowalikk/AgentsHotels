@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -44,32 +45,34 @@ namespace HotelsLogic
             dateFrom = userPreference.DateFrom.Year + "-" + MakeTwoPostions(userPreference.DateFrom.Month) + "-" + MakeTwoPostions(userPreference.DateFrom.Day);
             dateTo = userPreference.DateTo.Year + "-" + MakeTwoPostions(userPreference.DateTo.Month) + "-" + MakeTwoPostions(userPreference.DateTo.Day);
             numberOfAdults = userPreference.NumberOfAdults;
-            numberOfChildren = 2;
+            numberOfChildren = 2;//TODO
             numberOfRooms = 2;//TODO
-            fromPrice = 300;
-            toPrice = 500;
+            fromPrice = 300;//TODO
+            toPrice = 500;//TODO
             city = userPreference.City;
             //helpers
             dateFromMonthsToSkip = userPreference.DateFrom.Month - DateTime.Now.Month;
             dateToMonthsToSkip = userPreference.DateTo.Month - DateTime.Now.Month;
             outputPath = ResultService.ResultsPath;
+            numberOfReturnOffers = 3;//TODO
+            delay = userPreference.Delay;
             //filters
-            airConditioning = false;
-            freeCancelation = false;
-            wifi = false;
-            bar = false;
-            pool = false;
-            fridge = false;
-            microwave = false;
-            safe = false;
-            tv = false;
-            massage = false;
-            sauna = false;
-            gym = false;
-            spa = false;
-            stars = false;
-
+            airConditioning = userPreference.AirConditioning;
+            freeCancelation = userPreference.FreeCancelation;
+            wifi = userPreference.Wifi;
+            bar = userPreference.Bar;
+            pool = userPreference.Pool;
+            fridge = userPreference.Fridge;
+            microwave = userPreference.Microwave;
+            safe = userPreference.Safe;
+            tv = userPreference.Tv;
+            massage = userPreference.Massage;
+            sauna = userPreference.Sauna;
+            gym = userPreference.Gym;
+            spa = userPreference.Spa;
+            stars = userPreference.Stars;
         }
+
         private static string MakeTwoPostions(int num)
         {
             if (num < 10)
@@ -79,7 +82,7 @@ namespace HotelsLogic
 
         public string GetDeserializedUserPreference()
         {
-            return JsonSerializer.Serialize(this);
+            return  JsonConvert.SerializeObject(this);
         }
     }
 }

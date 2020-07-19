@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Media;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Navigation;
 
@@ -82,7 +82,7 @@ namespace HotelsGUI
 
             ResultService.ResultServiceInstance.CleanResultsFolder();
             SearchService.SearchServiceInstance.CleanServiceFolder();
-            Thread.Sleep(2000);
+            await Task.Delay(2000);
 
             OutputTextBlock.Text = string.Empty;
 
@@ -145,9 +145,9 @@ namespace HotelsGUI
             proc.Start();
         }
 
-        private void OnResultFileCreated(object source, FileSystemEventArgs e)
+        private async void OnResultFileCreated(object source, FileSystemEventArgs e)
         {
-            List<SearchResult> newResults = ResultService.ResultServiceInstance.GetResultsFromFile(e.FullPath);
+            List<SearchResult> newResults = await ResultService.ResultServiceInstance.GetResultsFromFile(e.FullPath);
 
             App.Current.Dispatcher.Invoke(() =>
             {

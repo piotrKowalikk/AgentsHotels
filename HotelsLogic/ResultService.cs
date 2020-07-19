@@ -1,8 +1,6 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace HotelsLogic
@@ -36,16 +34,15 @@ namespace HotelsLogic
 
             watcher.Path = ResultsPath;
             watcher.Created += onCreate;
-            //watcher.Changed += onCreate;
             watcher.EnableRaisingEvents = true;
 
             return tcs.Task;
         }
 
-        public List<SearchResult> GetResultsFromFile(string path)
+        public async Task<List<SearchResult>> GetResultsFromFile(string path)
         {
             List<SearchResult> results = new List<SearchResult>();
-            Thread.Sleep(1000);
+            await Task.Delay(1000);
             watcher.EnableRaisingEvents = false;
             try
             {
@@ -99,7 +96,7 @@ namespace HotelsLogic
         }
 
         public void CleanSearchOrders()
-        { 
+        {
             foreach(var path in SearchOrders)
             {
                 try

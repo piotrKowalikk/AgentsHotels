@@ -190,13 +190,25 @@ namespace HotelsGUI
 
         private UserPreference GetUserPreferenceFromInputs() =>
             new UserPreference()
-            {
-                City = CityTextbox.Text,
-                DateTo = DateTo.SelectedDate.Value,
-                DateFrom = DateFrom.SelectedDate.Value,
-                NumberOfAdults = AdultsNumberCombobox.SelectedIndex + 1,
-                Delay = (DelayCombobox.SelectedIndex + 1) * 3
-            };
+                .WithCity(CityTextbox.Text)
+                .WithDateTo(DateTo.SelectedDate.Value)
+                .WithDateFrom(DateFrom.SelectedDate.Value)
+                .WithNumberOfAdults(AdultsNumberCombobox.SelectedIndex + 1)
+                .WithDelay((DelayCombobox.SelectedIndex + 1) * 3)
+                .WithAirConditioning((FiltersChoice)AirConditioningCombo.SelectedItem)
+                .WithFreeCancelation((FiltersChoice)FreeCancelationCombo.SelectedItem)
+                .WithWifi((FiltersChoice)WiFiCombo.SelectedItem)
+                .WithBar((FiltersChoice)BarCombo.SelectedItem)
+                .WithPool((FiltersChoice)PoolCombo.SelectedItem)
+                .WithFridge((FiltersChoice)FridgeCombo.SelectedItem)
+                .WithMicrowave((FiltersChoice)MicrowaveCombo.SelectedItem)
+                .WithSafe((FiltersChoice)SafeCombo.SelectedItem)
+                .WithTv((FiltersChoice)TVCombo.SelectedItem)
+                .WithMassage((FiltersChoice)MassageCombo.SelectedItem)
+                .WithSauna((FiltersChoice)SaunaCombo.SelectedItem)
+                .WithGym((FiltersChoice)GymCombo.SelectedItem)
+                .WithSpa((FiltersChoice)SpaCombo.SelectedItem)
+                .WithStars((StarsChoice)StarsCombo.SelectedItem);
 
         private bool InputIsValid(out string message)
         {

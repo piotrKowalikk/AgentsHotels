@@ -9,6 +9,7 @@ using System.Linq;
 using System.Media;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Navigation;
 
 namespace HotelsGUI
@@ -31,6 +32,8 @@ namespace HotelsGUI
             Preferences = new ObservableCollection<SavedPreference>(PreferencesRepository.PreferencesRepositoryInstance.GetAll());
             AddInitialInput();
             PreferencesCombobox.ItemsSource = Preferences;
+
+            InitializeFiltersComboboxes();
         }
 
         private void AddInitialInput()
@@ -244,6 +247,41 @@ namespace HotelsGUI
         private void Window_Closed(object sender, EventArgs e)
         {
             ResultService.ResultServiceInstance.CleanSearchOrders();
+        }
+
+        private void InitializeFiltersComboboxes()
+        {
+            var combos = new List<object>()
+            {
+                AirConditioningCombo,
+                FreeCancelationCombo,
+                WiFiCombo,
+                BarCombo,
+                PoolCombo,
+                FridgeCombo,
+                MicrowaveCombo,
+                SafeCombo,
+                TVCombo,
+                MassageCombo,
+                SaunaCombo,
+                GymCombo,
+                SpaCombo
+            };
+
+            combos.ForEach(c => InitializeComboBoxWithFiltersChoice(c as ComboBox));
+            InitializeComboBoxWithStarsChoice(StarsCombo);
+        }
+
+        private void InitializeComboBoxWithFiltersChoice(ComboBox box)
+        {
+            box.ItemsSource = Enum.GetValues(typeof(FiltersChoice)).Cast<FiltersChoice>();
+            box.SelectedIndex = 0;
+        }
+
+        private void InitializeComboBoxWithStarsChoice(ComboBox box)
+        {
+            box.ItemsSource = Enum.GetValues(typeof(StarsChoice)).Cast<StarsChoice>();
+            box.SelectedIndex = 0;
         }
     }
 }

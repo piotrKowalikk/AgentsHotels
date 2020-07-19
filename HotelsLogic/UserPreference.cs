@@ -8,6 +8,7 @@ namespace HotelsLogic
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
         public int NumberOfAdults { get; set; }
+        public int NumberOfChildren { get; set; }
         public int Delay { get; set; }
         public int NumberOfReturnOffers { get; set; }
         //filtry
@@ -47,6 +48,12 @@ namespace HotelsLogic
         public UserPreference WithNumberOfAdults(int adults)
         {
             NumberOfAdults = adults;
+            return this;
+        }
+
+        public UserPreference WithNumberOfChildren(int adults)
+        {
+            NumberOfChildren = adults;
             return this;
         }
 

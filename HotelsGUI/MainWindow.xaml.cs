@@ -194,6 +194,7 @@ namespace HotelsGUI
                 .WithDateTo(DateTo.SelectedDate.Value)
                 .WithDateFrom(DateFrom.SelectedDate.Value)
                 .WithNumberOfAdults(AdultsNumberCombobox.SelectedIndex + 1)
+                .WithNumberOfChildren(ChildrenNumberCombobox.SelectedIndex)
                 .WithDelay((DelayCombobox.SelectedIndex + 1) * 3)
                 .WithAirConditioning((FiltersChoice)AirConditioningCombo.SelectedItem)
                 .WithFreeCancelation((FiltersChoice)FreeCancelationCombo.SelectedItem)

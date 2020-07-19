@@ -21,6 +21,7 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
                 <RowDefinition Height="2*" MinHeight="200"/>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
@@ -72,6 +73,25 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
+                <Label Name="ChildrenNumberLabel" VerticalAlignment="Bottom" >Number of Children</Label>
+                <ComboBox Name="ChildrenNumberCombobox" VerticalAlignment="Top" Grid.Row="1" SelectedIndex="0">
+                    <ComboBoxItem Content="0"></ComboBoxItem>
+                    <ComboBoxItem Content="1"></ComboBoxItem>
+                    <ComboBoxItem Content="2"></ComboBoxItem>
+                    <ComboBoxItem Content="3"></ComboBoxItem>
+                    <ComboBoxItem Content="4"></ComboBoxItem>
+                    <ComboBoxItem Content="5"></ComboBoxItem>
+                    <ComboBoxItem Content="6"></ComboBoxItem>
+                    <ComboBoxItem Content="7"></ComboBoxItem>
+                    <ComboBoxItem Content="8"></ComboBoxItem>
+                </ComboBox>
+            </Grid>
+
+            <Grid Grid.Row="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
                 <Label Name="DelayLabel" VerticalAlignment="Center" >Delay</Label>
                 <ComboBox Name="DelayCombobox" VerticalAlignment="Top" Grid.Row="1">
                     <ComboBoxItem Content="Short"></ComboBoxItem>
@@ -80,7 +100,7 @@
                 </ComboBox>
             </Grid>
 
-            <Grid Grid.Row="5">
+            <Grid Grid.Row="6">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
@@ -99,11 +119,11 @@
                 <Button Name="DeleteButton" Click="DeleteButton_Click" Grid.Row="6" VerticalAlignment="Center">Delete Preference</Button>
             </Grid>
 
-            <Grid Grid.Row="6">
+            <Grid Grid.Row="7">
                 <TextBlock Name="OutputTextBlock" Grid.Row="4" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
             </Grid>
 
-            <Grid Grid.Row="7">
+            <Grid Grid.Row="8">
                 <Button Name="StartButton" Grid.Row="5" Click="StartButton_Click" VerticalAlignment="Center">Start</Button>
             </Grid>
         </Grid>

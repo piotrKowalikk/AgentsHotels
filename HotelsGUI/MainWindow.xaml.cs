@@ -1,4 +1,5 @@
 ﻿using HotelsLogic;
+using HotelsLogic.Results;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -6,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Media;
+using System.Threading;
 using System.Windows;
 using System.Windows.Navigation;
 
@@ -17,13 +19,13 @@ namespace HotelsGUI
     public partial class MainWindow : Window
     {
 
-        public ObservableCollection<SearchResult> Results { get; set; }
+        public ObservableCollection<SearchedHotel> Results { get; set; }
         public ObservableCollection<SavedPreference> Preferences { get; set; }
         public MainWindow()
         {
             InitializeComponent();
 
-            Results = new ObservableCollection<SearchResult>();
+            Results = new ObservableCollection<SearchedHotel>();
             ResultListView.ItemsSource = Results;
 
             Preferences = new ObservableCollection<SavedPreference>(PreferencesRepository.PreferencesRepositoryInstance.GetAll());
@@ -35,7 +37,7 @@ namespace HotelsGUI
         {
             string defaultPrefName = PreferencesRepository.PreferencesRepositoryInstance.GetDefaultPreferenceName();
             SavedPreference defaultPref = PreferencesRepository.PreferencesRepositoryInstance.GetPreference(defaultPrefName);
-            if(defaultPref != null)
+            if (defaultPref != null)
             {
                 FillInputs(defaultPref);
             }
@@ -68,7 +70,7 @@ namespace HotelsGUI
         }
 
         private int GetDelayComboIndexFromSeconds(int delay) => delay / 3 - 1;
-        private int GetDelaySecondsFromComboIndex(int index) => (index + 1 )* 3;
+        private int GetDelaySecondsFromComboIndex(int index) => (index + 1) * 3;
 
         private async void StartButton_Click(object sender, RoutedEventArgs e)
         {
@@ -80,6 +82,7 @@ namespace HotelsGUI
 
             ResultService.ResultServiceInstance.CleanResultsFolder();
             SearchService.SearchServiceInstance.CleanServiceFolder();
+            Thread.Sleep(2000);
 
             OutputTextBlock.Text = string.Empty;
 
@@ -92,7 +95,7 @@ namespace HotelsGUI
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if(!IsPreferenceNameValid(PreferenceNameTextbox.Text, out string nameMessage))
+            if (!IsPreferenceNameValid(PreferenceNameTextbox.Text, out string nameMessage))
             {
                 OutputTextBlock.Text = nameMessage;
                 return;
@@ -150,11 +153,14 @@ namespace HotelsGUI
             {
                 foreach (SearchResult item in newResults)
                 {
-                    if (!Results.Any(x => x.HotelName == item.HotelName))
+                    foreach (SearchedHotel hotel in item.HotelsList)
                     {
-                        Results.Add(item);
-                        SoundPlayer wowSound = new SoundPlayer("../../../../Resources/Sounds/success.wav");
-                        wowSound.Play();
+                        if (!Results.Any(x => x == hotel))
+                        {
+                            Results.Add(hotel);
+                            SoundPlayer wowSound = new SoundPlayer("../../../../Resources/Sounds/success.wav");
+                            wowSound.Play();
+                        }
                     }
                 }
             }

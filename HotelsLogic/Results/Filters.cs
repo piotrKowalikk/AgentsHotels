@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Text;
-
-namespace HotelsLogic.Results
+﻿namespace HotelsLogic.Results
 {
     public class Filters
     {

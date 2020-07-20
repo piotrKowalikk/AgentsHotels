@@ -5,16 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HotelsGUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="1000" MinHeight="600" MinWidth="1000" Closed="Window_Closed">
+        Title="MainWindow" Height="800" Width="1000" MinHeight="800" MinWidth="1000" Closed="Window_Closed">
 
     <Grid>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
             <ColumnDefinition Width="200" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
@@ -71,6 +73,25 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
+                <Label Name="ChildrenNumberLabel" VerticalAlignment="Bottom" >Number of Children</Label>
+                <ComboBox Name="ChildrenNumberCombobox" VerticalAlignment="Top" Grid.Row="1" SelectedIndex="0">
+                    <ComboBoxItem Content="0"></ComboBoxItem>
+                    <ComboBoxItem Content="1"></ComboBoxItem>
+                    <ComboBoxItem Content="2"></ComboBoxItem>
+                    <ComboBoxItem Content="3"></ComboBoxItem>
+                    <ComboBoxItem Content="4"></ComboBoxItem>
+                    <ComboBoxItem Content="5"></ComboBoxItem>
+                    <ComboBoxItem Content="6"></ComboBoxItem>
+                    <ComboBoxItem Content="7"></ComboBoxItem>
+                    <ComboBoxItem Content="8"></ComboBoxItem>
+                </ComboBox>
+            </Grid>
+
+            <Grid Grid.Row="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
                 <Label Name="DelayLabel" VerticalAlignment="Center" >Delay</Label>
                 <ComboBox Name="DelayCombobox" VerticalAlignment="Top" Grid.Row="1">
                     <ComboBoxItem Content="Short"></ComboBoxItem>
@@ -79,7 +100,7 @@
                 </ComboBox>
             </Grid>
 
-            <Grid Grid.Row="5">
+            <Grid Grid.Row="6">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
@@ -98,16 +119,92 @@
                 <Button Name="DeleteButton" Click="DeleteButton_Click" Grid.Row="6" VerticalAlignment="Center">Delete Preference</Button>
             </Grid>
 
-            <Grid Grid.Row="6">
+            <Grid Grid.Row="7">
                 <TextBlock Name="OutputTextBlock" Grid.Row="4" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
             </Grid>
 
-            <Grid Grid.Row="7">
+            <Grid Grid.Row="8">
                 <Button Name="StartButton" Grid.Row="5" Click="StartButton_Click" VerticalAlignment="Center">Start</Button>
             </Grid>
         </Grid>
 
         <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" VerticalAlignment="Bottom">Air Conditioning</Label>
+            <ComboBox Grid.Row="1" Name="AirConditioningCombo" VerticalAlignment="Top"></ComboBox>
+
+            <Label Grid.Row="2" VerticalAlignment="Bottom">Free Cancelation</Label>
+            <ComboBox Grid.Row="3" Name="FreeCancelationCombo" VerticalAlignment="Top"></ComboBox>
+
+            <Label Grid.Row="4" VerticalAlignment="Bottom">WiFi</Label>
+            <ComboBox Grid.Row="5" Name="WiFiCombo" VerticalAlignment="Top"></ComboBox>
+
+            <Label Grid.Row="6" VerticalAlignment="Bottom">Bar</Label>
+            <ComboBox Grid.Row="7" Name="BarCombo" VerticalAlignment="Top"></ComboBox>
+
+            <Label Grid.Row="8" VerticalAlignment="Bottom">Pool</Label>
+            <ComboBox Grid.Row="9" Name="PoolCombo" VerticalAlignment="Top"></ComboBox>
+
+            <Label Grid.Row="10" VerticalAlignment="Bottom">Fridge</Label>
+            <ComboBox Grid.Row="11" Name="FridgeCombo" VerticalAlignment="Top"></ComboBox>
+
+            <Label Grid.Row="12" VerticalAlignment="Bottom">Microwave</Label>
+            <ComboBox Grid.Row="13" Name="MicrowaveCombo" VerticalAlignment="Top"></ComboBox>
+
+            <Label Grid.Row="14" VerticalAlignment="Bottom">Safe</Label>
+            <ComboBox Grid.Row="15" Name="SafeCombo" VerticalAlignment="Top"></ComboBox>
+
+            <Label Grid.Row="16" VerticalAlignment="Bottom">TV</Label>
+            <ComboBox Grid.Row="17" Name="TVCombo" VerticalAlignment="Top"></ComboBox>
+
+            <Label Grid.Row="18" VerticalAlignment="Bottom">Massage</Label>
+            <ComboBox Grid.Row="19" Name="MassageCombo" VerticalAlignment="Top"></ComboBox>
+
+            <Label Grid.Row="20" VerticalAlignment="Bottom">Sauna</Label>
+            <ComboBox Grid.Row="21" Name="SaunaCombo" VerticalAlignment="Top"></ComboBox>
+
+            <Label Grid.Row="22" VerticalAlignment="Bottom">Gym</Label>
+            <ComboBox Grid.Row="23" Name="GymCombo" VerticalAlignment="Top"></ComboBox>
+
+            <Label Grid.Row="24" VerticalAlignment="Bottom">Spa</Label>
+            <ComboBox Grid.Row="25" Name="SpaCombo" VerticalAlignment="Top"></ComboBox>
+
+            <Label Grid.Row="26" VerticalAlignment="Bottom">Stars</Label>
+            <ComboBox Grid.Row="27" Name="StarsCombo" VerticalAlignment="Top"></ComboBox>
+        </Grid>
+
+        <Grid Grid.Column="2">
             <ListView Name="ResultListView" Grid.Column="1" Grid.RowSpan="10" >
                 <ListView.View>
                     <GridView>

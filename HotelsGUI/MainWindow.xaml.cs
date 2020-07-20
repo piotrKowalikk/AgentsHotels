@@ -7,8 +7,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Media;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Navigation;
 
 namespace HotelsGUI
@@ -31,6 +32,8 @@ namespace HotelsGUI
             Preferences = new ObservableCollection<SavedPreference>(PreferencesRepository.PreferencesRepositoryInstance.GetAll());
             AddInitialInput();
             PreferencesCombobox.ItemsSource = Preferences;
+
+            InitializeFiltersComboboxes();
         }
 
         private void AddInitialInput()
@@ -82,7 +85,7 @@ namespace HotelsGUI
 
             ResultService.ResultServiceInstance.CleanResultsFolder();
             SearchService.SearchServiceInstance.CleanServiceFolder();
-            Thread.Sleep(2000);
+            await Task.Delay(2000);
 
             OutputTextBlock.Text = string.Empty;
 
@@ -145,9 +148,9 @@ namespace HotelsGUI
             proc.Start();
         }
 
-        private void OnResultFileCreated(object source, FileSystemEventArgs e)
+        private async void OnResultFileCreated(object source, FileSystemEventArgs e)
         {
-            List<SearchResult> newResults = ResultService.ResultServiceInstance.GetResultsFromFile(e.FullPath);
+            List<SearchResult> newResults = await ResultService.ResultServiceInstance.GetResultsFromFile(e.FullPath);
 
             App.Current.Dispatcher.Invoke(() =>
             {
@@ -187,13 +190,26 @@ namespace HotelsGUI
 
         private UserPreference GetUserPreferenceFromInputs() =>
             new UserPreference()
-            {
-                City = CityTextbox.Text,
-                DateTo = DateTo.SelectedDate.Value,
-                DateFrom = DateFrom.SelectedDate.Value,
-                NumberOfAdults = AdultsNumberCombobox.SelectedIndex + 1,
-                Delay = (DelayCombobox.SelectedIndex + 1) * 3
-            };
+                .WithCity(CityTextbox.Text)
+                .WithDateTo(DateTo.SelectedDate.Value)
+                .WithDateFrom(DateFrom.SelectedDate.Value)
+                .WithNumberOfAdults(AdultsNumberCombobox.SelectedIndex + 1)
+                .WithNumberOfChildren(ChildrenNumberCombobox.SelectedIndex)
+                .WithDelay((DelayCombobox.SelectedIndex + 1) * 3)
+                .WithAirConditioning((FiltersChoice)AirConditioningCombo.SelectedItem)
+                .WithFreeCancelation((FiltersChoice)FreeCancelationCombo.SelectedItem)
+                .WithWifi((FiltersChoice)WiFiCombo.SelectedItem)
+                .WithBar((FiltersChoice)BarCombo.SelectedItem)
+                .WithPool((FiltersChoice)PoolCombo.SelectedItem)
+                .WithFridge((FiltersChoice)FridgeCombo.SelectedItem)
+                .WithMicrowave((FiltersChoice)MicrowaveCombo.SelectedItem)
+                .WithSafe((FiltersChoice)SafeCombo.SelectedItem)
+                .WithTv((FiltersChoice)TVCombo.SelectedItem)
+                .WithMassage((FiltersChoice)MassageCombo.SelectedItem)
+                .WithSauna((FiltersChoice)SaunaCombo.SelectedItem)
+                .WithGym((FiltersChoice)GymCombo.SelectedItem)
+                .WithSpa((FiltersChoice)SpaCombo.SelectedItem)
+                .WithStars((StarsChoice)StarsCombo.SelectedItem);
 
         private bool InputIsValid(out string message)
         {
@@ -244,6 +260,41 @@ namespace HotelsGUI
         private void Window_Closed(object sender, EventArgs e)
         {
             ResultService.ResultServiceInstance.CleanSearchOrders();
+        }
+
+        private void InitializeFiltersComboboxes()
+        {
+            var combos = new List<object>()
+            {
+                AirConditioningCombo,
+                FreeCancelationCombo,
+                WiFiCombo,
+                BarCombo,
+                PoolCombo,
+                FridgeCombo,
+                MicrowaveCombo,
+                SafeCombo,
+                TVCombo,
+                MassageCombo,
+                SaunaCombo,
+                GymCombo,
+                SpaCombo
+            };
+
+            combos.ForEach(c => InitializeComboBoxWithFiltersChoice(c as ComboBox));
+            InitializeComboBoxWithStarsChoice(StarsCombo);
+        }
+
+        private void InitializeComboBoxWithFiltersChoice(ComboBox box)
+        {
+            box.ItemsSource = Enum.GetValues(typeof(FiltersChoice)).Cast<FiltersChoice>();
+            box.SelectedIndex = 0;
+        }
+
+        private void InitializeComboBoxWithStarsChoice(ComboBox box)
+        {
+            box.ItemsSource = Enum.GetValues(typeof(StarsChoice)).Cast<StarsChoice>();
+            box.SelectedIndex = 0;
         }
     }
 }

@@ -7,6 +7,7 @@ if  ♥task⟦changetype⟧=="Created"
      call main
 end
 
+procedure main
 text.read ♥task⟦filepath⟧ result ♥jsonTxt
     ♥json = ⟦json⟧♥jsonTxt
     ♥dateFrom=♥json⟦dateFrom⟧
@@ -265,3 +266,5 @@ keyboard ‴♥outputPath‴
 keyboard ‴\trivagoResult.txt‴
 delay 1
 keyboard ⋘ENTER⋙
+
+end --procedure

@@ -14,6 +14,7 @@ text.read ♥task⟦filepath⟧ result ♥jsonTxt
     ♥dateTo=♥json⟦dateTo⟧
     ♥numberOfAdults=♥json⟦numberOfAdults⟧
     ♥numberOfChildren=♥json⟦numberOfChildren⟧
+    ♥numberOfReturnOffers=♥json⟦numberOfReturnOffers⟧
     ♥city=♥json⟦city⟧
     ♥outputPath=♥json⟦outputPath⟧
     ♥delay=♥json⟦delay⟧
@@ -48,8 +49,8 @@ text.read ♥task⟦filepath⟧ result ♥jsonTxt
     ♥starsMsg=♥notsearched
 
     --♥outputPath=‴C:\Dev\AgentsHotels\HotelsGUI\bin\Debug\netcoreapp3.1\Results‴
-    --♥dateFrom="05/27/2020"
-    --♥dateTo="05/28/2020"
+    --♥dateFrom="07/27/2020"
+    --♥dateTo="07/29/2020"
     --♥city="Lubin"
     --♥days = 0
     --♥increaseDays=true

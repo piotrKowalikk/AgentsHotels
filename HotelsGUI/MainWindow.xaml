@@ -20,7 +20,7 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="2*" MinHeight="150"/>
+                <RowDefinition Height="2*" MinHeight="200"/>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
@@ -87,13 +87,15 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Label Name="SelectPreferenceLabel" Grid.Row="0" VerticalAlignment="Center">Select Your Preference:</Label>
                 <ComboBox Name="PreferencesCombobox" Grid.Row="1" VerticalAlignment="Center" SelectionChanged="PreferencesCombobox_SelectionChanged"></ComboBox>
                 <Label Name="PreferenceNameLabel" Grid.Row="2" VerticalAlignment="Center">Name Your Preference:</Label>
                 <TextBox Name="PreferenceNameTextbox" Grid.Row="3" VerticalAlignment="Center"></TextBox>
-                <Button Name="SaveButton" Click="SaveButton_Click" Grid.Row="4" VerticalAlignment="Center">Save Preference</Button>
-                <Button Name="DeleteButton" Click="DeleteButton_Click" Grid.Row="5" VerticalAlignment="Center">Delete Preference</Button>
+                <CheckBox Name="IsDefaultPreferenceCheckbox" Grid.Row="4">Is default preference</CheckBox>
+                <Button Name="SaveButton" Click="SaveButton_Click" Grid.Row="5" VerticalAlignment="Center">Save Preference</Button>
+                <Button Name="DeleteButton" Click="DeleteButton_Click" Grid.Row="6" VerticalAlignment="Center">Delete Preference</Button>
             </Grid>
 
             <Grid Grid.Row="6">

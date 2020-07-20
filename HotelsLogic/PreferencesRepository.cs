@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
@@ -8,6 +9,7 @@ namespace HotelsLogic
     public class PreferencesRepository : IPreferencesRepository
     {
         public string PreferencesPath => "./Preferences";
+        public static string DefaultPreferenceFileName = "Default";
         public static PreferencesRepository PreferencesRepositoryInstance { get; private set; } = new PreferencesRepository();
 
         private PreferencesRepository()
@@ -58,15 +60,42 @@ namespace HotelsLogic
                 foreach (string name in fileNames)
                 {
                     string json = File.ReadAllText(name);
-                    result.Add(JsonConvert.DeserializeObject<SavedPreference>(json));
+                    try
+                    {
+                        result.Add(JsonConvert.DeserializeObject<SavedPreference>(json));
+                    }
+                    catch
+                    {
+                    }
                 }
             }
             catch
             {
-                throw;
             }
 
             return result;
         }
+
+        public SavedPreference GetPreference(string prefName)
+        {
+            try
+            {
+                string json = File.ReadAllText($"{PreferencesPath}/{prefName}.txt");
+                SavedPreference pref = JsonConvert.DeserializeObject<SavedPreference>(json);
+                return pref;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public string GetDefaultPreferenceName() =>
+            File.Exists($"{PreferencesPath}/{DefaultPreferenceFileName}.txt")
+                ? File.ReadAllText($"{PreferencesPath}/{DefaultPreferenceFileName}.txt")
+                : null;
+
+        public void SetDefaultPreference(string name) =>
+            File.WriteAllText($"{PreferencesPath}/{DefaultPreferenceFileName}.txt", name);
     }
 }

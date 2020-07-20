@@ -7,38 +7,46 @@ if  ♥task⟦changetype⟧=="Created"
      call main
 end
 
+procedure main
 text.read ♥task⟦filepath⟧ result ♥jsonTxt
     ♥json = ⟦json⟧♥jsonTxt
     ♥dateFrom=♥json⟦dateFrom⟧
     ♥dateTo=♥json⟦dateTo⟧
     ♥numberOfAdults=♥json⟦numberOfAdults⟧
+    ♥numberOfChildren=♥json⟦numberOfChildren⟧
+    ♥numberOfReturnOffers=♥json⟦numberOfReturnOffers⟧
     ♥city=♥json⟦city⟧
     ♥outputPath=♥json⟦outputPath⟧
     ♥delay=♥json⟦delay⟧
-
-    --♥outputPath=‴C:\Dev\AgentsHotels\HotelsGUI\bin\Debug\netcoreapp3.1\Results‴
-    --♥dateFrom="05/27/2020"
-    --♥dateTo="05/28/2020"
-    --♥city="Lubin"
-    --♥days = 0
-    --♥increaseDays=true
-    --♥numberOfAdults=3
-    --♥delay=9
-
-    ♥airConditioning=false
-    ♥freeCancelation=false
-    ♥wifi=true
-    ♥bar=false
-    ♥pool=false
-    ♥fridge=false
-    ♥microwave=false
-    ♥safe=false
-    ♥tv=true
-    ♥massage=false
-    ♥sauna=false
-    ♥gym=true
-    ♥spa=false
-    ♥stars=0
+    --filtry
+    ♥airConditioning= ♥json⟦airConditioning⟧
+    ♥airConditioningMsg=♥notsearched
+    ♥freeCancelation= ♥json⟦freeCancelation⟧
+    ♥freeCancelationMsg=♥notsearched
+    ♥wifi= ♥json⟦wifi⟧
+    ♥wifiMsg=♥notsearched
+    ♥bar= ♥json⟦bar⟧
+    ♥barMsg=♥notsearched
+    ♥pool= ♥json⟦pool⟧
+    ♥poolMsg=♥notsearched
+    ♥fridge= ♥json⟦fridge⟧
+    ♥fridgeMsg=♥notsearched
+    ♥microwave= ♥json⟦microwave⟧
+    ♥microwaveMsg=♥notsearched
+    ♥safe= ♥json⟦safe⟧
+    ♥safeMsg=♥notsearched
+    ♥tv= ♥json⟦tv⟧
+    ♥tvMsg=♥notsearched
+    ♥massage= ♥json⟦massage⟧
+    ♥massageMsg=♥notsearched
+    ♥sauna= ♥json⟦sauna⟧
+    ♥saunaMsg=♥notsearched
+    ♥gym= ♥json⟦gym⟧
+    ♥gymMsg=♥notsearched
+    ♥spa= ♥json⟦spa⟧
+    ♥spaMsg=♥notsearched
+    ♥stars= ♥json⟦stars⟧
+    ♥starsMsg=♥notsearched
 
     --♥airConditioning=true
     --♥freeCancelation=true
@@ -54,6 +62,7 @@ text.read ♥task⟦filepath⟧ result ♥jsonTxt
     --♥gym=true
     --♥spa=true
     --♥stars=0
+
 
 selenium.open chrome url ‴https://www.trivago.pl/‴
 delay 5
@@ -72,11 +81,7 @@ window ✱trivago✱ style maximize
         delay 1
     end for 
 
-for ♥i from 0 to ♥days
-    selenium.click search //*[@id="js-fullscreen-hero"]/div[1]/form/div[2]/button[♥increaseDays] by xpath
-
-    delay 1
-end for
+    selenium.runscript ‴let dat = document.getElementsByClassName('dealform-button__label')[1].dateTime; let arr = dat.split('-'); let datok = arr[1] + '/' + arr[2] + '/' + arr[0]; let d1 = new Date(arr[0], arr[1] - 1, arr[2]); let d2 = new Date('♥dateTo'); console.log('♥dateTo'); console.log(d1); console.log(d2); return Math.ceil(Math.abs(d2 - d1) / (1000 * 60 * 60 * 24)) - 1;‴ result ♥days
 
     selenium.runscript ‴let dat = document.getElementsByClassName('dealform-button__label')[1].dateTime; let arr = dat.split('-'); let datok = arr[1] + '/' + arr[2] + '/' + arr[0]; let d1 = new Date(arr[0], arr[1] - 1, arr[2]); let d2 = new Date('♥dateTo'); console.log('♥dateTo'); console.log(d1); console.log(d2); return (d2 - d1) > 0 ? 2 : 1;‴ result ♥increaseDays
 
@@ -86,37 +91,33 @@ end for
     end for 
 
     delay 1
-end for
+--end for
 
-    if ⊂♥numberOfAdults != 2⊃
-        selenium.click search //*[@id="js-fullscreen-hero"]/div[1]/form/button[1] by xpath
-        delay 1
-        selenium.click search //*[@id="js-fullscreen-hero"]/div[1]/form/div[4]/div/div/ul/li[3]/button by xpath
-        delay 1
-        selenium.click search /html/body/div[4]/div[2]/div[4]/div[1]/form/div[4]/div/div/div/div[1]/div/div[2]/div/select by xpath
-        delay 1
-        selenium.click search /html/body/div[4]/div[2]/div[4]/div[1]/form/div[4]/div/div/div/div[1]/div/div[2]/div/select/option[3] by xpath
-        selenium.runscript ‴let element = document.getElementsByClassName("df-select")[0]; element.selectedIndex = (♥numberOfAdults - 1); if ("createEvent" in document) { var evt = document.createEvent("HTMLEvents"); evt.initEvent("change", false, true); element.dispatchEvent(evt); } else element.fireEvent("onchange");‴
-        selenium.runscript ‴document.querySelectorAll("[class*=btn--tertiary]")[1].click()‴
-        --selenium.click search /html/body/div[4]/div[2]/div[4]/div[1]/form/div[4]/div/div/div/div[2]/button[2] by xpath
-    end
 
-if ⊂♥numberOfAdults != 2⊃
-    selenium.click search //*[@id="js-fullscreen-hero"]/div[1]/form/button[1] by xpath
-    delay 1
-    selenium.click search //*[@id="js-fullscreen-hero"]/div[1]/form/div[4]/div/div/ul/li[3]/button by xpath
-    delay 1
-    selenium.runscript ‴let element = document.getElementsByClassName("df-select")[0]; element.selectedIndex = (♥dorosli - 1); if ("createEvent" in document) { var evt = document.createEvent("HTMLEvents"); evt.initEvent("change", false, true); element.dispatchEvent(evt); } else element.fireEvent("onchange");‴
+selenium.click search //*[@id="js-fullscreen-hero"]/div[1]/form/button[1] by xpath
+delay 1
+selenium.type "\b" search ‴adults-input‴ by id
+selenium.type ♥numberOfAdults search ‴adults-input‴ by id
+keyboard ⋘ENTER⋙
+delay 1
+selenium.type "\b" search ‴children-input‴ by id
+selenium.type ♥numberOfChildren search ‴children-input‴ by id
+keyboard ⋘ENTER⋙
+delay 1
+selenium.runscript ‴document.querySelectorAll("[class*=btn--apply-config]")[0].click()‴
 
-    selenium.click search //*[@id="dealform_extRooms"]/div[2]/button[2]/span by xpath
-end
 
-    list.create type text result ♥hotels
-    list.create type text result ♥urls
+delay 2
+selenium.click search ‴//*[@id="querytext"]‴ by xpath
+delay 1
+selenium.type ♥city search ‴//*[@id="querytext"]‴ by xpath
+delay 2
+selenium.click search search-button__label by class
+list.create type text result ♥hotels
+list.create type text result ♥urls
 
-    program notepad
-    delay 2
-    window ✱trivago✱
+
+window ✱trivago✱
 
 delay 2
 
@@ -195,25 +196,34 @@ delay 1
 
 program notepad
 delay 2
-window ✱trivago✱
 
---for ♥i from 0 to 1
-    --selenium.runscript ‴return document.getElementsByClassName('item-link name__copytext')[♥i].innerText‴ result ♥hotel
-    window ✱Not✱
-    keyboard ‴[‴
-    delay 1
+window ✱trivago✱
+delay ♥delay
+selenium.runscript ‴let element = document.getElementById('mf-select-sortby'); element.selectedIndex = 5; if ("createEvent" in document) { var evt = document.createEvent("HTMLEvents"); evt.initEvent("change", false, true); element.dispatchEvent(evt); } else element.fireEvent("onchange");‴;
+delay ♥delay;
+
+window ✱Not✱
+keyboard ‴[‴
+delay 1
+
+♥numberOfReturnOffers = ♥numberOfReturnOffers - 1
+for ♥i from 0 to ♥numberOfReturnOffers
     window ✱trivago✱ style maximize
 
-    selenium.runscript ‴return document.getElementsByClassName('item-link name__copytext')[0].innerText‴ result ♥hotel
+    --selenium.runscript ‴return document.getElementsByClassName('item-link name__copytext')[0].innerText‴ result ♥hotel
+    selenium.runscript ‴return document.getElementsByClassName('item-link name__copytext')[♥i].innerText‴ result ♥hotel
     list.add ♥hotels toadd ♥hotel
     delay 1
 
     --selenium.runscript ‴document.querySelectorAll("[class*=accommodation-list__recommended]")[♥i].querySelectorAll("[class*=accommodation-list__button]")[0].click()‴
 --    selenium.runscript ‴document.querySelectorAll("[class*=accommodation-list__recommended]")[♥i].querySelectorAll("[class*=accommodation-list__button]")[0].click()‴
 
-    selenium.runscript ‴document.querySelectorAll("[class*=location-details]")[0].click()‴
+    --selenium.runscript ‴document.querySelectorAll("[class*=location-details]")[0].click()‴
+    --delay 2
+    --selenium.runscript ‴document.querySelectorAll("[class*=btn-as-link--share]")[0].click()‴
+    selenium.runscript ‴document.querySelectorAll("[class*=location-details]")[♥i].click()‴
     delay 2
-    selenium.runscript ‴document.querySelectorAll("[class*=btn-as-link--share]")[0].click()‴
+    selenium.runscript ‴document.querySelectorAll("[class*=btn-as-link--share]")[♥i].click()‴
     keyboard ⋘CTRL+C⋙
     delay 1
     keyboard ⋘ENTER⋙
@@ -222,14 +232,14 @@ window ✱trivago✱
     delay 1
     keyboard ‴{"fromCompany": "trivago","hotelName": "♥hotel","url": "⋘CTRL+V⋙"},⋘ENTER⋙‴
 
-    keyboard ‴]‴
-    keyboard  ⋘CTRL+S⋙
-    keyboard ‴♥outputPath‴ 
-    keyboard ‴\trivagoResult.txt‴ 
-    delay 1
-    window ✱trivago✱
+    --keyboard ‴]‴
+    --keyboard  ⋘CTRL+S⋙
+    --keyboard ‴♥outputPath‴ 
+    --keyboard ‴\trivagoResult.txt‴ 
+    --delay 1
+    --window ✱trivago✱
     --dialog ♥url
---end for
+end for
 
 
 delay 1
@@ -242,3 +252,4 @@ keyboard ‴\trivagoResult.txt‴
 delay 1
 keyboard ⋘ENTER⋙
 
+end --procedure

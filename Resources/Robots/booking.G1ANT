@@ -116,21 +116,40 @@ if  ♥task⟦changetype⟧=="Created"
     --kliknij wyszukaj
     selenium.click search sb-searchbox__button by class
     delay ♥delay
+
     
     --pozostałe stałe paramenry
     selenium.runscript ‴document.getElementsByName('group_adults')[0].selectedIndex=♥numberOfAdults-1‴
-    selenium.runscript ‴document.getElementsByName('group_children')[0].selectedIndex=♥numberOfChildren-1‴
+    selenium.runscript ‴document.getElementsByName('group_children')[0].selectedIndex=♥numberOfChildren‴
     selenium.runscript ‴document.getElementsByName('no_rooms')[0].selectedIndex=♥numberOfRooms-1‴
+    selenium.runscript ‴$('[data-sb-id="main"][type="submit"]')[0].click()‴
     delay ♥delay
     
     --klikanie w checkboxy z cena
     for ♥prio from ♥fromCostPriority to  ♥toCostPriority step 1
-        selenium.runscript ‴document.querySelector('[data-id~="pri-♥prio"]').click();‴
-        delay ♥delay
+ ---       selenium.runscript ‴document.querySelector('[data-id~="pri-♥prio"]').click();‴
+ --       delay ♥delay
     end
     
 
     --filtry
+            --stars
+        try if ♥stars errorjump catchstars
+            delay  ♥delay
+            if  ♥stars<6
+                ♥idx =♥stars -1
+            else
+                ♥idx =5
+            end
+            
+            selenium.runscript ‴$("#filter_class").children()[1].children[♥idx].click()‴
+            ♥starsMsg=♥satisfied
+        end
+        jump succededstars
+        label catchstars
+            ♥starsMsg=♥notfound
+        label succededstars
+    
         --klimatyzacja 
         try if ♥airConditioning errorjump catchAirConditioning
             selenium.runscript ‴$('[data-id="roomfacility-11"]')[0].click()‴
@@ -265,16 +284,13 @@ if  ♥task⟦changetype⟧=="Created"
             ♥spaMsg=♥notfound
         label succededspa
         
-        --stars
-        if ♥stars 
-            ♥starsMsg=♥notfound
-        end
+
     
  --wybór wynikowych domków
 
 
 ♥urlsArray="["
-for ♥i from 1 to ♥numberOfReturnOffers+1 step 1
+for ♥i from 1 to ♥numberOfReturnOffers step 1
     try errorresult ♥errorMesg  errorjump errjump
         selenium.getattribute name href search /html/body/div[6]/div/div[3]/div[1]/div[1]/div[7]/div[3]/div[1]/div/div[♥i]/div[2]/div[1]/div[1]/div[1]/h3/a by xpath result ♥url1
         selenium.getinnerhtml search           /html/body/div[6]/div/div[3]/div[1]/div[1]/div[7]/div[3]/div[1]/div/div[♥i]/div[2]/div[1]/div[1]/div[1]/h3/a/span[1] by xpath result   ♥title1

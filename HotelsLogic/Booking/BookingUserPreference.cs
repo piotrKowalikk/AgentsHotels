@@ -36,7 +36,7 @@ namespace HotelsLogic
         public bool sauna { get; private set; }
         public bool gym { get; private set; }
         public bool spa { get; private set; }
-        public bool stars { get; private set; }
+        public int stars { get; private set; }
 
         public string outputPath { get; private set; }
 
@@ -45,16 +45,16 @@ namespace HotelsLogic
             dateFrom = userPreference.DateFrom.Year + "-" + MakeTwoPostions(userPreference.DateFrom.Month) + "-" + MakeTwoPostions(userPreference.DateFrom.Day);
             dateTo = userPreference.DateTo.Year + "-" + MakeTwoPostions(userPreference.DateTo.Month) + "-" + MakeTwoPostions(userPreference.DateTo.Day);
             numberOfAdults = userPreference.NumberOfAdults;
-            numberOfChildren = 2;//TODO
-            numberOfRooms = 2;//TODO
-            fromPrice = 300;//TODO
-            toPrice = 500;//TODO
+            numberOfChildren = userPreference.NumberOfChildren;
+            numberOfRooms = 1;//TODO
+            fromPrice = 0;//TODO
+            toPrice = 10000;//TODO
             city = userPreference.City;
             //helpers
             dateFromMonthsToSkip = userPreference.DateFrom.Month - DateTime.Now.Month;
             dateToMonthsToSkip = userPreference.DateTo.Month - DateTime.Now.Month;
             outputPath = ResultService.ResultsPath;
-            numberOfReturnOffers = 3;//TODO
+            numberOfReturnOffers = userPreference.NumberOfReturnOffers;
             delay = userPreference.Delay;
             //filters
             airConditioning = userPreference.AirConditioning;

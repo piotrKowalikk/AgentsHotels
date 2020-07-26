@@ -177,16 +177,35 @@ namespace HotelsGUI
             OutputTextBlock.Text = string.Empty;
         }
 
-        private SavedPreference GetSavedPreferenceFromInputs() =>
-            new SavedPreference
+        private SavedPreference GetSavedPreferenceFromInputs()
+        {
+            return (SavedPreference)(new SavedPreference()
             {
                 PreferenceName = PreferenceNameTextbox.Text,
-                City = CityTextbox.Text,
-                DateTo = DateTo.SelectedDate.Value,
-                DateFrom = DateFrom.SelectedDate.Value,
-                NumberOfAdults = AdultsNumberCombobox.SelectedIndex + 1,
-                Delay = GetDelaySecondsFromComboIndex(DelayCombobox.SelectedIndex)
-            };
+            }
+               .WithAirConditioning((FiltersChoice)AirConditioningCombo.SelectedItem)
+                .WithCity(CityTextbox.Text)
+                .WithDateTo(DateTo.SelectedDate.Value)
+                .WithDateFrom(DateFrom.SelectedDate.Value)
+                .WithNumberOfAdults(AdultsNumberCombobox.SelectedIndex + 1)
+                .WithNumberOfChildren(ChildrenNumberCombobox.SelectedIndex)
+                .WithDelay((DelayCombobox.SelectedIndex + 1) * 3)
+                .WithAirConditioning((FiltersChoice)AirConditioningCombo.SelectedItem)
+                .WithFreeCancelation((FiltersChoice)FreeCancelationCombo.SelectedItem)
+                .WithWifi((FiltersChoice)WiFiCombo.SelectedItem)
+                .WithBar((FiltersChoice)BarCombo.SelectedItem)
+                .WithPool((FiltersChoice)PoolCombo.SelectedItem)
+                .WithFridge((FiltersChoice)FridgeCombo.SelectedItem)
+                .WithMicrowave((FiltersChoice)MicrowaveCombo.SelectedItem)
+                .WithSafe((FiltersChoice)SafeCombo.SelectedItem)
+                .WithTv((FiltersChoice)TVCombo.SelectedItem)
+                .WithMassage((FiltersChoice)MassageCombo.SelectedItem)
+                .WithSauna((FiltersChoice)SaunaCombo.SelectedItem)
+                .WithGym((FiltersChoice)GymCombo.SelectedItem)
+                .WithSpa((FiltersChoice)SpaCombo.SelectedItem)
+                .WithStars((StarsChoice)StarsCombo.SelectedItem)
+               );
+        }
 
         private UserPreference GetUserPreferenceFromInputs() =>
             new UserPreference()

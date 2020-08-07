@@ -78,7 +78,7 @@ namespace HotelsGUI
             SaunaCombo.SelectedIndex = savedPreference.Sauna ? 1 : 0;
             GymCombo.SelectedIndex = savedPreference.Gym ? 1 : 0;
             SpaCombo.SelectedIndex = savedPreference.Spa ? 1 : 0;
-            StarsCombo.SelectedIndex = savedPreference.Stars - 1;
+            StarsCombo.SelectedIndex = savedPreference.Stars;
         }
 
         private int GetDelayComboIndexFromSeconds(int delay) => delay / 3 - 1;

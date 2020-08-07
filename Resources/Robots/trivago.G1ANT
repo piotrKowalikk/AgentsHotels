@@ -7,12 +7,14 @@ if  ♥task⟦changetype⟧=="Created"
      call main
 end
 
+procedure main
 text.read ♥task⟦filepath⟧ result ♥jsonTxt
     ♥json = ⟦json⟧♥jsonTxt
     ♥dateFrom=♥json⟦dateFrom⟧
     ♥dateTo=♥json⟦dateTo⟧
     ♥numberOfAdults=♥json⟦numberOfAdults⟧
     ♥numberOfChildren=♥json⟦numberOfChildren⟧
+    ♥numberOfReturnOffers=♥json⟦numberOfReturnOffers⟧
     ♥city=♥json⟦city⟧
     ♥outputPath=♥json⟦outputPath⟧
     ♥delay=♥json⟦delay⟧
@@ -45,30 +47,6 @@ text.read ♥task⟦filepath⟧ result ♥jsonTxt
     ♥spaMsg=♥notsearched
     ♥stars= ♥json⟦stars⟧
     ♥starsMsg=♥notsearched
-
-    --♥outputPath=‴C:\Dev\AgentsHotels\HotelsGUI\bin\Debug\netcoreapp3.1\Results‴
-    --♥dateFrom="05/27/2020"
-    --♥dateTo="05/28/2020"
-    --♥city="Lubin"
-    --♥days = 0
-    --♥increaseDays=true
-    --♥numberOfAdults=3
-    --♥delay=9
-
-    --♥airConditioning=false
-    --♥freeCancelation=false
-    --♥wifi=true
-    --♥bar=false
-    --♥pool=false
-    --♥fridge=false
-    --♥microwave=false
-    --♥safe=false
-    --♥tv=true
-    --♥massage=false
-    --♥sauna=false
-    --♥gym=true
-    --♥spa=false
-    --♥stars=0
 
     --♥airConditioning=true
     --♥freeCancelation=true
@@ -135,12 +113,11 @@ delay 1
 selenium.type ♥city search ‴//*[@id="querytext"]‴ by xpath
 delay 2
 selenium.click search search-button__label by class
-    list.create type text result ♥hotels
-    list.create type text result ♥urls
+list.create type text result ♥hotels
+list.create type text result ♥urls
 
-    program notepad
-    delay 2
-    window ✱trivago✱
+
+window ✱trivago✱
 
 delay 2
 
@@ -219,25 +196,34 @@ delay 1
 
 program notepad
 delay 2
-window ✱trivago✱
 
---for ♥i from 0 to 1
-    --selenium.runscript ‴return document.getElementsByClassName('item-link name__copytext')[♥i].innerText‴ result ♥hotel
-    window ✱Not✱
-    keyboard ‴[‴
-    delay 1
+window ✱trivago✱
+delay ♥delay
+selenium.runscript ‴let element = document.getElementById('mf-select-sortby'); element.selectedIndex = 5; if ("createEvent" in document) { var evt = document.createEvent("HTMLEvents"); evt.initEvent("change", false, true); element.dispatchEvent(evt); } else element.fireEvent("onchange");‴;
+delay ♥delay;
+
+window ✱Not✱
+keyboard ‴[‴
+delay 1
+
+♥numberOfReturnOffers = ♥numberOfReturnOffers - 1
+for ♥i from 0 to ♥numberOfReturnOffers
     window ✱trivago✱ style maximize
 
-    selenium.runscript ‴return document.getElementsByClassName('item-link name__copytext')[0].innerText‴ result ♥hotel
+    --selenium.runscript ‴return document.getElementsByClassName('item-link name__copytext')[0].innerText‴ result ♥hotel
+    selenium.runscript ‴return document.getElementsByClassName('item-link name__copytext')[♥i].innerText‴ result ♥hotel
     list.add ♥hotels toadd ♥hotel
     delay 1
 
     --selenium.runscript ‴document.querySelectorAll("[class*=accommodation-list__recommended]")[♥i].querySelectorAll("[class*=accommodation-list__button]")[0].click()‴
 --    selenium.runscript ‴document.querySelectorAll("[class*=accommodation-list__recommended]")[♥i].querySelectorAll("[class*=accommodation-list__button]")[0].click()‴
 
-    selenium.runscript ‴document.querySelectorAll("[class*=location-details]")[0].click()‴
+    --selenium.runscript ‴document.querySelectorAll("[class*=location-details]")[0].click()‴
+    --delay 2
+    --selenium.runscript ‴document.querySelectorAll("[class*=btn-as-link--share]")[0].click()‴
+    selenium.runscript ‴document.querySelectorAll("[class*=location-details]")[♥i].click()‴
     delay 2
-    selenium.runscript ‴document.querySelectorAll("[class*=btn-as-link--share]")[0].click()‴
+    selenium.runscript ‴document.querySelectorAll("[class*=btn-as-link--share]")[♥i].click()‴
     keyboard ⋘CTRL+C⋙
     delay 1
     keyboard ⋘ENTER⋙
@@ -246,14 +232,14 @@ window ✱trivago✱
     delay 1
     keyboard ‴{"fromCompany": "trivago","hotelName": "♥hotel","url": "⋘CTRL+V⋙"},⋘ENTER⋙‴
 
-    keyboard ‴]‴
-    keyboard  ⋘CTRL+S⋙
-    keyboard ‴♥outputPath‴ 
-    keyboard ‴\trivagoResult.txt‴ 
-    delay 1
-    window ✱trivago✱
+    --keyboard ‴]‴
+    --keyboard  ⋘CTRL+S⋙
+    --keyboard ‴♥outputPath‴ 
+    --keyboard ‴\trivagoResult.txt‴ 
+    --delay 1
+    --window ✱trivago✱
     --dialog ♥url
---end for
+end for
 
 
 delay 1
@@ -265,3 +251,5 @@ keyboard ‴♥outputPath‴
 keyboard ‴\trivagoResult.txt‴
 delay 1
 keyboard ⋘ENTER⋙
+
+end --procedure

@@ -19,7 +19,6 @@ namespace HotelsGUI
     /// </summary>
     public partial class MainWindow : Window
     {
-
         public ObservableCollection<SearchedHotel> Results { get; set; }
         public ObservableCollection<SavedPreference> Preferences { get; set; }
         public MainWindow()
@@ -30,10 +29,9 @@ namespace HotelsGUI
             ResultListView.ItemsSource = Results;
 
             Preferences = new ObservableCollection<SavedPreference>(PreferencesRepository.PreferencesRepositoryInstance.GetAll());
+            InitializeFiltersComboboxes();
             AddInitialInput();
             PreferencesCombobox.ItemsSource = Preferences;
-
-            InitializeFiltersComboboxes();
         }
 
         private void AddInitialInput()
@@ -70,6 +68,17 @@ namespace HotelsGUI
             IsDefaultPreferenceCheckbox.IsChecked = string.Equals(
                 savedPreference.PreferenceName,
                 PreferencesRepository.PreferencesRepositoryInstance.GetDefaultPreferenceName());
+            AirConditioningCombo.SelectedIndex = savedPreference.AirConditioning ? 1 : 0;
+            FreeCancelationCombo.SelectedIndex = savedPreference.FreeCancelation ? 1 : 0;
+            WiFiCombo.SelectedIndex = savedPreference.Wifi ? 1 : 0;
+            BarCombo.SelectedIndex = savedPreference.Bar ? 1 : 0;
+            PoolCombo.SelectedIndex = savedPreference.Pool ? 1 : 0;
+            FridgeCombo.SelectedIndex = savedPreference.Fridge ? 1 : 0;
+            MicrowaveCombo.SelectedIndex = savedPreference.Microwave ? 1 : 0;
+            SaunaCombo.SelectedIndex = savedPreference.Sauna ? 1 : 0;
+            GymCombo.SelectedIndex = savedPreference.Gym ? 1 : 0;
+            SpaCombo.SelectedIndex = savedPreference.Spa ? 1 : 0;
+            StarsCombo.SelectedIndex = savedPreference.Stars - 1;
         }
 
         private int GetDelayComboIndexFromSeconds(int delay) => delay / 3 - 1;
@@ -130,7 +139,7 @@ namespace HotelsGUI
             OutputTextBlock.Text = string.Empty;
         }
 
-        private void PreferencesCombobox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void PreferencesCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (PreferencesCombobox.SelectedItem != null)
             {
@@ -177,16 +186,35 @@ namespace HotelsGUI
             OutputTextBlock.Text = string.Empty;
         }
 
-        private SavedPreference GetSavedPreferenceFromInputs() =>
-            new SavedPreference
+        private SavedPreference GetSavedPreferenceFromInputs()
+        {
+            return (SavedPreference)(new SavedPreference()
             {
                 PreferenceName = PreferenceNameTextbox.Text,
-                City = CityTextbox.Text,
-                DateTo = DateTo.SelectedDate.Value,
-                DateFrom = DateFrom.SelectedDate.Value,
-                NumberOfAdults = AdultsNumberCombobox.SelectedIndex + 1,
-                Delay = GetDelaySecondsFromComboIndex(DelayCombobox.SelectedIndex)
-            };
+            }
+                .WithAirConditioning((FiltersChoice)AirConditioningCombo.SelectedItem)
+                .WithCity(CityTextbox.Text)
+                .WithDateTo(DateTo.SelectedDate.Value)
+                .WithDateFrom(DateFrom.SelectedDate.Value)
+                .WithNumberOfAdults(AdultsNumberCombobox.SelectedIndex + 1)
+                .WithNumberOfChildren(ChildrenNumberCombobox.SelectedIndex)
+                .WithDelay((DelayCombobox.SelectedIndex + 1) * 3)
+                .WithAirConditioning((FiltersChoice)AirConditioningCombo.SelectedItem)
+                .WithFreeCancelation((FiltersChoice)FreeCancelationCombo.SelectedItem)
+                .WithWifi((FiltersChoice)WiFiCombo.SelectedItem)
+                .WithBar((FiltersChoice)BarCombo.SelectedItem)
+                .WithPool((FiltersChoice)PoolCombo.SelectedItem)
+                .WithFridge((FiltersChoice)FridgeCombo.SelectedItem)
+                .WithMicrowave((FiltersChoice)MicrowaveCombo.SelectedItem)
+                .WithSafe((FiltersChoice)SafeCombo.SelectedItem)
+                .WithTv((FiltersChoice)TVCombo.SelectedItem)
+                .WithMassage((FiltersChoice)MassageCombo.SelectedItem)
+                .WithSauna((FiltersChoice)SaunaCombo.SelectedItem)
+                .WithGym((FiltersChoice)GymCombo.SelectedItem)
+                .WithSpa((FiltersChoice)SpaCombo.SelectedItem)
+                .WithStars((StarsChoice)StarsCombo.SelectedItem)
+               );
+        }
 
         private UserPreference GetUserPreferenceFromInputs() =>
             new UserPreference()

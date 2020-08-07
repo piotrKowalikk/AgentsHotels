@@ -10,7 +10,7 @@ namespace HotelsLogic
         public int NumberOfAdults { get; set; }
         public int NumberOfChildren { get; set; }
         public int Delay { get; set; }
-        public int NumberOfReturnOffers { get; set; }
+        public int NumberOfReturnOffers { get; set; } = 1;
         //filtry
         public bool AirConditioning { get; set; }
         public bool FreeCancelation { get; set; }
@@ -25,7 +25,7 @@ namespace HotelsLogic
         public bool Sauna { get; set; }
         public bool Gym { get; set; }
         public bool Spa { get; set; }
-        public bool Stars { get; set; }
+        public int Stars { get; set; }
 
         public UserPreference WithCity(string city)
         {
@@ -41,7 +41,7 @@ namespace HotelsLogic
 
         public UserPreference WithDateTo(DateTime date)
         {
-            DateFrom = date;
+            DateTo = date;
             return this;
         }
 
@@ -77,79 +77,79 @@ namespace HotelsLogic
 
         public UserPreference WithFreeCancelation(FiltersChoice choice)
         {
-            AirConditioning = choice == FiltersChoice.Yes;
+            FreeCancelation = choice == FiltersChoice.Yes;
             return this;
         }
 
         public UserPreference WithWifi(FiltersChoice choice)
         {
-            AirConditioning = choice == FiltersChoice.Yes;
+            Wifi = choice == FiltersChoice.Yes;
             return this;
         }
 
         public UserPreference WithBar(FiltersChoice choice)
         {
-            AirConditioning = choice == FiltersChoice.Yes;
+            Bar = choice == FiltersChoice.Yes;
             return this;
         }
 
         public UserPreference WithPool(FiltersChoice choice)
         {
-            AirConditioning = choice == FiltersChoice.Yes;
+            Pool = choice == FiltersChoice.Yes;
             return this;
         }
 
         public UserPreference WithFridge(FiltersChoice choice)
         {
-            AirConditioning = choice == FiltersChoice.Yes;
+            Fridge = choice == FiltersChoice.Yes;
             return this;
         }
 
         public UserPreference WithMicrowave(FiltersChoice choice)
         {
-            AirConditioning = choice == FiltersChoice.Yes;
+            Microwave = choice == FiltersChoice.Yes;
             return this;
         }
 
         public UserPreference WithSafe(FiltersChoice choice)
         {
-            AirConditioning = choice == FiltersChoice.Yes;
+            Safe = choice == FiltersChoice.Yes;
             return this;
         }
 
         public UserPreference WithTv(FiltersChoice choice)
         {
-            AirConditioning = choice == FiltersChoice.Yes;
+            Tv = choice == FiltersChoice.Yes;
             return this;
         }
 
         public UserPreference WithMassage(FiltersChoice choice)
         {
-            AirConditioning = choice == FiltersChoice.Yes;
+            Massage = choice == FiltersChoice.Yes;
             return this;
         }
 
         public UserPreference WithSauna(FiltersChoice choice)
         {
-            AirConditioning = choice == FiltersChoice.Yes;
+            Sauna = choice == FiltersChoice.Yes;
             return this;
         }
 
         public UserPreference WithGym(FiltersChoice choice)
         {
-            AirConditioning = choice == FiltersChoice.Yes;
+            Gym = choice == FiltersChoice.Yes;
             return this;
         }
 
         public UserPreference WithSpa(FiltersChoice choice)
         {
-            AirConditioning = choice == FiltersChoice.Yes;
+            Spa = choice == FiltersChoice.Yes;
             return this;
         }
 
         public UserPreference WithStars(StarsChoice choice)
         {
-            AirConditioning = choice != StarsChoice.Any;
+            Stars = (int)choice;
             return this;
         }
     }

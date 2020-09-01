@@ -12,7 +12,7 @@ namespace HotelsLogic
         }
         private string PrepareUserPreferenceForBookingBot(UserPreference userPreference)
         {
-            return new BookingUserPreference(userPreference).GetDeserializedUserPreference();
+            return new BookingUserPreference(userPreference).GetSerializedUserPreference();
         }
 
         public void CleanServiceFolder()

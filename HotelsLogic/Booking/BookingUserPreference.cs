@@ -46,7 +46,7 @@ namespace HotelsLogic
             dateTo = userPreference.DateTo.Year + "-" + MakeTwoPostions(userPreference.DateTo.Month) + "-" + MakeTwoPostions(userPreference.DateTo.Day);
             numberOfAdults = userPreference.NumberOfAdults;
             numberOfChildren = userPreference.NumberOfChildren;
-            numberOfRooms = 1;//TODO
+            numberOfRooms = userPreference.NumberOfRooms;
             fromPrice = 0;//TODO
             toPrice = 10000;//TODO
             city = userPreference.City;
@@ -80,7 +80,7 @@ namespace HotelsLogic
             return "" + num;
         }
 
-        public string GetDeserializedUserPreference()
+        public string GetSerializedUserPreference()
         {
             return  JsonConvert.SerializeObject(this);
         }

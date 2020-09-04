@@ -3,6 +3,7 @@ using HotelsLogic.Results;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -17,78 +18,40 @@ namespace HotelsGUI
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    public delegate void CreatePreferenceEventHandler(string name);
     public partial class MainWindow : Window
     {
+        private int numberOfReturnOffers = 3;
+        private string defaultPreferenceName = "--default preference--";
+        private event CreatePreferenceEventHandler preferenceCreationEvent;
         public ObservableCollection<SearchedHotel> Results { get; set; }
         public ObservableCollection<SavedPreference> Preferences { get; set; }
+
         public MainWindow()
         {
+            preferenceCreationEvent += AddNewPreference;
             InitializeComponent();
-
             Results = new ObservableCollection<SearchedHotel>();
             ResultListView.ItemsSource = Results;
 
             Preferences = new ObservableCollection<SavedPreference>(PreferencesRepository.PreferencesRepositoryInstance.GetAll());
-            InitializeFiltersComboboxes();
-            AddInitialInput();
+            if (Preferences.Count == 0)
+            {
+                AddDefaultPreference();
+                Preferences = new ObservableCollection<SavedPreference>(PreferencesRepository.PreferencesRepositoryInstance.GetAll());
+            }
+
             PreferencesCombobox.ItemsSource = Preferences;
+            StarsComboBox.ItemsSource = Enum.GetValues(typeof(StarsChoice)).Cast<StarsChoice>();
+            AddInitialInput();
         }
 
-        private void AddInitialInput()
-        {
-            string defaultPrefName = PreferencesRepository.PreferencesRepositoryInstance.GetDefaultPreferenceName();
-            SavedPreference defaultPref = PreferencesRepository.PreferencesRepositoryInstance.GetPreference(defaultPrefName);
-            if (defaultPref != null)
-            {
-                FillInputs(defaultPref);
-            }
-            else
-            {
-                FillWithDefaultInput();
-            }
-        }
-
-        private void FillWithDefaultInput()
-        {
-            CityTextbox.Text = "Warszawa";
-            DateFrom.SelectedDate = DateTime.Today;
-            DateTo.SelectedDate = DateTime.Today.AddDays(1);
-            AdultsNumberCombobox.SelectedIndex = 1;
-            DelayCombobox.SelectedIndex = 1;
-        }
-
-        private void FillInputs(SavedPreference savedPreference)
-        {
-            CityTextbox.Text = savedPreference.City;
-            DateFrom.SelectedDate = DateTime.Today;
-            DateTo.SelectedDate = DateTime.Today.AddDays(1);
-            AdultsNumberCombobox.SelectedIndex = savedPreference.NumberOfAdults - 1;
-            DelayCombobox.SelectedIndex = GetDelayComboIndexFromSeconds(savedPreference.Delay);
-            PreferenceNameTextbox.Text = savedPreference.PreferenceName;
-            IsDefaultPreferenceCheckbox.IsChecked = string.Equals(
-                savedPreference.PreferenceName,
-                PreferencesRepository.PreferencesRepositoryInstance.GetDefaultPreferenceName());
-            AirConditioningCombo.SelectedIndex = savedPreference.AirConditioning ? 1 : 0;
-            FreeCancelationCombo.SelectedIndex = savedPreference.FreeCancelation ? 1 : 0;
-            WiFiCombo.SelectedIndex = savedPreference.Wifi ? 1 : 0;
-            BarCombo.SelectedIndex = savedPreference.Bar ? 1 : 0;
-            PoolCombo.SelectedIndex = savedPreference.Pool ? 1 : 0;
-            FridgeCombo.SelectedIndex = savedPreference.Fridge ? 1 : 0;
-            MicrowaveCombo.SelectedIndex = savedPreference.Microwave ? 1 : 0;
-            SaunaCombo.SelectedIndex = savedPreference.Sauna ? 1 : 0;
-            GymCombo.SelectedIndex = savedPreference.Gym ? 1 : 0;
-            SpaCombo.SelectedIndex = savedPreference.Spa ? 1 : 0;
-            StarsCombo.SelectedIndex = savedPreference.Stars - 1;
-        }
-
-        private int GetDelayComboIndexFromSeconds(int delay) => delay / 3 - 1;
-        private int GetDelaySecondsFromComboIndex(int index) => (index + 1) * 3;
-
+        #region GUI elements events
         private async void StartButton_Click(object sender, RoutedEventArgs e)
         {
             if (!InputIsValid(out string message))
             {
-                OutputTextBlock.Text = message;
+                MessageBox.Show(message);
                 return;
             }
 
@@ -96,66 +59,103 @@ namespace HotelsGUI
             SearchService.SearchServiceInstance.CleanServiceFolder();
             await Task.Delay(2000);
 
-            OutputTextBlock.Text = string.Empty;
+            PreferencesRepository.PreferencesRepositoryInstance.DefaultPreferenceName = ((SavedPreference)PreferencesCombobox.SelectedItem).PreferenceName;
 
             UserPreference userPreference = GetUserPreferenceFromInputs();
             SearchService.SearchServiceInstance.Search(userPreference);
 
             await ResultService.ResultServiceInstance.WaitForResult(new FileSystemEventHandler(OnResultFileCreated));
-            OutputTextBlock.Text = "Waiting for results";
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!IsPreferenceNameValid(PreferenceNameTextbox.Text, out string nameMessage))
-            {
-                OutputTextBlock.Text = nameMessage;
-                return;
-            }
             if (!InputIsValid(out string message))
             {
-                OutputTextBlock.Text = message;
-                return;
+                MessageBox.Show(message);
             }
 
-            SavedPreference pref = GetSavedPreferenceFromInputs();
+            NewPreferenceWindow newPreferenceWindow = new NewPreferenceWindow(preferenceCreationEvent);
+            newPreferenceWindow.Show();
+        }
 
-            PreferencesRepository.PreferencesRepositoryInstance.Add(pref);
-            if (IsDefaultPreferenceCheckbox.IsChecked == true)
-            {
-                PreferencesRepository.PreferencesRepositoryInstance.SetDefaultPreference(pref.PreferenceName);
-            }
+        private void AddNewPreference(string name)
+        {
+            SavedPreference newPreference = GetSavedPreferenceFromInputs(name);
+            PreferencesRepository.PreferencesRepositoryInstance.Add(newPreference);
+
             RefreshGUI();
+            int index = 0;
+            foreach (var pref in PreferencesRepository.PreferencesRepositoryInstance.GetAll())
+            {
+                if (pref.PreferenceName == name)
+                {
+                    PreferencesCombobox.SelectedIndex = index;
+                    break;
+                }
+                ++index;
+            }
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!PreferencesRepository.PreferencesRepositoryInstance.Delete(PreferencesCombobox.SelectedItem as SavedPreference))
+            PreferencesRepository prefRepo = PreferencesRepository.PreferencesRepositoryInstance;
+            SavedPreference pref = (SavedPreference)PreferencesCombobox.SelectedItem;
+            prefRepo.Delete(pref);
+
+            if (prefRepo.GetAll().Count() == 0)
             {
-                OutputTextBlock.Text = "Could not delete preference";
-                return;
+                AddDefaultPreference();
+            }
+            else if (prefRepo.DefaultPreferenceName == pref.PreferenceName)
+            {
+                if(prefRepo.GetPreference(defaultPreferenceName) != null)
+                {
+                    prefRepo.DefaultPreferenceName = defaultPreferenceName;
+                }
+                else
+                {
+                    prefRepo.DefaultPreferenceName = prefRepo.GetAll().First().PreferenceName;
+                }
             }
 
-            OutputTextBlock.Text = string.Empty;
+            RefreshGUI();
+            PreferencesCombobox.SelectedIndex = 0;
         }
 
         private void PreferencesCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (PreferencesCombobox.SelectedItem != null)
+            SavedPreference pref = (SavedPreference)PreferencesCombobox.SelectedItem;
+
+            if (pref != null)
             {
-                FillInputs(PreferencesCombobox.SelectedItem as SavedPreference);
+                FillInputs(pref);
             }
-
-            Preferences = new ObservableCollection<SavedPreference>(PreferencesRepository.PreferencesRepositoryInstance.GetAll());
         }
 
-        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        private void Window_Closed(object sender, EventArgs e)
         {
-            Process proc = new Process();
-            proc.StartInfo.UseShellExecute = true;
-            proc.StartInfo.FileName = e.Uri.AbsoluteUri;
-            proc.Start();
+            ResultService.ResultServiceInstance.CleanSearchOrders();
         }
+        #endregion
+
+        private void AddInitialInput()
+        {
+            PreferencesRepository prefRepo = PreferencesRepository.PreferencesRepositoryInstance;
+            string defPrefName = prefRepo.DefaultPreferenceName;
+            SavedPreference defaultPreference = prefRepo.GetPreference(defPrefName);
+
+            int index = 0;
+            foreach (var pref in prefRepo.GetAll())
+            {
+                if (pref.PreferenceName == defaultPreference.PreferenceName)
+                {
+                    PreferencesCombobox.SelectedIndex = index;
+                    return;
+                }
+                ++index;
+            }
+        }
+
 
         private async void OnResultFileCreated(object source, FileSystemEventArgs e)
         {
@@ -179,66 +179,6 @@ namespace HotelsGUI
             );
         }
 
-        private void RefreshGUI()
-        {
-            Preferences = new ObservableCollection<SavedPreference>(PreferencesRepository.PreferencesRepositoryInstance.GetAll());
-            PreferencesCombobox.ItemsSource = Preferences;
-            OutputTextBlock.Text = string.Empty;
-        }
-
-        private SavedPreference GetSavedPreferenceFromInputs()
-        {
-            return (SavedPreference)(new SavedPreference()
-            {
-                PreferenceName = PreferenceNameTextbox.Text,
-            }
-                .WithAirConditioning((FiltersChoice)AirConditioningCombo.SelectedItem)
-                .WithCity(CityTextbox.Text)
-                .WithDateTo(DateTo.SelectedDate.Value)
-                .WithDateFrom(DateFrom.SelectedDate.Value)
-                .WithNumberOfAdults(AdultsNumberCombobox.SelectedIndex + 1)
-                .WithNumberOfChildren(ChildrenNumberCombobox.SelectedIndex)
-                .WithDelay((DelayCombobox.SelectedIndex + 1) * 3)
-                .WithAirConditioning((FiltersChoice)AirConditioningCombo.SelectedItem)
-                .WithFreeCancelation((FiltersChoice)FreeCancelationCombo.SelectedItem)
-                .WithWifi((FiltersChoice)WiFiCombo.SelectedItem)
-                .WithBar((FiltersChoice)BarCombo.SelectedItem)
-                .WithPool((FiltersChoice)PoolCombo.SelectedItem)
-                .WithFridge((FiltersChoice)FridgeCombo.SelectedItem)
-                .WithMicrowave((FiltersChoice)MicrowaveCombo.SelectedItem)
-                .WithSafe((FiltersChoice)SafeCombo.SelectedItem)
-                .WithTv((FiltersChoice)TVCombo.SelectedItem)
-                .WithMassage((FiltersChoice)MassageCombo.SelectedItem)
-                .WithSauna((FiltersChoice)SaunaCombo.SelectedItem)
-                .WithGym((FiltersChoice)GymCombo.SelectedItem)
-                .WithSpa((FiltersChoice)SpaCombo.SelectedItem)
-                .WithStars((StarsChoice)StarsCombo.SelectedItem)
-               );
-        }
-
-        private UserPreference GetUserPreferenceFromInputs() =>
-            new UserPreference()
-                .WithCity(CityTextbox.Text)
-                .WithDateTo(DateTo.SelectedDate.Value)
-                .WithDateFrom(DateFrom.SelectedDate.Value)
-                .WithNumberOfAdults(AdultsNumberCombobox.SelectedIndex + 1)
-                .WithNumberOfChildren(ChildrenNumberCombobox.SelectedIndex)
-                .WithDelay((DelayCombobox.SelectedIndex + 1) * 3)
-                .WithAirConditioning((FiltersChoice)AirConditioningCombo.SelectedItem)
-                .WithFreeCancelation((FiltersChoice)FreeCancelationCombo.SelectedItem)
-                .WithWifi((FiltersChoice)WiFiCombo.SelectedItem)
-                .WithBar((FiltersChoice)BarCombo.SelectedItem)
-                .WithPool((FiltersChoice)PoolCombo.SelectedItem)
-                .WithFridge((FiltersChoice)FridgeCombo.SelectedItem)
-                .WithMicrowave((FiltersChoice)MicrowaveCombo.SelectedItem)
-                .WithSafe((FiltersChoice)SafeCombo.SelectedItem)
-                .WithTv((FiltersChoice)TVCombo.SelectedItem)
-                .WithMassage((FiltersChoice)MassageCombo.SelectedItem)
-                .WithSauna((FiltersChoice)SaunaCombo.SelectedItem)
-                .WithGym((FiltersChoice)GymCombo.SelectedItem)
-                .WithSpa((FiltersChoice)SpaCombo.SelectedItem)
-                .WithStars((StarsChoice)StarsCombo.SelectedItem);
-
         private bool InputIsValid(out string message)
         {
             if (!DateFrom.SelectedDate.HasValue)
@@ -246,83 +186,126 @@ namespace HotelsGUI
                 message = "Select value of DateFrom";
                 return false;
             }
-
-            if (!DateTo.SelectedDate.HasValue)
+            else if (!DateTo.SelectedDate.HasValue)
             {
                 message = "Select value of DateTo";
                 return false;
             }
-
-            if (DateFrom.SelectedDate.Value.CompareTo(DateTo.SelectedDate.Value) >= 0)
+            else if (DateFrom.SelectedDate.Value.CompareTo(DateTo.SelectedDate.Value) >= 0)
             {
                 message = "Date From cannot be greater than Date To";
                 return false;
             }
-
-            if (DateFrom.SelectedDate.Value.CompareTo(DateTime.Today) < 0)
+            else if (DateFrom.SelectedDate.Value.CompareTo(DateTime.Today) < 0)
             {
                 message = "Date From cannot be before today";
                 return false;
             }
 
-            message = "";
+            message = null;
             return true;
         }
 
-        private bool IsPreferenceNameValid(string name, out string message)
+        private UserPreference GetUserPreferenceFromInputs()
         {
-            if (string.IsNullOrWhiteSpace(PreferenceNameTextbox.Text))
+            return new UserPreference()
+                    .WithCity(CityTextbox.Text)
+                    .WithDateTo(DateTo.SelectedDate.Value)
+                    .WithDateFrom(DateFrom.SelectedDate.Value)
+                    .WithNumberOfAdults(AdultsNumberCombobox.SelectedIndex + 1)
+                    .WithNumberOfChildren(ChildrenNumberCombobox.SelectedIndex)
+                    .WithNumberOfRooms(RoomsNumberCombobox.SelectedIndex + 1)
+                    .WithNumberOfReturnOffers(numberOfReturnOffers)
+                    .WithDelay(GetDelaySecondsFromComboIndex(DelayCombobox.SelectedIndex))
+                    .WithAirConditioning(AirConditioningCheckBox.IsChecked)
+                    .WithFreeCancelation(FreeCancelationCheckBox.IsChecked)
+                    .WithWifi(WIFICheckBox.IsChecked)
+                    .WithBar(BarCheckBox.IsChecked)
+                    .WithPool(PoolCheckBox.IsChecked)
+                    .WithFridge(FridgeCheckBox.IsChecked)
+                    .WithMicrowave(MicrowaveCheckBox.IsChecked)
+                    .WithSafe(SafeCheckBox.IsChecked)
+                    .WithTv(TVCheckBox.IsChecked)
+                    .WithMassage(MassageCheckBox.IsChecked)
+                    .WithSauna(SaunaCheckBox.IsChecked)
+                    .WithGym(GymCheckBox.IsChecked)
+                    .WithSpa(SpaCheckBox.IsChecked)
+                    .WithStars((StarsChoice)StarsComboBox.SelectedItem);
+        }
+
+        private SavedPreference GetSavedPreferenceFromInputs(string name)
+        {
+            return new SavedPreference(name, GetUserPreferenceFromInputs());
+        }
+
+        private void FillInputs(SavedPreference savedPreference)
+        {
+            CityTextbox.Text = savedPreference.City;
+            DateFrom.SelectedDate = DateTime.Today;
+            DateTo.SelectedDate = DateTime.Today.AddDays(1);
+            AdultsNumberCombobox.SelectedIndex = savedPreference.NumberOfAdults - 1;
+            ChildrenNumberCombobox.SelectedIndex = savedPreference.NumberOfChildren;
+            RoomsNumberCombobox.SelectedIndex = savedPreference.NumberOfRooms - 1;
+            DelayCombobox.SelectedIndex = GetDelayComboIndexFromSeconds(savedPreference.Delay);
+            AirConditioningCheckBox.IsChecked = savedPreference.AirConditioning;
+            FreeCancelationCheckBox.IsChecked = savedPreference.FreeCancelation;
+            WIFICheckBox.IsChecked = savedPreference.Wifi;
+            BarCheckBox.IsChecked = savedPreference.Bar;
+            PoolCheckBox.IsChecked = savedPreference.Pool;
+            FridgeCheckBox.IsChecked = savedPreference.Fridge;
+            MicrowaveCheckBox.IsChecked = savedPreference.Microwave;
+            SafeCheckBox.IsChecked = savedPreference.Safe;
+            TVCheckBox.IsChecked = savedPreference.Tv;
+            MassageCheckBox.IsChecked = savedPreference.Massage;
+            SaunaCheckBox.IsChecked = savedPreference.Sauna;
+            GymCheckBox.IsChecked = savedPreference.Gym;
+            SpaCheckBox.IsChecked = savedPreference.Spa;
+            StarsComboBox.SelectedIndex = savedPreference.Stars;
+        }
+
+        private int GetDelayComboIndexFromSeconds(int seconds)
+        {
+            return (seconds / 3) - 1;
+        }
+
+        private int GetDelaySecondsFromComboIndex(int index)
+        {
+            return (index + 1) * 3;
+        }
+
+
+        private void AddDefaultPreference()
+        {
+            SavedPreference defaultPreference = (SavedPreference)(new SavedPreference()
             {
-                message = "Select name for your preference";
-                return false;
+                PreferenceName = defaultPreferenceName,
             }
-            if (string.Equals(PreferenceNameTextbox.Text, PreferencesRepository.DefaultPreferenceFileName))
-            {
-                message = "Please select different name";
-                return false;
-            }
-            message = string.Empty;
-            return true;
+            .WithCity("Warsaw")
+            .WithDateFrom(DateTime.Today)
+            .WithDateTo(DateTime.Today.AddDays(1))
+            .WithNumberOfAdults(2)
+            .WithNumberOfChildren(0)
+            .WithNumberOfRooms(1)
+            .WithDelay(6)
+            .WithNumberOfReturnOffers(numberOfReturnOffers));
+
+            PreferencesRepository repo = PreferencesRepository.PreferencesRepositoryInstance;
+            repo.Add(defaultPreference);
+            repo.DefaultPreferenceName = defaultPreference.PreferenceName;
         }
 
-        private void Window_Closed(object sender, EventArgs e)
+        private void RefreshGUI()
         {
-            ResultService.ResultServiceInstance.CleanSearchOrders();
+            Preferences = new ObservableCollection<SavedPreference>(PreferencesRepository.PreferencesRepositoryInstance.GetAll());
+            PreferencesCombobox.ItemsSource = Preferences;
         }
 
-        private void InitializeFiltersComboboxes()
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
-            var combos = new List<object>()
-            {
-                AirConditioningCombo,
-                FreeCancelationCombo,
-                WiFiCombo,
-                BarCombo,
-                PoolCombo,
-                FridgeCombo,
-                MicrowaveCombo,
-                SafeCombo,
-                TVCombo,
-                MassageCombo,
-                SaunaCombo,
-                GymCombo,
-                SpaCombo
-            };
-
-            combos.ForEach(c => InitializeComboBoxWithFiltersChoice(c as ComboBox));
-            InitializeComboBoxWithStarsChoice(StarsCombo);
-        }
-
-        private void InitializeComboBoxWithFiltersChoice(ComboBox box)
-        {
-            box.ItemsSource = Enum.GetValues(typeof(FiltersChoice)).Cast<FiltersChoice>();
-            box.SelectedIndex = 0;
-        }
-
-        private void InitializeComboBoxWithStarsChoice(ComboBox box)
-        {
-            box.ItemsSource = Enum.GetValues(typeof(StarsChoice)).Cast<StarsChoice>();
-            box.SelectedIndex = 0;
+            Process proc = new Process();
+            proc.StartInfo.UseShellExecute = true;
+            proc.StartInfo.FileName = e.Uri.AbsoluteUri;
+            proc.Start();
         }
     }
 }

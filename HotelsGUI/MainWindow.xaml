@@ -9,207 +9,193 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200" />
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="400" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Grid>
+        <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="2*" MinHeight="200"/>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Grid>
+            <Grid Grid.Row="0" Name="EntryInfoGrid">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Label Name="CityLabel" VerticalAlignment="Bottom" >City</Label>
-                <TextBox Name="CityTextbox" VerticalAlignment="Top" Grid.Row="1"></TextBox>
+
+                <Grid Grid.Row="0" Name="CityGrid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label VerticalAlignment="Center" HorizontalAlignment="Center">City</Label>
+                    <TextBox Name="CityTextbox" VerticalAlignment="Center" Padding="5 1 5 1" Grid.Column="1" Margin="5"></TextBox>
+                </Grid>
+
+                <Grid Grid.Row="1" Name="DatesGrid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label VerticalAlignment="Center" HorizontalAlignment="Center">Date From</Label>
+                    <DatePicker Name="DateFrom" VerticalAlignment="Center" Grid.Column="1"></DatePicker>
+                    <Label VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="2">Date To</Label>
+                    <DatePicker Name="DateTo" VerticalAlignment="Center" Grid.Column="3"></DatePicker>
+                </Grid>
+
+                <Grid Grid.Row="2" Name="NumbersGrid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label VerticalAlignment="Center" Grid.Column="0" Margin="5 0 0 0">
+                        <TextBlock TextWrapping="WrapWithOverflow">
+                            Number of adults
+                        </TextBlock>
+                    </Label>
+                    <ComboBox Name="AdultsNumberCombobox" VerticalAlignment="Center" Grid.Column="1" SelectedIndex="1" Margin="5">
+                        <ComboBoxItem Content="1"></ComboBoxItem>
+                        <ComboBoxItem Content="2"></ComboBoxItem>
+                        <ComboBoxItem Content="3"></ComboBoxItem>
+                        <ComboBoxItem Content="4"></ComboBoxItem>
+                    </ComboBox>
+                    <Label VerticalAlignment="Center" Grid.Column="2" >
+                        <TextBlock TextWrapping="WrapWithOverflow">
+                            Number of children
+                        </TextBlock>
+                    </Label>
+                    <ComboBox Name="ChildrenNumberCombobox" VerticalAlignment="Center" Grid.Column="3" SelectedIndex="0" Margin="5">
+                        <ComboBoxItem Content="0"></ComboBoxItem>
+                        <ComboBoxItem Content="1"></ComboBoxItem>
+                        <ComboBoxItem Content="2"></ComboBoxItem>
+                        <ComboBoxItem Content="3"></ComboBoxItem>
+                        <ComboBoxItem Content="4"></ComboBoxItem>
+                        <ComboBoxItem Content="5"></ComboBoxItem>
+                        <ComboBoxItem Content="6"></ComboBoxItem>
+                        <ComboBoxItem Content="7"></ComboBoxItem>
+                        <ComboBoxItem Content="8"></ComboBoxItem>
+                    </ComboBox>
+                    <Label VerticalAlignment="Center" Grid.Column="4">
+                        <TextBlock TextWrapping="WrapWithOverflow">
+                            Number of rooms
+                        </TextBlock>
+                    </Label>
+                    <ComboBox Name="RoomsNumberCombobox" VerticalAlignment="Center" Grid.Column="5" SelectedIndex="0" Margin="5">
+                        <ComboBoxItem Content="1"></ComboBoxItem>
+                        <ComboBoxItem Content="2"></ComboBoxItem>
+                        <ComboBoxItem Content="3"></ComboBoxItem>
+                        <ComboBoxItem Content="4"></ComboBoxItem>
+                    </ComboBox>
+                </Grid>
             </Grid>
 
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="1" Name="FiltersGrid">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Label Name="DateFromLabel" VerticalAlignment="Bottom" >Date From</Label>
-                <DatePicker Name="DateFrom" VerticalAlignment="Top" Grid.Row="1"></DatePicker>
+
+                <Label Grid.Row="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">Filters</Label>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin="10">
+                        <CheckBox Name="AirConditioningCheckBox">Air Conditioning</CheckBox>
+                        <CheckBox Name="WIFICheckBox">WI-FI</CheckBox>
+                        <CheckBox Name="PoolCheckBox">Pool</CheckBox>
+                        <CheckBox Name="MicrowaveCheckBox">Microwave</CheckBox>
+                        <CheckBox Name="TVCheckBox">TV</CheckBox>
+                        <CheckBox Name="SaunaCheckBox">Sauna</CheckBox>
+                        <CheckBox Name="SpaCheckBox">Spa</CheckBox>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="10">
+                        <CheckBox Name="FreeCancelationCheckBox">Free Cancelation</CheckBox>
+                        <CheckBox Name="BarCheckBox">Bar</CheckBox>
+                        <CheckBox Name="FridgeCheckBox">Fridge</CheckBox>
+                        <CheckBox Name="SafeCheckBox">Safe</CheckBox>
+                        <CheckBox Name="MassageCheckBox">Massage</CheckBox>
+                        <CheckBox Name="GymCheckBox">Gym</CheckBox>
+                        <Grid Name="StarsGrid" Margin="0 2 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <ComboBox Name="StarsComboBox" Grid.Column="0" SelectedIndex="0"/>
+                            <Label Grid.Column="1">Stars</Label>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
             </Grid>
 
-            <Grid Grid.Row="2">
+            <Grid Grid.Row="2" Name="PreferencesGrid">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <Label Name="DateToLabel" VerticalAlignment="Bottom" >Date To</Label>
-                <DatePicker Name="DateTo" VerticalAlignment="Top" Grid.Row="1"></DatePicker>
-            </Grid>
 
-            <Grid Grid.Row="3">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Label Name="AdultsNumberLabel" VerticalAlignment="Bottom" >Number of Adults</Label>
-                <ComboBox Name="AdultsNumberCombobox" VerticalAlignment="Top" Grid.Row="1">
-                    <ComboBoxItem Content="1"></ComboBoxItem>
-                    <ComboBoxItem Content="2"></ComboBoxItem>
-                    <ComboBoxItem Content="3"></ComboBoxItem>
-                    <ComboBoxItem Content="4"></ComboBoxItem>
-                </ComboBox>
-            </Grid>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-            <Grid Grid.Row="4">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Label Name="ChildrenNumberLabel" VerticalAlignment="Bottom" >Number of Children</Label>
-                <ComboBox Name="ChildrenNumberCombobox" VerticalAlignment="Top" Grid.Row="1" SelectedIndex="0">
-                    <ComboBoxItem Content="0"></ComboBoxItem>
-                    <ComboBoxItem Content="1"></ComboBoxItem>
-                    <ComboBoxItem Content="2"></ComboBoxItem>
-                    <ComboBoxItem Content="3"></ComboBoxItem>
-                    <ComboBoxItem Content="4"></ComboBoxItem>
-                    <ComboBoxItem Content="5"></ComboBoxItem>
-                    <ComboBoxItem Content="6"></ComboBoxItem>
-                    <ComboBoxItem Content="7"></ComboBoxItem>
-                    <ComboBoxItem Content="8"></ComboBoxItem>
-                </ComboBox>
-            </Grid>
+                    <Label Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">Select Your Preference</Label>
+                    <ComboBox Name="PreferencesCombobox" Grid.Column="1" VerticalAlignment="Center" SelectionChanged="PreferencesCombobox_SelectionChanged" Margin="10"></ComboBox>
+                </Grid>
 
-            <Grid Grid.Row="5">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Label Name="DelayLabel" VerticalAlignment="Center" >Delay</Label>
-                <ComboBox Name="DelayCombobox" VerticalAlignment="Top" Grid.Row="1">
-                    <ComboBoxItem Content="Short"></ComboBoxItem>
-                    <ComboBoxItem Content="Medium"></ComboBoxItem>
-                    <ComboBoxItem Content="Long"></ComboBoxItem>
-                </ComboBox>
-            </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
 
-            <Grid Grid.Row="6">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Label Name="SelectPreferenceLabel" Grid.Row="0" VerticalAlignment="Center">Select Your Preference:</Label>
-                <ComboBox Name="PreferencesCombobox" Grid.Row="1" VerticalAlignment="Center" SelectionChanged="PreferencesCombobox_SelectionChanged"></ComboBox>
-                <Label Name="PreferenceNameLabel" Grid.Row="2" VerticalAlignment="Center">Name Your Preference:</Label>
-                <TextBox Name="PreferenceNameTextbox" Grid.Row="3" VerticalAlignment="Center"></TextBox>
-                <CheckBox Name="IsDefaultPreferenceCheckbox" Grid.Row="4">Is default preference</CheckBox>
-                <Button Name="SaveButton" Click="SaveButton_Click" Grid.Row="5" VerticalAlignment="Center">Save Preference</Button>
-                <Button Name="DeleteButton" Click="DeleteButton_Click" Grid.Row="6" VerticalAlignment="Center">Delete Preference</Button>
-            </Grid>
+                    <Button Name="SaveButton" Click="SaveButton_Click" Grid.Column="0" VerticalAlignment="Center" Margin="10,0,10,0">Save Preference</Button>
+                    <Button Name="DeleteButton" Click="DeleteButton_Click" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,10,0" Grid.ColumnSpan="2">Delete Preference</Button>
+                </Grid>
+                
+                <TextBlock Name="OutputTextBlock" Grid.Row="2" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
 
-            <Grid Grid.Row="7">
-                <TextBlock Name="OutputTextBlock" Grid.Row="4" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
-            </Grid>
+                <Grid Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-            <Grid Grid.Row="8">
-                <Button Name="StartButton" Grid.Row="5" Click="StartButton_Click" VerticalAlignment="Center">Start</Button>
+                    <Label Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">Delay</Label>
+                    <ComboBox Name="DelayCombobox" Grid.Column="1" VerticalAlignment="Center" Margin="10 0 10 0" SelectedIndex="1">
+                        <ComboBoxItem Content="Short"></ComboBoxItem>
+                        <ComboBoxItem Content="Medium"></ComboBoxItem>
+                        <ComboBoxItem Content="Long"></ComboBoxItem>
+                    </ComboBox>
+                </Grid>
+
+                <Button Name="StartButton" Grid.Row="4" Click="StartButton_Click" VerticalAlignment="Center" Margin="10,10,10,10" Height="40">Start</Button>
             </Grid>
         </Grid>
 
         <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <Label Grid.Row="0" VerticalAlignment="Bottom">Air Conditioning</Label>
-            <ComboBox Grid.Row="1" Name="AirConditioningCombo" VerticalAlignment="Top"></ComboBox>
-
-            <Label Grid.Row="2" VerticalAlignment="Bottom">Free Cancelation</Label>
-            <ComboBox Grid.Row="3" Name="FreeCancelationCombo" VerticalAlignment="Top"></ComboBox>
-
-            <Label Grid.Row="4" VerticalAlignment="Bottom">WiFi</Label>
-            <ComboBox Grid.Row="5" Name="WiFiCombo" VerticalAlignment="Top"></ComboBox>
-
-            <Label Grid.Row="6" VerticalAlignment="Bottom">Bar</Label>
-            <ComboBox Grid.Row="7" Name="BarCombo" VerticalAlignment="Top"></ComboBox>
-
-            <Label Grid.Row="8" VerticalAlignment="Bottom">Pool</Label>
-            <ComboBox Grid.Row="9" Name="PoolCombo" VerticalAlignment="Top"></ComboBox>
-
-            <Label Grid.Row="10" VerticalAlignment="Bottom">Fridge</Label>
-            <ComboBox Grid.Row="11" Name="FridgeCombo" VerticalAlignment="Top"></ComboBox>
-
-            <Label Grid.Row="12" VerticalAlignment="Bottom">Microwave</Label>
-            <ComboBox Grid.Row="13" Name="MicrowaveCombo" VerticalAlignment="Top"></ComboBox>
-
-            <Label Grid.Row="14" VerticalAlignment="Bottom">Safe</Label>
-            <ComboBox Grid.Row="15" Name="SafeCombo" VerticalAlignment="Top"></ComboBox>
-
-            <Label Grid.Row="16" VerticalAlignment="Bottom">TV</Label>
-            <ComboBox Grid.Row="17" Name="TVCombo" VerticalAlignment="Top"></ComboBox>
-
-            <Label Grid.Row="18" VerticalAlignment="Bottom">Massage</Label>
-            <ComboBox Grid.Row="19" Name="MassageCombo" VerticalAlignment="Top"></ComboBox>
-
-            <Label Grid.Row="20" VerticalAlignment="Bottom">Sauna</Label>
-            <ComboBox Grid.Row="21" Name="SaunaCombo" VerticalAlignment="Top"></ComboBox>
-
-            <Label Grid.Row="22" VerticalAlignment="Bottom">Gym</Label>
-            <ComboBox Grid.Row="23" Name="GymCombo" VerticalAlignment="Top"></ComboBox>
-
-            <Label Grid.Row="24" VerticalAlignment="Bottom">Spa</Label>
-            <ComboBox Grid.Row="25" Name="SpaCombo" VerticalAlignment="Top"></ComboBox>
-
-            <Label Grid.Row="26" VerticalAlignment="Bottom">Stars</Label>
-            <ComboBox Grid.Row="27" Name="StarsCombo" VerticalAlignment="Top"></ComboBox>
-        </Grid>
-
-        <Grid Grid.Column="2">
             <ListView Name="ResultListView" Grid.Column="1" Grid.RowSpan="10" >
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Name" DisplayMemberBinding="{Binding HotelName}"/>
-
                         <GridViewColumn Header="URL" >
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -225,6 +211,5 @@
                 </ListView.View>
             </ListView>
         </Grid>
-
     </Grid>
 </Window>

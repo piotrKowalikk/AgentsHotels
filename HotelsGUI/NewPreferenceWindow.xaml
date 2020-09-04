@@ -1,0 +1,21 @@
+﻿<Window x:Class="HotelsGUI.NewPreferenceWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HotelsGUI"
+        mc:Ignorable="d"
+        Closed="Window_Closed"
+        Title="New Preference Creation" Height="126" Width="240" ResizeMode="NoResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 0 0 5">Name new preference</Label>
+        <TextBox Name="PreferenceNameTextBox" Grid.Row="1" Margin="10 2 10 2"></TextBox>
+        <Button Grid.Row="2" HorizontalAlignment="Center" Width="64" Margin="0 5 0 5" Click="Button_Click">OK</Button>
+
+    </Grid>
+</Window>

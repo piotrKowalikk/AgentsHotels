@@ -124,8 +124,7 @@ window ✱trivago✱ style maximize
 
 
 
-selenium.click search /html/body/div[3]/div[2]/div[4]/div[1]/form/div/button[1] by xpath
-
+selenium.click search /html/body/div[3]/div[2]/div[4]/div/div[1]/form/div/button[1] by xpath
 delay 3
 selenium.type "\b" search ‴adults-input‴ by id
 selenium.type ♥numberOfAdults search ‴adults-input‴ by id

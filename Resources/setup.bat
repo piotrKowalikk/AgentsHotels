@@ -28,14 +28,14 @@ echo     ^<WordWrap^>true^</WordWrap^> >> %giantconfig%
 echo   ^</Studio^> >> %giantconfig%
 echo   ^<Variables /^> >> %giantconfig%
 echo   ^<Triggers^> >> %giantconfig%
-echo     ^<Trigger Name="trigger1" TaskName="booking.G1ANT" Class="FileTrigger" StartInstance="true"^> >> %giantconfig%
-echo       ^<Arguments^> >> %giantconfig%
-echo         ^<Argument Key="Directory"^>%repodir%\HotelsGUI\bin\Debug\netcoreapp3.1\BookingSearch^</Argument^> >> %giantconfig%
-echo       ^</Arguments^> >> %giantconfig%
-echo     ^</Trigger^> >> %giantconfig%
-echo     ^<Trigger Name="trigger2" TaskName="hotels.G1ANT" Class="FileTrigger" StartInstance="true"^> >> %giantconfig%
+echo     ^<Trigger Name="trigger1" TaskName="hotels.G1ANT" Class="FileTrigger" StartInstance="true"^> >> %giantconfig%
 echo       ^<Arguments^> >> %giantconfig%
 echo         ^<Argument Key="Directory"^>%repodir%\HotelsGUI\bin\Debug\netcoreapp3.1\HotelsSearch^</Argument^> >> %giantconfig%
+echo       ^</Arguments^> >> %giantconfig%
+echo     ^</Trigger^> >> %giantconfig%
+echo     ^<Trigger Name="trigger2" TaskName="booking.G1ANT" Class="FileTrigger" StartInstance="true"^> >> %giantconfig%
+echo       ^<Arguments^> >> %giantconfig%
+echo         ^<Argument Key="Directory"^>%repodir%\HotelsGUI\bin\Debug\netcoreapp3.1\BookingSearch^</Argument^> >> %giantconfig%
 echo       ^</Arguments^> >> %giantconfig%
 echo     ^</Trigger^> >> %giantconfig%
 echo     ^<Trigger Name="trigger3" TaskName="trivago.G1ANT" Class="FileTrigger" StartInstance="true"^> >> %giantconfig%

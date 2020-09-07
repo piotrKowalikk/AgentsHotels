@@ -89,7 +89,6 @@ if  ♥task⟦changetype⟧=="Created"
     -------
     --start programu
     selenium.open chrome url ‴www.booking.com‴
-    
     --wybór miasta
     selenium.type ♥city search ss by id 
     
@@ -292,8 +291,9 @@ if  ♥task⟦changetype⟧=="Created"
 ♥urlsArray="["
 for ♥i from 1 to ♥numberOfReturnOffers step 1
     try errorresult ♥errorMesg  errorjump errjump
-        selenium.getattribute name href search /html/body/div[6]/div/div[3]/div[1]/div[1]/div[7]/div[3]/div[1]/div/div[♥i]/div[2]/div[1]/div[1]/div[1]/h3/a by xpath result ♥url1
-        selenium.getinnerhtml search           /html/body/div[6]/div/div[3]/div[1]/div[1]/div[7]/div[3]/div[1]/div/div[♥i]/div[2]/div[1]/div[1]/div[1]/h3/a/span[1] by xpath result   ♥title1
+        selenium.getattribute name href search /html/body/div[6]/div/div[3]/div[1]/div[1]/div[6]/div[3]/div[1]/div/div[♥i]/div[2]/div[1]/div[1]/div[1]/h3/a by xpath result ♥url1
+        selenium.getinnerhtml search           /html/body/div[6]/div/div[3]/div[1]/div[1]/div[6]/div[3]/div[1]/div/div[♥i]/div[2]/div[1]/div[1]/div[1]/h3/a/span[1] by xpath result   ♥title1
+        
         ♥urlsArray = ‴♥urlsArray {"url":"♥url1","hotelName": "♥title1"},‴
     end
     label errjump
@@ -308,9 +308,8 @@ selenium.close
 program notepad
 keyboard ‴{"fromCompany": "booking","hotelsList":♥urlsArray, "filters": ♥filters}⋘ENTER⋙‴
 keyboard  ⋘CTRL+S⋙
-keyboard ‴bookingResult.txt‴
-keyboard ⋘ALT+A⋙
 keyboard ‴♥outputPath‴ 
-keyboard ⋘ALT+Z⋙
-keyboard ⋘CTRL+W⋙
+keyboard ‴\bookingResult.txt‴
+keyboard ⋘ENTER⋙
+keyboard ⋘ALT+F4⋙
 end

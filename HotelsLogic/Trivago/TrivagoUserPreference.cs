@@ -34,6 +34,7 @@ namespace HotelsLogic
             dateTo = $"{userPreference.DateTo.Month}/{userPreference.DateTo.Day}/{userPreference.DateTo.Year}";
             numberOfAdults = userPreference.NumberOfAdults;
             numberOfChildren = userPreference.NumberOfChildren;
+            numberOfReturnOffers = userPreference.NumberOfReturnOffers;
             city = userPreference.City;
             outputPath = ResultService.ResultsPath;
             delay = userPreference.Delay;

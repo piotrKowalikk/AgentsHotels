@@ -41,9 +41,9 @@ namespace HotelsLogic
 
         public async Task<List<SearchResult>> GetResultsFromFile(string path)
         {
+            watcher.EnableRaisingEvents = false;
             List<SearchResult> results = new List<SearchResult>();
             await Task.Delay(1000);
-            watcher.EnableRaisingEvents = false;
             try
             {
                 using (FileStream fileStream = new FileStream(path, FileMode.Open))

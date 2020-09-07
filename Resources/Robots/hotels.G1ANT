@@ -7,73 +7,323 @@ if  ♥task⟦changetype⟧=="Created"
 end
 
 procedure main
+    ♥satisfied="Satisfied"
+    ♥possible="Possible"
+    ♥notfound="NotFound"
+    ♥notsearched="NotSearched"
+
     text.read ♥task⟦filepath⟧ result ♥jsonTxt
     ♥json = ⟦json⟧♥jsonTxt
+    ♥numberOfReturnOffers=♥json⟦numberOfReturnOffers⟧
+    ♥delay=♥json⟦‴delay‴⟧  
     ♥dateFrom=♥json⟦dateFrom⟧
     ♥dateTo=♥json⟦dateTo⟧
     ♥numberOfAdults=♥json⟦numberOfAdults⟧
     ♥numberOfChildren=♥json⟦numberOfChildren⟧
     ♥numberOfRooms=♥json⟦numberOfRooms⟧
-    ♥fromPrice=♥json⟦fromPrice⟧
-    ♥toPrice=♥json⟦toPrice⟧
     ♥city=♥json⟦city⟧
     ♥outputPath=♥json⟦outputPath⟧
-    ♥delay=2
+    ♥airConditioning= ♥json⟦airConditioning⟧
+    ♥freeCancelation= ♥json⟦freeCancelation⟧
+    ♥wifi= ♥json⟦wifi⟧
+    ♥bar= ♥json⟦bar⟧
+    ♥pool= ♥json⟦pool⟧
+    ♥fridge= ♥json⟦fridge⟧
+    ♥microwave= ♥json⟦microwave⟧
+    ♥safe= ♥json⟦safe⟧
+    ♥tv= ♥json⟦tv⟧
+    ♥massage= ♥json⟦massage⟧
+    ♥sauna= ♥json⟦sauna⟧
+    ♥gym= ♥json⟦gym⟧
+    ♥spa= ♥json⟦spa⟧
+    ♥stars= ♥json⟦stars⟧
+    
+    ♥numberOfAdultsPerRoom=♥numberOfAdults/♥numberOfRooms
+    ♥numberOfAdultsRest=♥numberOfAdults%♥numberOfRooms
+    ♥numberOfChildrenPerRoom=♥numberOfChildren/♥numberOfRooms
+    ♥numberOfChildrenRest=♥numberOfChildren%♥numberOfRooms
+    ♥tableXPath="/html/body/div[3]/main/div[2]/div[2]/div/section[2]/div/ol"
+    ♥tableToLinkXPath="/article/section/div/h3/a"
+    
+    ♥airConditioningMsg=♥notsearched
+    ♥freeCancelationMsg=♥notsearched
+    ♥wifiMsg=♥notsearched
+    ♥barMsg=♥notsearched
+    ♥poolMsg=♥notsearched
+    ♥fridgeMsg=♥notsearched
+    ♥microwaveMsg=♥notsearched
+    ♥safeMsg=♥notsearched
+    ♥tvMsg=♥notsearched
+    ♥massageMsg=♥notsearched
+    ♥saunaMsg=♥notsearched
+    ♥gymMsg=♥notsearched
+    ♥spaMsg=♥notsearched
+    ♥starsMsg=♥notsearched
+    ♥uncheckedSpa=true
+    
+    
+    while (♥numberOfChildren>6*♥numberOfRooms)&(♥numberOfRooms<9)
+        ♥numberOfRooms = ♥numberOfRooms + 1
+    end
+    
+    while (♥numberOfAdults>20*♥numberOfRooms)&(♥numberOfRooms<9)
+        ♥numberOfRooms = ♥numberOfRooms + 1
+    end
 
     selenium.open chrome url ‴www.hotels.com‴
-    delay 5
+    delay 2*♥delay
     window ✱hotels✱ style maximize
-    selenium.click search cookie-policy-banner-accept by class
-    delay 3 
-    --choose city
-    selenium.type ♥city search qf-0q-destination by id
     
-    --selenium.click search citysqm-asi0-s0 by id
-    --selenium.click search recommendedsqm-asi0-s0 by id
-    --selenium.runscript script ‴document.querySelector('[id*="sqm-asi0-s0"]').click()‴
-    selenium.click search /html/body/div[8]/table/tbody[1]/tr[1]/td by xpath
+    --accept cookie policy
+    selenium.click search cookie-policy-banner-accept by class
+    delay ♥delay 
+    
+    --enter city
+    selenium.runscript script ‴document.getElementById('qf-0q-destination').value='♥city'‴
     delay ♥delay
 
+    --enter check-in date
     selenium.click search qf-0q-localised-check-in by id
     selenium.runscript script ‴document.getElementById('qf-0q-localised-check-in').value=''‴
     selenium.type ♥dateFrom search qf-0q-localised-check-in by id
-
     delay ♥delay
 
+    --enter check-out date
     selenium.click search qf-0q-localised-check-out by id
     selenium.runscript script ‴document.getElementById('qf-0q-localised-check-out').value=''‴
     selenium.type ♥dateTo search qf-0q-localised-check-out by id
-
-    delay ♥delay
-
-    --get out of calendar focus
+    --delay 1
     selenium.click search widget-query-heading by class
-
-    --set number of adults
-    selenium.runscript script ‴document.getElementById('qf-0q-room-0-adults').selectedIndex=♥numberOfAdults-1‴
-
     delay ♥delay
+    
+    --enter number of rooms
+    selenium.click search qf-0q-rooms by id
+    delay ♥delay
+    
+    if ♥numberOfRooms>=9
+        keyboard 9
+        delay 1
+        keyboard ⋘TAB⋙
+        delay 1
+    else
+        keyboard ♥numberOfRooms
+        delay 1
+        keyboard ⋘TAB⋙
+        delay 1
+        for ♥roomNo from 0 to ⊂♥numberOfRooms - 1⊃ step 1
+            selenium.click search qf-0q-room-♥roomNo-adults by id
+            delay 1
+            ♥adultNo = ♥numberOfAdultsPerRoom
+            if ♥numberOfAdultsRest>0
+                ♥adultNo = ♥adultNo + 1
+                ♥numberOfAdultsRest = ♥numberOfAdultsRest - 1
+            end          
+            if ♥adultNo==1
+                keyboard ⋘UP⋙
+            else if (♥adultNo==2)|(♥adultNo==0)
+            else if ♥adultNo==20
+                keyboard 2
+            else if ♥adultNo>=10
+                for ♥tabIndex from 0 to ⊂♥adultNo - 10⊃ step 1
+                    keyboard 1
+                    delay 1
+                end
+            else
+                keyboard ♥adultNo
+            end
+            keyboard ⋘TAB⋙
+            selenium.click search qf-0q-room-♥roomNo-children by id
+            ♥childrenNo = ♥numberOfChildrenPerRoom
+            if ♥numberOfChildrenRest>0
+                ♥childrenNo = ♥childrenNo + 1
+                ♥numberOfChildrenRest = ♥numberOfChildrenRest - 1
+            end 
+            keyboard ♥childrenNo
+            keyboard ⋘TAB⋙
+        end
+    end
 
     selenium.click search cta-strong by class
+    delay 3*♥delay
+    
+    --air conditioning 
+    try if ♥airConditioning errorjump catchAirConditioning
+        delay  ♥delay       
+        selenium.runscript ‴document.getElementById('f-facilities-2030').click()‴
+        ♥airConditioningMsg=♥satisfied
+    end
+    jump succededAirConditioning
+    label catchAirConditioning
+    ♥airConditioningMsg=♥notfound
+    label succededAirConditioning
 
-    delay ♥delay
+    --free cancelation 
+    try if ♥freeCancelation errorjump catchFreeCancelation
+        delay  ♥delay       
+        selenium.runscript ‴document.getElementById('f-pay-pref-fc').click()‴
+        ♥freeCancelationMsg=♥satisfied
+    end
+    jump succededFreeCancelation
+    label catchFreeCancelation
+    ♥freeCancelationMsg=♥notfound
+    label succededFreeCancelation
+    
+    --WiFi
+    try if ♥wifi errorjump catchWiFi
+        delay  ♥delay       
+        selenium.runscript ‴document.getElementById('f-facilities-527').click()‴
+        ♥wifiMsg=♥satisfied
+    end
+    jump succededWiFi
+    label catchWiFi
+    ♥wifiMsg=♥notfound
+    label succededWiFi
+    
+    --Bar
+    try if ♥bar errorjump catchBar
+        delay  ♥delay       
+        selenium.runscript ‴document.getElementById('f-facilities-515').click()‴
+        ♥barMsg=♥satisfied
+    end
+    jump succededBar
+    label catchBar
+    ♥barMsg=♥notfound
+    label succededBar
+    
+    --Pool
+    try if ♥pool errorjump catchPool
+        delay  ♥delay       
+        selenium.runscript ‴document.getElementById('f-facilities-128').click()‴
+        ♥poolMsg=♥satisfied
+    end
+    jump succededPool
+    label catchPool
+    ♥poolMsg=♥notfound
+    label succededPool
+    
+    --Fridge
+    --lodówka lub minibarek
+    if ♥fridge
+        ♥fridgeMsg=♥notfound
+    end
 
-    selenium.getinnerhtml search /html/body/div[3]/main/div[2]/div[2]/div/section[2]/div/ol/li[1]/article/section/div/h3/a by xpath result ♥title1
+    --Microwave
+    if ♥microwave
+        ♥microwaveMsg=♥notfound
+    end
 
-    selenium.click search /html/body/div[3]/main/div[2]/div[2]/div/section[2]/div/ol/li[1]/article/section/div/h3/a by xpath
+    --Safe
+    --sejf
+    if ♥safe
+        ♥safeMsg=♥notfound
+    end
+    
+    --TV
+    --telewizor lub TV
+    if ♥TV 
+        ♥TVMsg=♥notfound
+    end
 
-    delay ♥delay
+    --Massage
+    try if (♥massage&&♥uncheckedSpa) errorjump catchMassage
+        delay  ♥delay       
+        selenium.runscript ‴document.getElementById('f-facilities-539').click()‴
+        ♥massageMsg=♥satisfied
+        ♥saunaMsg=♥satisfied
+        ♥spaMsg=♥satisfied
+        ♥uncheckedSpa=false
+    end
+    jump succededMassage
+    label catchMassage
+    ♥massageMsg=♥notfound
+    label succededMassage
 
-    selenium.geturl result ♥url1
+    --Sauna
+    try if (♥sauna&&♥uncheckedSpa) errorjump catchSauna
+        delay  ♥delay       
+        selenium.runscript ‴document.getElementById('f-facilities-539').click()‴
+        ♥massageMsg=♥satisfied
+        ♥saunaMsg=♥satisfied
+        ♥spaMsg=♥satisfied
+        ♥uncheckedSpa=false
+    end
+    jump succededSauna
+    label catchSauna
+    ♥saunaMsg=♥notfound
+    label succededSauna
+
+    --Gym
+    try if ♥gym errorjump catchGym
+        delay  ♥delay       
+        selenium.runscript ‴document.getElementById('f-facilities-2').click()‴
+        ♥gymMsg=♥satisfied
+    end
+    jump succededGym
+    label catchGym
+    ♥gymMsg=♥notfound
+    label succededGym
+
+    --Spa
+    try if (♥spa&&♥uncheckedSpa) errorjump catchSpa
+        delay  ♥delay       
+        selenium.runscript ‴document.getElementById('f-facilities-539').click()‴
+        ♥massageMsg=♥satisfied
+        ♥saunaMsg=♥satisfied
+        ♥spaMsg=♥satisfied
+        ♥uncheckedSpa=false
+    end
+    jump succededSpa
+    label catchSpa
+    ♥spaMsg=♥notfound
+    label succededSpa
+
+    --Stars
+    if ♥Stars>0
+        delay  ♥delay       
+        selenium.runscript ‴document.getElementById('f-star-rating-♥Stars').click()‴
+        ♥StarsMsg=♥satisfied
+    end
+    
+    --end
+    --procedure ehs
+    
+    --don't try this at home
+    ♥liIndex=0
+    ♥offersCount=0
+    ♥urlsArray="["
+    ♥loop=true
+    while ♥offersCount<♥numberOfReturnOffers&&♥loop
+        try if true errorjump skipStep
+            ♥loop = false
+            selenium.runscript ‴if(document.evaluate('♥tableXPath', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.children[♥liIndex]==null) throw Error(); else true;‴
+            ♥loop = true
+        end
+        
+        try if true errorjump skipStep
+            selenium.runscript ‴if(document.evaluate('♥tableXPath', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.children[♥liIndex].classList.contains('hotel')==false || document.evaluate('♥tableXPath', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.children[♥liIndex].classList.contains('sold-out')==true) throw Error(); else true;‴
+        end
+        
+        ♥offersCount = ♥offersCount + 1
+        ♥liNumber = ♥liIndex + 1
+        ♥linkPath = ♥tableXPath + "/li[" + ♥liNumber + "]" + ♥tableToLinkXPath
+        selenium.getattribute name href search ♥linkPath by xpath result ♥url
+        selenium.getinnerhtml search ♥linkPath by xpath result ♥title
+        ♥urlsArray = ‴♥urlsArray {"url":"♥url","hotelName": "♥title"},‴
+        
+        label skipStep
+        ♥liIndex = ♥liIndex + 1
+    end
+    
+    ♥urlsArray= ♥urlsArray + "]"
     selenium.close
 
     --zapis do pliku
+    ♥filters = {"airConditioning": "♥airConditioningMsg","freeCancelation": "♥freeCancelationMsg","wifi": "♥wifiMsg", "bar":"♥barMsg","pool":"♥poolMsg","fridge":"♥fridgeMsg","microwave":"♥microwaveMsg","safe":"♥safeMsg","tv":"♥tvMsg","massage":"♥massageMsg","sauna":"♥saunaMsg","gym":"♥gymMsg","spa":"♥spaMsg","stars":"♥starsMsg"}
     program notepad
-    keyboard ‴[‴
-    keyboard ‴{"fromCompany": "hotels","hotelName": "♥title1","url": "♥url1"},⋘ENTER⋙‴
-    keyboard ‴]‴
+    keyboard ‴{"fromCompany": "hotels","hotelsList": ♥urlsArray, "filters": ♥filters}⋘ENTER⋙‴
     keyboard  ⋘CTRL+S⋙
     keyboard ‴♥outputPath‴ 
     keyboard ‴\hotelsResult.txt‴
     keyboard ⋘ENTER⋙    
+    keyboard ⋘ALT+F4⋙
 end

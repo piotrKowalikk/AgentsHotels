@@ -58,4 +58,5 @@ echo ^</Settings^> >> %giantconfig%
 rem copy all files
 ren %giantdir%\G1ANT.Robot.config former_G1ANT.Robot.config
 copy /y * %giantdir%
+del G1ANT.Robot.config
 cd %startdir%

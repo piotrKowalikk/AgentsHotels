@@ -2,7 +2,7 @@
 {
     public enum StarsChoice
     {
-        Any=6,
+        Any=0,
         One=1,
         Two=2,
         Three=3,

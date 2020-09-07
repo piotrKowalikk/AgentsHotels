@@ -14,7 +14,7 @@ namespace HotelsLogic
 
         private string PrepareUserPreferenceForHotelsBot(UserPreference userPreference)
         {
-            return new HotelsUserPreference(userPreference).GetDeserializedUserPreference();
+            return new HotelsUserPreference(userPreference).GetSerializedUserPreference();
         }
 
         public void CleanServiceFolder()

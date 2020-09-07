@@ -21,7 +21,7 @@ namespace HotelsLogic
             delay = userPreference.Delay;
         }
 
-        public string GetDeserializedUserPreference()
+        public string GetSerializedUserPreference()
         {
             return JsonSerializer.Serialize(this);
         }

@@ -33,7 +33,7 @@ namespace HotelsLogic
 
         public bool Delete(SavedPreference pref)
         {
-            if(pref == null)
+            if (pref == null)
             {
                 return false;
             }
@@ -90,12 +90,12 @@ namespace HotelsLogic
             }
         }
 
-        public string GetDefaultPreferenceName() =>
-            File.Exists($"{PreferencesPath}/{DefaultPreferenceFileName}.txt")
+        public string DefaultPreferenceName
+        {
+            get => File.Exists($"{PreferencesPath}/{DefaultPreferenceFileName}.txt")
                 ? File.ReadAllText($"{PreferencesPath}/{DefaultPreferenceFileName}.txt")
                 : null;
-
-        public void SetDefaultPreference(string name) =>
-            File.WriteAllText($"{PreferencesPath}/{DefaultPreferenceFileName}.txt", name);
-    }
+            set => File.WriteAllText($"{PreferencesPath}/{DefaultPreferenceFileName}.txt", value);
+        }
+}
 }

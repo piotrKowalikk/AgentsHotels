@@ -14,7 +14,7 @@ namespace HotelsLogic
 
         private string PrepareUserPreferenceForTrivagoBot(UserPreference userPreference)
         {
-            return new TrivagoUserPreference(userPreference).GetDeserializedUserPreference();
+            return new TrivagoUserPreference(userPreference).GetSerializedUserPreference();
         }
 
         public void CleanServiceFolder()

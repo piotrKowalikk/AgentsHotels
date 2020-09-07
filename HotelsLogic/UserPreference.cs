@@ -9,6 +9,7 @@ namespace HotelsLogic
         public DateTime DateTo { get; set; }
         public int NumberOfAdults { get; set; }
         public int NumberOfChildren { get; set; }
+        public int NumberOfRooms { get; set; }
         public int Delay { get; set; }
         public int NumberOfReturnOffers { get; set; } = 1;
         //filtry
@@ -57,6 +58,12 @@ namespace HotelsLogic
             return this;
         }
 
+        public UserPreference WithNumberOfRooms(int rooms)
+        {
+            NumberOfRooms = rooms;
+            return this;
+        }
+
         public UserPreference WithDelay(int delay)
         {
             Delay = delay;
@@ -69,81 +76,81 @@ namespace HotelsLogic
             return this;
         }
 
-        public UserPreference WithAirConditioning(FiltersChoice choice)
+        public UserPreference WithAirConditioning(bool? choice)
         {
-            AirConditioning = choice == FiltersChoice.Yes;
+            AirConditioning = choice.Value;
             return this;
         }
 
-        public UserPreference WithFreeCancelation(FiltersChoice choice)
+        public UserPreference WithFreeCancelation(bool? choice)
         {
-            FreeCancelation = choice == FiltersChoice.Yes;
+            FreeCancelation = choice.Value;
             return this;
         }
 
-        public UserPreference WithWifi(FiltersChoice choice)
+        public UserPreference WithWifi(bool? choice)
         {
-            Wifi = choice == FiltersChoice.Yes;
+            Wifi = choice.Value;
             return this;
         }
 
-        public UserPreference WithBar(FiltersChoice choice)
+        public UserPreference WithBar(bool? choice)
         {
-            Bar = choice == FiltersChoice.Yes;
+            Bar = choice.Value;
             return this;
         }
 
-        public UserPreference WithPool(FiltersChoice choice)
+        public UserPreference WithPool(bool? choice)
         {
-            Pool = choice == FiltersChoice.Yes;
+            Pool = choice.Value;
             return this;
         }
 
-        public UserPreference WithFridge(FiltersChoice choice)
+        public UserPreference WithFridge(bool? choice)
         {
-            Fridge = choice == FiltersChoice.Yes;
+            Fridge = choice.Value;
             return this;
         }
 
-        public UserPreference WithMicrowave(FiltersChoice choice)
+        public UserPreference WithMicrowave(bool? choice)
         {
-            Microwave = choice == FiltersChoice.Yes;
+            Microwave = choice.Value;
             return this;
         }
 
-        public UserPreference WithSafe(FiltersChoice choice)
+        public UserPreference WithSafe(bool? choice)
         {
-            Safe = choice == FiltersChoice.Yes;
+            Safe = choice.Value;
             return this;
         }
 
-        public UserPreference WithTv(FiltersChoice choice)
+        public UserPreference WithTv(bool? choice)
         {
-            Tv = choice == FiltersChoice.Yes;
+            Tv = choice.Value;
             return this;
         }
 
-        public UserPreference WithMassage(FiltersChoice choice)
+        public UserPreference WithMassage(bool? choice)
         {
-            Massage = choice == FiltersChoice.Yes;
+            Massage = choice.Value;
             return this;
         }
 
-        public UserPreference WithSauna(FiltersChoice choice)
+        public UserPreference WithSauna(bool? choice)
         {
-            Sauna = choice == FiltersChoice.Yes;
+            Sauna = choice.Value;
             return this;
         }
 
-        public UserPreference WithGym(FiltersChoice choice)
+        public UserPreference WithGym(bool? choice)
         {
-            Gym = choice == FiltersChoice.Yes;
+            Gym = choice.Value;
             return this;
         }
 
-        public UserPreference WithSpa(FiltersChoice choice)
+        public UserPreference WithSpa(bool? choice)
         {
-            Spa = choice == FiltersChoice.Yes;
+            Spa = choice.Value;
             return this;
         }
 

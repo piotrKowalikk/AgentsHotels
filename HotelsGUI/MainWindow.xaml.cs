@@ -108,7 +108,7 @@ namespace HotelsGUI
             }
             else if (prefRepo.DefaultPreferenceName == pref.PreferenceName)
             {
-                if(prefRepo.GetPreference(defaultPreferenceName) != null)
+                if (prefRepo.GetPreference(defaultPreferenceName) != null)
                 {
                     prefRepo.DefaultPreferenceName = defaultPreferenceName;
                 }
@@ -167,13 +167,17 @@ namespace HotelsGUI
                 {
                     foreach (SearchedHotel hotel in item.HotelsList)
                     {
-                        if (!Results.Any(x => x == hotel))
+                        if (!Results.Any(x => x == hotel))  // check if already in
                         {
                             Results.Add(hotel);
                             SoundPlayer wowSound = new SoundPlayer("../../../../Resources/Sounds/success.wav");
                             wowSound.Play();
                         }
                     }
+                    List<SearchedHotel> resultsArray = Results.ToList();
+                    resultsArray.Sort((y, x) => x.Score.Value.CompareTo(y.Score.Value));
+                    Results = new ObservableCollection<SearchedHotel>(resultsArray);
+                    ResultListView.ItemsSource = Results;
                 }
             }
             );

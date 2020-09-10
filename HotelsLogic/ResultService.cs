@@ -54,7 +54,8 @@ namespace HotelsLogic
                     try
                     {
                         results.Add( JsonConvert.DeserializeObject<SearchResult>(fileContent));
-
+                        results[results.Count - 1].CalculateHotelsScore();
+                        results[results.Count - 1].FormatHotelNames();
                     }
                     catch (System.Exception e)
                     {

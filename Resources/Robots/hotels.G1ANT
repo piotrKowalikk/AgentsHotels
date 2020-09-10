@@ -7,10 +7,10 @@ if  ♥task⟦changetype⟧=="Created"
 end
 
 procedure main
-    ♥satisfied="Satisfied"
-    ♥possible="Possible"
     ♥notfound="NotFound"
     ♥notsearched="NotSearched"
+    ♥possible="Possible"
+    ♥satisfied="Satisfied"
 
     text.read ♥task⟦filepath⟧ result ♥jsonTxt
     ♥json = ⟦json⟧♥jsonTxt
@@ -225,13 +225,13 @@ procedure main
     end
 
     --Massage
-    try if (♥massage&&♥uncheckedSpa) errorjump catchMassage
-        delay  ♥delay       
-        selenium.runscript ‴document.getElementById('f-facilities-539').click()‴
-        ♥massageMsg=♥satisfied
-        ♥saunaMsg=♥satisfied
-        ♥spaMsg=♥satisfied
-        ♥uncheckedSpa=false
+    try if (♥massage) errorjump catchMassage
+        if (♥uncheckedSpa)
+            delay  ♥delay 
+            selenium.runscript ‴document.getElementById('f-facilities-539').click()‴
+            ♥uncheckedSpa=false
+        end
+        ♥massageMsg=♥possible
     end
     jump succededMassage
     label catchMassage
@@ -239,13 +239,13 @@ procedure main
     label succededMassage
 
     --Sauna
-    try if (♥sauna&&♥uncheckedSpa) errorjump catchSauna
-        delay  ♥delay       
-        selenium.runscript ‴document.getElementById('f-facilities-539').click()‴
-        ♥massageMsg=♥satisfied
-        ♥saunaMsg=♥satisfied
-        ♥spaMsg=♥satisfied
-        ♥uncheckedSpa=false
+    try if (♥sauna) errorjump catchSauna
+        if (♥uncheckedSpa)
+            delay  ♥delay       
+            selenium.runscript ‴document.getElementById('f-facilities-539').click()‴
+            ♥uncheckedSpa=false
+        end
+        ♥saunaMsg=♥possible
     end
     jump succededSauna
     label catchSauna
@@ -264,13 +264,13 @@ procedure main
     label succededGym
 
     --Spa
-    try if (♥spa&&♥uncheckedSpa) errorjump catchSpa
-        delay  ♥delay       
-        selenium.runscript ‴document.getElementById('f-facilities-539').click()‴
-        ♥massageMsg=♥satisfied
-        ♥saunaMsg=♥satisfied
+    try if (♥spa) errorjump catchSpa
+        if (♥uncheckedSpa)
+            delay  ♥delay       
+            selenium.runscript ‴document.getElementById('f-facilities-539').click()‴
+            ♥uncheckedSpa=false
+        end
         ♥spaMsg=♥satisfied
-        ♥uncheckedSpa=false
     end
     jump succededSpa
     label catchSpa
